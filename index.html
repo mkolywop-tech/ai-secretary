@@ -1,0 +1,2706 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5b5bf0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AI เลขา">
+<link rel="manifest" href="manifest.json">
+<title>Daily AI Secretary · เลขาส่วนตัว การเงิน & ข่าวตลาด</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#f6f5f0;--card:#ffffff;--tx:#1e2235;--mu:#7c8094;--ln:#e8e6df;
+  --inc:#12b886;--exp:#e85d5d;--warn:#f59e0b;
+  --hero:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);--herotx:#fff;
+  --ac:#4f46e5;--ac2:#eef2ff;--actx:#fff;
+  --sh:0 4px 18px rgba(30,34,53,.06);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#11131a;--card:#1b1e28;--tx:#eef0f8;--mu:#9498ad;--ln:#2a2e3d;
+    --inc:#3fd9a4;--exp:#ff7a85;--warn:#fbbf24;
+    --hero:linear-gradient(135deg,#4338ca 0%,#6d28d9 100%);--herotx:#fff;
+    --ac:#818cf8;--ac2:#25283c;--actx:#11131a;
+    --sh:0 4px 20px rgba(0,0,0,.28);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11131a;--card:#1b1e28;--tx:#eef0f8;--mu:#9498ad;--ln:#2a2e3d;
+  --inc:#3fd9a4;--exp:#ff7a85;--warn:#fbbf24;
+  --hero:linear-gradient(135deg,#4338ca 0%,#6d28d9 100%);--herotx:#fff;
+  --ac:#818cf8;--ac2:#25283c;--actx:#11131a;
+  --sh:0 4px 20px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{
+  background:var(--bg);color:var(--tx);
+  font-family:"Inter","Noto Sans Thai",system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+}
+button,input,select,textarea{font-family:inherit;color:inherit}
+button{cursor:pointer}
+main.shell{max-width:980px;margin:0 auto;padding:16px 16px 120px}
+main.shell.narrow{max-width:540px}
+
+/* Top App Header & Mode Switcher */
+.app-bar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  max-width:980px;margin:0 auto;padding:16px 16px 4px;flex-wrap:wrap;
+}
+.brand-wrap{display:flex;align-items:center;gap:10px}
+.brand-logo{
+  width:38px;height:38px;border-radius:12px;background:var(--hero);color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:18px;
+  box-shadow:0 6px 16px rgba(79,70,229,.28);
+}
+.brand{font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1.15}
+.brand-sub{font-size:12px;color:var(--mu)}
+.mode-nav{
+  display:flex;gap:4px;background:var(--card);border:1px solid var(--ln);
+  border-radius:999px;padding:4px;box-shadow:var(--sh);
+}
+.mode-nav button{
+  border:0;background:none;color:var(--mu);padding:7px 15px;border-radius:999px;
+  font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;transition:.15s;
+}
+.mode-nav button.on{background:var(--ac);color:var(--actx)}
+.top-actions{display:flex;align-items:center;gap:8px}
+
+/* Common UI */
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px;flex-wrap:wrap}
+.mn{display:flex;align-items:center;background:var(--card);border:1px solid var(--ln);border-radius:999px;padding:3px;box-shadow:var(--sh)}
+.mn button{width:30px;height:30px;border:0;border-radius:50%;background:none;color:var(--tx);font-size:18px}
+.mn button:disabled{opacity:.25}
+.mn b{font-size:13px;font-weight:600;min-width:110px;text-align:center}
+.hero{background:var(--hero);color:var(--herotx);border-radius:28px;box-shadow:0 12px 28px rgba(79,70,229,.25);padding:22px}
+.hr{display:flex;justify-content:space-between;align-items:center;min-height:26px}
+.lb{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.75;font-weight:600}
+.bal{font-size:42px;font-weight:700;letter-spacing:-.03em;margin:6px 0 18px}
+.two{display:flex;gap:10px}
+.two>div{cursor:pointer;flex:1;background:rgba(255,255,255,.16);border-radius:16px;padding:12px 14px;backdrop-filter:blur(6px)}
+.two b{display:block;font-size:18px;margin-top:4px;letter-spacing:-.01em}
+.back{border:0;background:rgba(255,255,255,.22);color:inherit;border-radius:999px;padding:5px 12px;font-size:12px;display:none}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin:14px -16px 0;padding:0 16px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;border:1px solid var(--ln);background:var(--card);color:var(--mu);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600}
+.tabs button.on{background:var(--ac);color:var(--actx);border-color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:24px;padding:20px;margin-top:14px;box-shadow:var(--sh)}
+h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--mu);font-weight:700;margin:0 0 14px}
+.ch{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.chev{display:inline-block;width:7px;height:7px;border-right:1.6px solid var(--mu);border-bottom:1.6px solid var(--mu);transform:rotate(45deg);transition:.2s;margin:0 4px 3px 0}
+.x{color:var(--mu);font-size:18px;line-height:1;padding:0 4px 0 12px;letter-spacing:0}
+.card.cl .cbody{display:none}.card.cl .chev{transform:rotate(-45deg)}.card.cl h2{margin-bottom:0}
+.mu{color:var(--mu);font-size:12px}
+.inc,.up{color:var(--inc)}.exp,.dn{color:var(--exp)}
+.two2{display:flex;gap:12px;margin-bottom:12px}.two2>div{flex:1}.two2 b{display:block;font-size:24px;letter-spacing:-.02em;margin-top:2px}
+.bar{height:8px;background:var(--ln);border-radius:8px;overflow:hidden}.bar i{display:block;height:100%;border-radius:8px}
+.st{font-size:13px;margin:10px 0 14px;font-weight:500}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.pills button{padding:7px 13px;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;font-size:13px;font-weight:500;transition:.15s}
+.pills button:hover{border-color:var(--ac)}
+.pills button.on,.pills button[aria-pressed="true"]{background:var(--ac);color:var(--actx);border-color:var(--ac)}
+.f{width:100%;padding:12px 14px;margin-bottom:8px;border:1px solid var(--ln);border-radius:14px;background:var(--bg);color:var(--tx);font-size:14px;outline:none}
+.f:focus{border-color:var(--ac)}
+.row{display:none;gap:8px}.row.on{display:flex}
+.btn{border:0;border-radius:14px;background:var(--ac);color:var(--actx);font-size:14px;font-weight:600;padding:12px 16px;transition:.15s}
+.btn.sec{background:var(--ac2);color:var(--ac)}
+.btn.ghost{background:var(--bg);color:var(--tx);border:1px solid var(--ln)}
+.lg{display:flex;justify-content:space-between;font-size:13px;margin-bottom:9px;gap:8px;font-weight:500}
+.lg i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px}
+.lg b{font-weight:500;color:var(--mu)}.lg b em{font-style:normal;color:var(--tx);font-weight:600}
+.itw{border-top:1px solid var(--ln)}.itw:first-child{border:0}
+.it{display:flex;align-items:center;gap:12px;padding:12px 0;cursor:pointer}
+.it .m{flex:1;min-width:0}.it .m div:first-child{font-size:15px;font-weight:500}
+.it b{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.itw.open .chev{transform:rotate(225deg)}
+.dt{display:none;padding:0 0 14px 0;font-size:13px}.itw.open .dt{display:block}
+.dr{display:flex;justify-content:space-between;gap:12px;padding:5px 0}.dr span:first-child{color:var(--mu);flex:none}.dr span:last-child{text-align:right;word-break:break-word;font-weight:500}
+.dbtn{margin-top:8px;border:1px solid var(--ln);background:none;color:var(--exp);border-radius:12px;padding:8px 13px;font-size:13px;font-weight:500}
+.rowb{margin-bottom:14px}.rowb .t{display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:6px}.tip{font-size:13px;line-height:1.5;margin:6px 0}
+.rv{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--ln);font-size:13px;font-weight:500}.rv .pills{margin:0;flex:none}
+.dscroll{max-height:65vh;overflow-y:auto;margin-top:6px}
+.dh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.dtot{font-size:32px;font-weight:600;letter-spacing:-.02em;margin-top:2px}
+.cls{border:0;background:var(--bg);color:var(--tx);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:500}
+.ib{width:38px;height:38px;border-radius:50%;border:1px solid var(--ln);background:var(--card);color:var(--tx);display:grid;place-items:center;box-shadow:var(--sh);flex:none}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--tx);color:var(--bg);padding:8px 8px 8px 18px;border-radius:999px;font-size:14px;font-weight:500;display:none;align-items:center;gap:14px;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast button{border:0;background:var(--bg);color:var(--tx);border-radius:999px;padding:7px 14px;font-weight:600}
+.qk{display:none;margin-top:14px}.ql{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);font-weight:600;margin-bottom:8px}
+.qr{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px 2px;scrollbar-width:none}.qr::-webkit-scrollbar{display:none}
+.qr button{flex:none;border:1px solid var(--ln);background:var(--card);color:var(--tx);padding:10px 15px;border-radius:16px;font-size:14px;font-weight:500;box-shadow:var(--sh)}
+.qr button b{margin-left:6px;font-weight:700}
+.empty{text-align:center;color:var(--mu);padding:20px 0;font-size:14px}
+.bn{display:none;align-items:center;gap:8px;background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:10px 10px 10px 16px;margin-bottom:14px;font-size:13px;font-weight:500;box-shadow:var(--sh)}
+.bn span{flex:1}.bn button{border:0;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;background:var(--ac);color:var(--actx)}
+.bn #bz{background:none;color:var(--mu);padding:8px 10px;font-size:18px;line-height:1}
+.rowc{display:flex;gap:10px;margin-bottom:10px;align-items:flex-end}.rowc label{flex:1;font-size:12px;color:var(--mu);font-weight:500}.rowc .f{margin:4px 0 0}.rowc .sv2{flex:1;font-size:12px;color:var(--mu)}.rowc .sv2 b{display:block;font-size:15px;color:var(--tx);padding:14px 0 13px}
+.lk{border:0;background:none;color:var(--ac);font-size:13px;font-weight:600;padding:4px 0;margin:6px 0 8px}
+.hp{background:var(--bg);border-radius:14px;padding:12px 14px;margin:2px 0 6px;font-size:13px;line-height:1.5}.hp b{display:block;margin-top:10px}.hp b:first-child{margin-top:0}.hp span{color:var(--mu)}
+.sn{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.sn button{width:32px;height:32px;border:0;border-radius:50%;background:var(--bg);color:var(--tx);font-size:18px}.sn button:disabled{opacity:.25}.sn span{font-size:14px;font-weight:600}
+.sm{background:var(--bg);border-radius:16px;padding:12px 14px}.sm b{display:block;font-size:22px;letter-spacing:-.02em;margin-top:2px}
+.fab{position:fixed;right:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border:0;border-radius:50%;background:var(--ac);color:var(--actx);display:grid;place-items:center;box-shadow:0 10px 24px rgba(79,70,229,.42);z-index:10}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:30;backdrop-filter:blur(2px)}.ov.on{display:flex}
+.sh{background:var(--card);width:100%;max-width:500px;border-radius:28px 28px 0 0;padding:12px 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--ln);margin:0 auto 14px}
+.seg{display:flex;background:var(--bg);border-radius:14px;padding:4px;margin-bottom:8px}
+.seg button{flex:1;padding:9px;border:0;background:none;color:var(--mu);border-radius:11px;font-size:13px;font-weight:600}
+.seg button.on{background:var(--card);color:var(--tx);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.amt{font-size:44px;font-weight:700;letter-spacing:-.03em;text-align:center;border:0;background:none;color:var(--tx);width:100%;outline:none;margin:6px 0 10px}
+.sv{width:100%;margin-top:4px}
+
+/* AI Agent Dashboard Styles */
+.agent-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;align-items:start}
+@media(max-width:820px){.agent-grid{grid-template-columns:1fr}}
+.agent-hero{
+  background:var(--hero);color:#fff;border-radius:26px;padding:22px;
+  box-shadow:0 12px 30px rgba(79,70,229,.25);position:relative;overflow:hidden;
+}
+.agent-badge{
+  display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);
+  padding:4px 11px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+}
+.pulse{width:8px;height:8px;border-radius:50%;background:#3fd9a4;box-shadow:0 0 0 4px rgba(63,217,164,.25)}
+.agent-hero h1{margin:10px 0 4px;font-size:24px;font-weight:800;letter-spacing:-.02em}
+.agent-hero p{margin:0;font-size:13.5px;opacity:.9}
+.brief-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+@media(max-width:480px){.brief-metrics{grid-template-columns:1fr 1fr}}
+.bm-box{background:rgba(255,255,255,.15);border-radius:16px;padding:11px 13px;backdrop-filter:blur(6px)}
+.bm-box span{font-size:11px;opacity:.8;display:block}
+.bm-box b{font-size:17px;font-weight:700;display:block;margin-top:2px}
+.bm-box small{font-size:11px;opacity:.85}
+
+.cmd-box{
+  background:var(--card);border:1.5px solid var(--ac);border-radius:22px;padding:14px;
+  margin-top:14px;box-shadow:0 8px 24px rgba(79,70,229,.1);
+}
+.cmd-row{display:flex;gap:8px;align-items:center}
+.cmd-input{
+  flex:1;border:0;background:var(--bg);color:var(--tx);padding:12px 14px;
+  border-radius:14px;font-size:14.5px;outline:none;
+}
+.cmd-prompts{display:flex;gap:6px;overflow-x:auto;padding-top:10px;scrollbar-width:none}
+.cmd-prompts::-webkit-scrollbar{display:none}
+.cmd-prompts button{
+  flex:none;border:1px solid var(--ln);background:var(--bg);color:var(--tx);
+  border-radius:999px;padding:5px 11px;font-size:12px;font-weight:500;white-space:nowrap;
+}
+.cmd-prompts button:hover{border-color:var(--ac);color:var(--ac)}
+
+.chat-feed{max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-top:12px;padding-right:2px}
+.msg{padding:12px 15px;border-radius:18px;font-size:13.5px;line-height:1.6;max-width:92%}
+.msg.ai{background:var(--ac2);color:var(--tx);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.user{background:var(--ac);color:var(--actx);align-self:flex-end;border-bottom-right-radius:4px}
+.msg b{font-weight:700}
+.msg .tag-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:var(--card);margin-right:4px}
+
+.brief-section{background:var(--bg);border-radius:16px;padding:14px;margin-bottom:10px}
+.brief-section h3{margin:0 0 6px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:space-between}
+.brief-list{margin:0;padding-left:18px;font-size:13.5px;line-height:1.65}
+.brief-list li{margin-bottom:5px}
+
+/* Todo List */
+.todo-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--ln);font-size:14px}
+.todo-item:first-child{border-top:0}
+.todo-item input[type="checkbox"]{width:18px;height:18px;accent-color:var(--ac);cursor:pointer}
+.todo-item.done span{text-decoration:line-through;color:var(--mu)}
+.todo-del{margin-left:auto;border:0;background:none;color:var(--mu);font-size:16px;padding:2px 6px}
+
+/* News & Market Styles (from finance-news) */
+.strip{display:flex;gap:10px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;background:var(--card);border:1px solid var(--ln);border-radius:16px;
+  padding:10px 14px;min-width:132px;text-align:left;box-shadow:var(--sh);transition:.15s;
+}
+.chip:hover,.chip.active{border-color:var(--ac);transform:translateY(-1px)}
+.chip b{display:block;font-size:11.5px;color:var(--mu);font-weight:700}
+.chip span{display:block;font-weight:800;font-size:16px;margin:2px 0}
+.chip i{display:block;font-style:normal;font-size:12px}
+
+.news-item{
+  background:var(--card);border:1px solid var(--ln);border-radius:16px;
+  padding:13px 15px;margin-bottom:9px;transition:.15s;
+}
+.news-item:hover{border-color:var(--ac)}
+.news-item summary{cursor:pointer;font-weight:600;font-size:14.5px;list-style:none}
+.news-item summary::-webkit-details-marker{display:none}
+.news-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:5px;font-size:12px;color:var(--mu);font-weight:400}
+.news-badge{background:var(--ac2);color:var(--ac);padding:2px 8px;border-radius:999px;font-weight:600;font-size:11px}
+.ai-box{background:var(--ac2);border-radius:14px;padding:12px 14px;margin-top:10px;font-size:13.5px;line-height:1.65}
+.market-grid{display:grid;grid-template-columns:250px 1fr;gap:16px;align-items:start}
+@media(max-width:760px){.market-grid{grid-template-columns:1fr}}
+.asset-list{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:6px;max-height:420px;overflow-y:auto}
+.asset-row{
+  display:flex;justify-content:space-between;align-items:center;width:100%;
+  border:0;background:none;padding:10px 12px;border-radius:12px;text-align:left;
+}
+.asset-row:hover{background:var(--bg)}
+.asset-row.active{background:var(--ac2);box-shadow:inset 3px 0 var(--ac)}
+.asset-row small{display:block;color:var(--mu);font-size:11.5px}
+.chart-wrap{position:relative;height:280px;margin-top:12px;background:var(--bg);border-radius:16px;padding:8px}
+.chart-wrap svg{width:100%;height:100%;display:block}
+.chart-detail{
+  position:absolute;top:10px;left:10px;z-index:2;background:var(--card);
+  border:1px solid var(--ln);border-radius:12px;padding:8px 12px;font-size:12px;
+  box-shadow:var(--sh);pointer-events:none;
+}
+/* ==================== DESIGN SYSTEM v2 ==================== */
+:root{
+  --bg:#f4f5fb;--card:#ffffff;--tx:#161a2e;--mu:#6f758c;--ln:#e7e9f3;
+  --ac:#5b5bf0;--ac2:#eeeeff;--actx:#fff;--inc:#0fb487;--exp:#ec5a6b;
+  --ac-grad:linear-gradient(135deg,#5b5bf0 0%,#8b5cf6 55%,#c06cf5 100%);
+  --hero:linear-gradient(135deg,#4a47e8 0%,#7c4df0 55%,#b05cf2 100%);
+  --glass:rgba(255,255,255,.78);--ring:0 0 0 3px rgba(91,91,240,.22);
+  --r-lg:24px;--r-md:16px;--r-sm:12px;
+  --sh:0 1px 2px rgba(22,26,46,.04),0 6px 20px rgba(22,26,46,.06);
+  --sh-lg:0 2px 4px rgba(22,26,46,.05),0 18px 40px rgba(60,50,160,.14);
+  --nav-h:68px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d0f1a;--card:#161927;--tx:#eef0fb;--mu:#8e94ad;--ln:#242840;
+  --ac:#8b8bff;--ac2:#212545;--actx:#0d0f1a;--inc:#3fe0aa;--exp:#ff7b8a;
+  --glass:rgba(22,25,39,.78);--ring:0 0 0 3px rgba(139,139,255,.3);
+  --sh:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);--sh-lg:0 18px 40px rgba(0,0,0,.45);
+}}
+:root[data-theme="dark"]{
+  --bg:#0d0f1a;--card:#161927;--tx:#eef0fb;--mu:#8e94ad;--ln:#242840;
+  --ac:#8b8bff;--ac2:#212545;--actx:#0d0f1a;--inc:#3fe0aa;--exp:#ff7b8a;
+  --glass:rgba(22,25,39,.78);--ring:0 0 0 3px rgba(139,139,255,.3);
+  --sh:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);--sh-lg:0 18px 40px rgba(0,0,0,.45);
+}
+html{scroll-behavior:smooth}
+body{font-family:"Noto Sans Thai","Inter",system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.6;
+  background:var(--bg);position:relative;min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto 0;height:420px;pointer-events:none;z-index:-1;
+  background:radial-gradient(600px 260px at 12% -40px,rgba(124,77,240,.16),transparent 70%),
+             radial-gradient(520px 240px at 92% -30px,rgba(91,91,240,.14),transparent 70%)}
+::selection{background:var(--ac);color:var(--actx)}
+*{scrollbar-width:thin;scrollbar-color:var(--ln) transparent}
+button{transition:transform .15s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease,color .18s ease}
+button:active{transform:scale(.97)}
+button:focus-visible,.f:focus-visible,.cmd-input:focus-visible{outline:none;box-shadow:var(--ring)}
+.f:focus{box-shadow:var(--ring);border-color:var(--ac)}
+
+/* Sticky glass header */
+.app-bar{position:sticky;top:0;z-index:40;max-width:none;margin:0;padding:12px max(16px,calc((100vw - 980px)/2));
+  background:var(--glass);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);
+  border-bottom:1px solid var(--ln);flex-wrap:nowrap;gap:12px}
+.brand-logo{width:40px;height:40px;border-radius:13px;background:var(--ac-grad);font-size:19px;
+  box-shadow:0 8px 18px rgba(124,77,240,.35)}
+.brand{font-size:18px;font-weight:800;letter-spacing:-.02em}
+.brand-sub{font-size:11.5px}
+.ib{width:40px;height:40px;border:1px solid var(--ln);background:var(--card);box-shadow:none;font-size:16px}
+.ib:hover{border-color:var(--ac);transform:translateY(-1px);box-shadow:var(--sh)}
+
+/* Desktop nav = segmented control */
+.mode-nav{background:var(--ac2);border:0;box-shadow:none;padding:4px;gap:2px}
+.mode-nav button{padding:8px 16px;font-size:13.5px;font-weight:600;gap:7px;color:var(--mu)}
+.mode-nav button svg{width:17px;height:17px;flex:none}
+.mode-nav button:hover{color:var(--tx)}
+.mode-nav button.on{background:var(--card);color:var(--ac);box-shadow:0 2px 8px rgba(22,26,46,.1)}
+
+/* Page transition */
+main.shell{padding-top:20px;animation:rise .38s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* Hero */
+.agent-hero{background:var(--hero);border-radius:28px;padding:26px;position:relative;overflow:hidden;box-shadow:var(--sh-lg)}
+.agent-hero::before,.agent-hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.agent-hero::before{width:260px;height:260px;right:-70px;top:-110px;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 70%)}
+.agent-hero::after{width:200px;height:200px;left:-60px;bottom:-110px;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%)}
+.agent-hero>*{position:relative;z-index:1}
+.agent-hero h1{font-size:26px;line-height:1.25;margin:14px 0 4px}
+.agent-hero p{font-size:13.5px;opacity:.88}
+.brief-metrics{gap:10px;margin-top:20px}
+.bm-box{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:18px;padding:13px 15px;
+  transition:transform .18s ease,background .18s ease}
+.bm-box:hover{background:rgba(255,255,255,.22);transform:translateY(-2px)}
+.bm-box b{font-size:20px;letter-spacing:-.02em}
+.bm-box span{font-weight:500}
+
+/* Command bar (primary action) */
+.cmd-box{background:var(--card);border:1px solid var(--ln);border-radius:22px;padding:14px 14px 12px;margin-top:16px;
+  box-shadow:var(--sh);position:relative}
+.cmd-box::before{content:"";position:absolute;inset:-1px;border-radius:23px;padding:1px;pointer-events:none;
+  background:var(--ac-grad);opacity:.55;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.cmd-input{background:var(--bg);border-radius:14px;padding:14px 16px;font-size:15px}
+.cmd-row .btn{border-radius:14px;padding:13px 20px;background:var(--ac-grad);color:#fff;box-shadow:0 6px 16px rgba(124,77,240,.32)}
+.cmd-row .btn:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(124,77,240,.4)}
+.cmd-prompts button{background:var(--card);padding:6px 12px;font-size:12.5px}
+.cmd-prompts button:hover{background:var(--ac2);border-color:var(--ac);color:var(--ac)}
+.chat-feed:empty{display:none}
+.msg{font-size:14px;line-height:1.65;box-shadow:0 1px 2px rgba(22,26,46,.04)}
+.msg.ai{background:var(--ac2)}
+.msg.user{background:var(--ac-grad);color:#fff}
+
+/* Cards & headings */
+.card{border-radius:var(--r-lg);padding:22px;border:1px solid var(--ln);box-shadow:var(--sh);margin-top:16px}
+h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weight:700}
+.brief-section{background:var(--bg);border-radius:var(--r-md);padding:15px 16px}
+.brief-section h3{font-size:14px}
+.brief-list li{margin-bottom:7px}
+.agent-grid{gap:18px;margin-top:2px}
+
+/* Buttons */
+.btn{border-radius:var(--r-sm);font-weight:600;letter-spacing:-.005em}
+.btn:not(.sec):not(.ghost){background:var(--ac-grad);color:#fff}
+.btn.sec{background:var(--ac2);color:var(--ac)}
+.btn.sec:hover{background:var(--ac);color:var(--actx)}
+.btn.ghost:hover{border-color:var(--ac)}
+.pills button{background:var(--card)}
+.pills button:hover{border-color:var(--ac);color:var(--ac)}
+.pills button.on,.pills button[aria-pressed="true"]{background:var(--ac-grad);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(124,77,240,.28)}
+.seg{background:var(--ac2)}
+.seg button.on{color:var(--ac)}
+.seg button{white-space:nowrap}
+.tabs button.on{background:var(--ac-grad);border-color:transparent;color:#fff}
+
+/* Market ticker chips */
+.strip{padding:6px 2px 14px;margin:0 -2px}
+.chip{border-radius:18px;padding:12px 15px;min-width:150px;box-shadow:var(--sh)}
+.chip:hover,.chip.active{border-color:var(--ac);box-shadow:var(--sh-lg);transform:translateY(-2px)}
+.chip span{font-size:17px;letter-spacing:-.02em}
+
+/* News */
+.news-item{border-radius:var(--r-md);padding:15px 17px;box-shadow:none;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.news-item:hover{border-color:var(--ac);box-shadow:var(--sh);transform:translateY(-1px)}
+.news-item summary{font-size:15px;line-height:1.5}
+.news-item[open]{border-color:var(--ac)}
+.ai-box{border-radius:var(--r-md);background:var(--ac2)}
+.asset-list{border-radius:var(--r-md);box-shadow:var(--sh)}
+.asset-row{border-radius:12px}
+.chart-wrap{border-radius:var(--r-md);background:var(--bg)}
+
+/* Wallet polish */
+.hero{background:var(--hero);border-radius:28px;box-shadow:var(--sh-lg);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;width:220px;height:220px;right:-70px;top:-100px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.25),transparent 70%);pointer-events:none}
+.bal{font-size:46px;font-weight:700}
+.two>div{border:1px solid rgba(255,255,255,.2);transition:background .18s ease}
+.two>div:hover{background:rgba(255,255,255,.26)}
+.it{border-radius:12px;padding:13px 6px;transition:background .15s ease}
+.it:hover{background:var(--bg)}
+.todo-item{padding:11px 4px;border-radius:10px}
+.todo-item:hover{background:var(--bg)}
+
+/* Floating action button */
+.fab{width:60px;height:60px;background:var(--ac-grad);box-shadow:0 12px 28px rgba(124,77,240,.45);z-index:35}
+.fab:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 16px 34px rgba(124,77,240,.55)}
+.fab:active{transform:scale(.94)}
+
+/* Sheets */
+.ov{backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);background:rgba(10,12,28,.5)}
+.sh{border-radius:28px 28px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.25);animation:sheetUp .28s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.toast{z-index:60;box-shadow:var(--sh-lg)}
+
+/* Mobile = app-style bottom tab bar */
+@media(max-width:720px){
+  .brand-sub{display:none}
+  .app-bar{padding:10px 16px;backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--bg)}
+  .mode-nav{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:50;
+    height:var(--nav-h);padding:6px;border-radius:24px;background:var(--glass);
+    backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);
+    border:1px solid var(--ln);box-shadow:0 12px 34px rgba(22,26,46,.22);gap:4px}
+  .mode-nav button{flex:1;flex-direction:column;justify-content:center;gap:3px;padding:6px 4px;border-radius:18px;font-size:11.5px}
+  .mode-nav button svg{width:22px;height:22px}
+  .mode-nav button.on{background:var(--ac-grad);color:#fff;box-shadow:0 6px 16px rgba(124,77,240,.4)}
+  main.shell{padding:14px 14px calc(var(--nav-h) + 56px)}
+  .fab{bottom:calc(var(--nav-h) + 26px + env(safe-area-inset-bottom,0px));right:18px;width:56px;height:56px}
+  .toast{bottom:calc(var(--nav-h) + 96px + env(safe-area-inset-bottom,0px))}
+  .agent-hero{padding:20px;border-radius:24px}
+  .agent-hero h1{font-size:22px}
+  .bm-box b{font-size:17px}
+  .card{padding:18px}
+  .cmd-row .btn{padding:13px 16px}
+  html,body{overflow-x:hidden}
+  .brand-wrap{min-width:0}.brand-wrap>div:last-child{min-width:0}
+  .brand{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top-actions{flex:none}
+  .brief-metrics{grid-template-columns:1fr;gap:8px;margin-top:16px}
+  .bm-box{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 12px;padding:12px 14px}
+  .bm-box small{flex-basis:100%;order:3}
+  .bm-box:hover{transform:none}
+  .cmd-box>div:first-child{flex-wrap:wrap;gap:2px 10px}
+  .agent-hero>div:first-child{gap:10px}
+  .agent-grid{grid-template-columns:1fr}
+  .msg{max-width:100%}
+}
+/* ==================== HOME v3 (layout) ==================== */
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.card-head h2{margin:0}
+.greet{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 2px 16px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--ac)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--inc);box-shadow:0 0 0 4px color-mix(in srgb,var(--inc) 25%,transparent)}
+.greet h1{margin:4px 0 2px;font-size:28px;line-height:1.25;letter-spacing:-.02em;font-weight:800}
+.greet p{margin:0;color:var(--mu);font-size:13.5px}
+.greet-actions{display:flex;gap:8px;flex-wrap:wrap}
+.chipbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ln);background:var(--card);color:var(--tx);
+  border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;box-shadow:var(--sh)}
+.chipbtn:hover{border-color:var(--ac);color:var(--ac);transform:translateY(-1px)}
+
+/* Composer */
+.cmd-box{margin-top:0;padding:12px 14px 10px}
+.cmd-row{display:flex;gap:8px;align-items:center}
+.cmd-ic{width:42px;height:42px;border-radius:13px;flex:none;display:grid;place-items:center;background:var(--ac-grad);color:#fff;
+  box-shadow:0 6px 14px rgba(124,77,240,.3)}
+.cmd-input{flex:1;min-width:0;border:0;outline:none;color:var(--tx)}
+.chip-group{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:10px 2px 0;scrollbar-width:none}
+.chip-group::-webkit-scrollbar{display:none}
+.chip-group .lbl{flex:none;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--mu);margin-right:2px;min-width:52px}
+.qchip{flex:none;border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:999px;padding:6px 12px;
+  font-size:12.5px;font-weight:500;white-space:nowrap}
+.qchip:hover{border-color:var(--ac);color:var(--ac);background:var(--ac2)}
+.qchip.add{background:var(--ac2);color:var(--ac);border-color:transparent}
+.qchip.add:hover{background:var(--ac);color:var(--actx)}
+.chat-wrap{margin-top:12px;padding-top:8px;border-top:1px dashed var(--ln)}
+.chat-head{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:700;color:var(--mu);letter-spacing:.04em}
+.chat-head .lk{margin:0;font-size:12px}
+.chat-feed{margin-top:8px}
+.cmd-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--mu)}
+
+/* KPI cards */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.kpi{background:var(--card);border:1px solid var(--ln);border-radius:20px;padding:16px 18px;box-shadow:var(--sh);cursor:pointer;
+  display:flex;flex-direction:column;gap:2px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.kpi:hover{border-color:var(--ac);transform:translateY(-2px);box-shadow:var(--sh-lg)}
+.kpi-l{font-size:12px;color:var(--mu);font-weight:600}
+.kpi-v{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+.kpi-s{font-size:12px;color:var(--mu);line-height:1.45}
+.kpi-bal{background:var(--hero);border:0;color:#fff;position:relative;overflow:hidden;box-shadow:var(--sh-lg)}
+.kpi-bal::after{content:"";position:absolute;width:170px;height:170px;right:-50px;top:-80px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.28),transparent 70%);pointer-events:none}
+.kpi-bal .kpi-l,.kpi-bal .kpi-s{color:rgba(255,255,255,.85)}
+.kpi-bal:hover{border:0}
+.kpi-ring{flex-direction:row;align-items:center;gap:14px}
+.ringwrap{position:relative;width:64px;height:64px;flex:none}
+.ring{width:64px;height:64px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:5}
+.ring-bg{stroke:var(--ln)}
+.ring-fg{stroke:var(--inc);stroke-linecap:round;stroke-dasharray:0 113.1;transition:stroke-dasharray .7s cubic-bezier(.2,.8,.2,1),stroke .3s}
+.ring-t{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800}
+
+.agent-grid{margin-top:4px}
+.c-digest{margin-top:16px}
+
+@media(max-width:900px){.kpis{grid-template-columns:1fr 1fr}.kpi-bal{grid-column:1/-1}}
+@media(max-width:720px){
+  .greet h1{font-size:23px}
+  .greet-actions{width:100%}
+  .chipbtn{flex:1;justify-content:center}
+  .kpi{padding:14px 15px}
+  .kpi-v{font-size:21px}
+  .kpi-ring{flex-direction:column;align-items:flex-start;gap:8px}
+  .kpi-bal .kpi-v{font-size:28px}
+  /* on phones: reorder cards by importance across both columns */
+  .agent-grid>div{display:contents}
+  .c-digest{order:1}.c-todo{order:2}.c-watch{order:3}.c-news{order:4}
+  .agent-grid{display:flex;flex-direction:column}
+  .cmd-foot span:first-child{display:none}
+  .news-filter-scroll,#news-cat-pills,#news-tag-pills,#market-group-tabs{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+  #news-cat-pills::-webkit-scrollbar,#news-tag-pills::-webkit-scrollbar,#market-group-tabs::-webkit-scrollbar{display:none}
+  #news-cat-pills button,#news-tag-pills button,#market-group-tabs button{flex:none;white-space:nowrap}
+}
+/* Clean News Filter & Topic Bar */
+#news-cat-pills{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:7px;padding:2px 2px 8px;margin-bottom:4px;scrollbar-width:none;border-bottom:1px solid var(--ln)}
+#news-cat-pills::-webkit-scrollbar{display:none}
+#news-cat-pills button{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;font-size:13px;font-weight:600;border-radius:999px;white-space:nowrap}
+.pill-cnt{font-size:11px;font-weight:700;padding:1px 6px;border-radius:999px;background:var(--bg);color:var(--mu);line-height:1.4}
+.pills button[aria-pressed="true"] .pill-cnt,.pills button.on .pill-cnt{background:rgba(255,255,255,.22);color:#fff}
+#news-tag-pills{display:flex;align-items:center;flex-wrap:nowrap;overflow-x:auto;gap:6px;padding:6px 2px 2px;margin-bottom:0;scrollbar-width:none}
+#news-tag-pills::-webkit-scrollbar{display:none}
+#news-tag-pills .tag-lbl{flex:none;font-size:11.5px;font-weight:700;color:var(--mu);margin-right:4px}
+#news-tag-pills button{flex:none;display:inline-flex;align-items:center;gap:5px;padding:5px 11px;font-size:12px;font-weight:500;border-radius:999px;background:var(--bg);border:1px solid transparent;white-space:nowrap}
+#news-tag-pills button:hover{border-color:var(--ac);color:var(--ac);background:var(--ac2)}
+#news-tag-pills button[aria-pressed="true"]{background:var(--ac2);color:var(--ac);border-color:var(--ac);font-weight:700;box-shadow:none}
+#news-tag-pills button[aria-pressed="true"] .pill-cnt{background:var(--ac);color:var(--actx)}
+/* AI Secretary Banner & Voice Mic */
+.sec-banner{background:linear-gradient(135deg,color-mix(in srgb,var(--ac) 14%,var(--card)),var(--card));border:1px solid color-mix(in srgb,var(--ac) 35%,var(--ln));border-radius:20px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;box-shadow:var(--sh)}
+.sec-avatar{width:40px;height:40px;border-radius:14px;background:var(--ac-grad);color:#fff;display:grid;place-items:center;font-size:20px;flex:none;box-shadow:0 6px 14px rgba(124,77,240,.3)}
+.mic-btn{width:44px;height:44px;border-radius:14px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);display:grid;place-items:center;cursor:pointer;flex:none}
+.mic-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--ac2)}
+.mic-btn.rec{background:var(--exp);color:#fff;border-color:var(--exp);animation:micPulse 1.2s infinite}
+@keyframes micPulse{0%{box-shadow:0 0 0 0 rgba(236,90,107,.55)}70%{box-shadow:0 0 0 12px rgba(236,90,107,0)}100%{box-shadow:0 0 0 0 rgba(236,90,107,0)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="app-bar">
+  <div class="brand-wrap">
+    <div class="brand-logo">✦</div>
+    <div>
+      <div class="brand">AI Secretary</div>
+      <div class="brand-sub">เลขาส่วนตัว · ข่าวการเงิน · เทค & กระเป๋าตังค์</div>
+    </div>
+  </div>
+  <nav class="mode-nav" aria-label="เมนูหลัก">
+    <button id="tab-agent" class="on" onclick="switchSection('agent')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.7 1.8L21.5 18.5l-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/></svg><span>เลขาวันนี้</span></button>
+    <button id="tab-news" onclick="switchSection('news')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h13a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2z"/><path d="M8 9h7M8 13h7M8 16h4"/></svg><span>ข่าว &amp; ตลาด</span></button>
+    <button id="tab-wallet" onclick="switchSection('wallet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h12v4"/><path d="M3 7v10a2 2 0 0 0 2 2h14V9H5a2 2 0 0 1-2-2z"/><circle cx="16" cy="14" r="1.1"/></svg><span>กระเป๋าตังค์</span></button>
+  </nav>
+  <div class="top-actions">
+    <button class="chipbtn" id="btn-install-pwa" style="display:none;padding:6px 12px;font-size:12px" onclick="installPWA()">📲 ติดตั้งแอป</button>
+    <button class="ib" id="btn-theme" title="สลับโหมดมืด/สว่าง" aria-label="Toggle theme">🌙</button>
+    <button class="ib" id="btn-ai-cfg" title="ตั้งค่าเลขา AI & เชื่อม Telegram Bot" aria-label="AI Settings">⚙️</button>
+  </div>
+</header>
+
+<!-- ==================== SECTION 1: AI AGENT HUB ==================== -->
+<main class="shell" id="sec-agent">
+  <!-- Greeting -->
+  <div class="greet">
+    <div>
+      <span class="eyebrow"><span class="pulse"></span> เลขาส่วนตัวพร้อมดูแลคุณ</span>
+      <h1 id="agent-greeting">สวัสดีครับ!</h1>
+      <p id="agent-date-sub"></p>
+    </div>
+    <div class="greet-actions">
+      <button class="chipbtn" id="btn-speak-brief">🔊 ให้เลขาอ่านสรุป</button>
+      <button class="chipbtn" onclick="pushBriefingToTelegram()">📲 ส่งเข้า Telegram</button>
+      <button class="chipbtn" id="btn-refresh-brief">🔄 อัปเดต</button>
+    </div>
+  </div>
+
+  <!-- Proactive Secretary Check-in Banner -->
+  <div class="sec-banner" id="sec-proactive-banner">
+    <div style="display:flex;gap:12px;align-items:flex-start;flex:1;min-width:240px">
+      <div class="sec-avatar">👩‍💼</div>
+      <div style="font-size:13.5px;line-height:1.55">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <b id="sec-routine-title" style="color:var(--ac)">รายงานจากเลขาประจำช่วงเวลา</b>
+          <span class="news-badge" id="tg-sync-badge" onclick="$('btn-ai-cfg').onclick()" style="cursor:pointer">⚙️ ตั้งค่าเชื่อม Telegram</span>
+        </div>
+        <div id="sec-routine-msg" style="margin-top:3px">กำลังเตรียมข้อมูลสรุปการเงิน งานวันนี้ และข่าวตลาดให้คุณ...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Composer: the single primary action with Voice Mic -->
+  <div class="cmd-box">
+    <form class="cmd-row" id="cmd-form" onsubmit="handleAgentCommand(event)">
+      <span class="cmd-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></span>
+      <input class="cmd-input" id="cmd-input" placeholder="พิมพ์หรือกดไมค์พูดกับเลขา… เช่น “กาแฟ 65”, “วันนี้มีอะไรบ้าง”" autocomplete="off">
+      <button type="button" class="mic-btn" id="btn-mic" onclick="toggleVoiceInput()" title="กดเพื่อพูดสั่งงานเลขาด้วยเสียง (ภาษาไทย)">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+      </button>
+      <button type="submit" class="btn" id="cmd-submit">ส่ง</button>
+    </form>
+    <div class="chip-group">
+      <span class="lbl">จดเร็ว</span>
+      <button type="button" class="qchip add" onclick="prefillCmd('กาแฟ ')">☕ กาแฟ</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('ข้าวเที่ยง ')">🍱 ข้าวเที่ยง</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('เดินทาง ')">🚕 เดินทาง</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('ช้อปปิ้ง ')">🛍️ ช้อปปิ้ง</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('ค่าไฟ ')">🧾 บิล</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('เงินเดือน ')">💰 รายรับ</button>
+    </div>
+    <div class="chip-group">
+      <span class="lbl">ถามเลขา</span>
+      <button type="button" class="qchip" onclick="quickPrompt('today มีอะไรบ้าง')">📅 Today มีอะไรบ้าง</button>
+      <button type="button" class="qchip" onclick="quickPrompt('week นี้มีอะไรบ้าง')">📆 Week นี้มีอะไรบ้าง</button>
+      <button type="button" class="qchip" onclick="quickPrompt('month นี้มีอะไรบ้าง')">🗓️ Month นี้มีอะไรบ้าง</button>
+      <button type="button" class="qchip" onclick="quickPrompt('สรุปข่าว Stablecoin และคริปโตล่าสุด')">🪙 Stablecoin</button>
+      <button type="button" class="qchip" onclick="quickPrompt('สรุปข่าวรถ EV และ Tesla Roadster ล่าสุด')">🏎️ Roadster & EV</button>
+      <button type="button" class="qchip" onclick="quickPrompt('วิเคราะห์สุขภาพการเงินเดือนนี้ให้หน่อย')">💡 วิเคราะห์การเงิน</button>
+    </div>
+    <div class="chat-wrap" id="chat-wrap" style="display:none">
+      <div class="chat-head"><span>บทสนทนากับเลขา</span><button type="button" class="lk" onclick="clearChat()">ล้าง</button></div>
+      <div class="chat-feed" id="chat-feed"></div>
+    </div>
+    <div class="cmd-foot"><span>🎤 กดปุ่มไมค์เพื่อพูดสั่งงาน หรือพิมพ์ “today มีอะไรบ้าง” / “กาแฟ 65”</span><span id="ai-engine-status">Smart Secretary พร้อมดูแล</span></div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi kpi-bal" onclick="switchSection('wallet')">
+      <div class="kpi-l">คงเหลือเดือนนี้</div>
+      <div class="kpi-v" id="ag-bal">฿0</div>
+      <div class="kpi-s" id="ag-today-spent">ใช้ไปวันนี้ ฿0</div>
+    </div>
+    <div class="kpi kpi-ring" onclick="switchSection('wallet')">
+      <div class="ringwrap"><svg class="ring" viewBox="0 0 44 44"><circle class="ring-bg" cx="22" cy="22" r="18"/><circle class="ring-fg" id="ag-ring" cx="22" cy="22" r="18"/></svg><span class="ring-t" id="ag-ring-t">–</span></div>
+      <div>
+        <div class="kpi-l">งบใช้ได้ต่อวัน</div>
+        <div class="kpi-v" id="ag-daily-allowance">฿0 / วัน</div>
+        <div class="kpi-s" id="ag-budget-status">แผน 50/30/20</div>
+      </div>
+    </div>
+    <div class="kpi" onclick="switchSection('news')">
+      <div class="kpi-l">ทิศทางตลาดจากข่าว</div>
+      <div class="kpi-v" id="ag-market-mood">กำลังโหลด…</div>
+      <div class="kpi-s" id="ag-news-count">ดึงข่าวสดอัตโนมัติ</div>
+    </div>
+  </div>
+
+  <div class="agent-grid">
+    <div>
+      <section class="card c-digest">
+        <div class="card-head" style="flex-wrap:wrap">
+          <div>
+            <h2>⚡ สรุปข่าวตามแพทเทิร์น (หุ้น · คริปโต · เทค)</h2>
+            <span class="mu" style="font-size:12px" id="brief-time"></span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <div class="seg" style="margin:0;padding:3px" id="brief-period-seg">
+              <button type="button" data-p="today" class="on" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('today')">Today</button>
+              <button type="button" data-p="week" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('week')">Weekly</button>
+              <button type="button" data-p="month" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('month')">Monthly</button>
+            </div>
+            <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="copyBriefingPattern()">📋 คัดลอก</button>
+            <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="pushBriefingToTelegram()">📲 ส่ง Telegram</button>
+            <button class="btn" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="generateAIDailyBriefing(true)">✨ AI สรุป</button>
+          </div>
+        </div>
+        <div id="daily-briefing-body">
+          <div class="brief-section" id="brief-pattern-box">
+            <ul class="brief-list" id="brief-news-list">
+              <li>กำลังดึงข้อมูลข่าวสารล่าสุด...</li>
+            </ul>
+          </div>
+          <div class="brief-section" style="margin-bottom:0">
+            <h3><span>💡 สรุปการเงินส่วนตัว & แผนใช้จ่าย</span></h3>
+            <ul class="brief-list" id="brief-wallet-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card c-news">
+        <div class="card-head">
+          <h2>🔥 ข่าวเด่นตอนนี้</h2>
+          <button class="lk" style="margin:0" onclick="switchSection('news')">ดูทั้งหมด &rsaquo;</button>
+        </div>
+        <div id="agent-top-news"></div>
+      </section>
+    </div>
+
+    <div>
+      <section class="card c-todo">
+        <div class="card-head">
+          <h2>✅ สิ่งที่ต้องทำวันนี้</h2>
+          <span class="mu" id="todo-progress">0/0</span>
+        </div>
+        <form style="display:flex;gap:6px;margin-bottom:10px" onsubmit="addTodoItem(event)">
+          <input class="f" id="todo-input" placeholder="เพิ่มงานวันนี้..." style="margin:0;padding:9px 12px">
+          <button class="btn" type="submit" style="padding:9px 14px">+</button>
+        </form>
+        <div id="todo-list"></div>
+      </section>
+
+      <section class="card c-watch">
+        <div class="card-head">
+          <h2>📊 ตลาดที่ติดตาม</h2>
+          <button class="lk" style="margin:0" onclick="switchSection('news');setNewsSubView('market')">ดูกราฟ &rsaquo;</button>
+        </div>
+        <div id="agent-watchlist"></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ==================== SECTION 2: FINANCE NEWS & MARKET ==================== -->
+<main class="shell" id="sec-news" style="display:none">
+  <div class="top">
+    <div>
+      <div class="brand" style="font-size:22px">ข่าวการเงิน · เทคโนโลยี & ตลาดโลก</div>
+      <div class="mu">ดึงข่าวครบทุกหน้า (200+ ข่าว) · เทคโนโลยี AI · รถ EV & Roadster · Stablecoin & คริปโต · หุ้น · ทอง</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="seg" style="margin:0">
+        <button id="nsub-news" class="on" onclick="setNewsSubView('news')" style="padding:7px 14px">ข่าววันนี้</button>
+        <button id="nsub-market" onclick="setNewsSubView('market')" style="padding:7px 14px">กราฟ & ตลาด</button>
+      </div>
+      <button class="btn sec" style="padding:8px 13px;border-radius:999px;font-size:13px" onclick="fetchLiveNews(true)">🔄 ดึงข่าวล่าสุด</button>
+    </div>
+  </div>
+
+  <!-- Market Ticker Strip -->
+  <div class="strip" id="market-strip"></div>
+
+  <!-- Subview 2A: News Feed -->
+  <div id="news-subview-feed">
+    <section class="card" style="margin-top:8px;padding:18px 20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <div>
+          <h2 style="margin:0">⭐ สรุปแพทเทิร์นข่าว (Today / Weekly / Monthly)</h2>
+          <div class="mu" style="font-size:12.5px">ไม่ต้องไล่อ่านทีละข่าว กดดูสรุปแยกหมวด (หุ้น · คริปโต/Stablecoin · เทค/EV) หรือคัดลอกไปส่งต่อได้ทันที</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn sec" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="summarizePeriodInNews('today')">📅 สรุป Today</button>
+          <button class="btn sec" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="summarizePeriodInNews('week')">📆 สรุป Weekly</button>
+          <button class="btn sec" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="summarizePeriodInNews('month')">🗓️ สรุป Monthly</button>
+          <button class="btn" style="padding:6px 12px;font-size:12px;border-radius:999px" id="btn-digest-visible" onclick="summarizeVisibleNews()">✨ สรุปหมวดที่เลือก</button>
+        </div>
+      </div>
+      <div id="news-ai-digest" class="ai-box" style="display:none;margin-bottom:12px"></div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <input class="f" id="news-search" type="search" placeholder="ค้นหาข่าว เช่น Stablecoin, Roadster, AI, Bitcoin, ทอง, SET..." style="margin:0;flex:1;min-width:200px" oninput="newsLimit=35;renderNewsSection()">
+        <select class="f" id="news-source" style="margin:0;width:auto;min-width:160px" onchange="newsLimit=35;renderNewsSection()">
+          <option value="all">ทุกแหล่งข่าว</option>
+        </select>
+      </div>
+      <div class="pills" id="news-cat-pills"></div>
+      <div class="pills" id="news-tag-pills"></div>
+    </section>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 4px 8px">
+      <span class="mu" id="news-Showing-count">0 ข่าว</span>
+      <span class="mu" id="news-updated-at"></span>
+    </div>
+    <div id="news-list-container"></div>
+  </div>
+
+  <!-- Subview 2B: Interactive Market & Candlestick Charts -->
+  <div id="news-subview-market" style="display:none">
+    <div class="pills" id="market-group-tabs" style="margin-top:6px"></div>
+    <div class="market-grid">
+      <aside>
+        <input class="f" id="asset-search" type="search" placeholder="ค้นหาสินทรัพย์ เช่น PTT, NVDA, BTC..." oninput="renderMarketView()">
+        <div class="asset-list" id="asset-sidebar-list"></div>
+      </aside>
+      <div>
+        <section class="card" style="margin-top:0">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+            <div>
+              <div class="mu" id="mkt-asset-title">SET · ดัชนี SET</div>
+              <div style="font-size:34px;font-weight:800;letter-spacing:-.03em" id="mkt-asset-price">1,385.20</div>
+              <div id="mkt-asset-change" style="font-size:13px"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+              <div class="pills" style="margin:0" id="mkt-range-btns"></div>
+              <div class="pills" style="margin:0" id="mkt-type-btns"></div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <div class="chart-detail" id="mkt-chart-tooltip" style="display:none"></div>
+            <svg id="mkt-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px">
+            <span class="mu">แตะหรือเลื่อนเมาส์บนกราฟแท่งเทียนเพื่อดูราคา เปิด/สูงสุด/ต่ำสุด/ปิด</span>
+            <button class="btn sec" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="askAgentAboutAsset()">🤖 ให้ AI วิเคราะห์สินทรัพย์นี้</button>
+          </div>
+        </section>
+        <section class="card">
+          <h2 id="mkt-related-news-title">ข่าวที่เกี่ยวข้อง</h2>
+          <div id="mkt-related-news"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ==================== SECTION 3: WALLET (ORIGINAL 100% PRESERVED) ==================== -->
+<main class="shell narrow" id="sec-wallet" style="display:none">
+  <header class="top">
+    <div class="brand">Wallet · รายรับรายจ่าย</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="mn">
+        <button id="pv" aria-label="Previous month">&#8249;</button>
+        <b id="mt"></b>
+        <button id="nx" aria-label="Next month">&#8250;</button>
+      </div>
+      <button class="ib" id="mo" aria-label="More">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="bn" id="bn"><span id="bt"></span><button id="bb">Back up</button><button id="bz" aria-label="Dismiss">&times;</button></div>
+  <section class="hero">
+    <div class="hr"><span class="lb">Balance</span><button class="back" id="back">Back to now</button></div>
+    <div class="bal" id="bal">0</div>
+    <div class="two">
+      <div data-d="i"><span class="lb">Income &rsaquo;</span><b id="inc">0</b></div>
+      <div data-d="e"><span class="lb">Expense &rsaquo;</span><b id="exp">0</b></div>
+    </div>
+  </section>
+  <nav class="tabs" id="vm"></nav>
+  <div class="qk" id="qk"><div class="ql">Quick add</div><div class="qr" id="qr"></div></div>
+  <section class="card" id="sc"><h2 class="ch"><span>Summary</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><div class="sn"><button id="sp" aria-label="Previous">&#8249;</button><span id="sl"></span><button id="sx" aria-label="Next">&#8250;</button></div><div class="seg" id="sg"><button data-m="day">Day</button><button data-m="week">Week</button><button data-m="month">Month</button></div><div class="two2"><div class="sm"><span class="mu">Income</span><b class="inc" id="si"></b></div><div class="sm"><span class="mu">Expense</span><b id="se"></b></div></div><div id="sr"></div></div></section>
+  <section class="card" id="ic"><h2 class="ch"><span>Insights</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><div id="ib"></div></div></section>
+  <section class="card" id="cc"><h2 class="ch"><span>Spending by category</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><div id="cats"></div></div></section>
+  <section class="card" id="tc"><h2 class="ch"><span>6-month trend</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><div id="tr"></div></div></section>
+  <section class="card" id="lc"><h2 class="ch"><span>Activity</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><input class="f" id="q" placeholder="Search" style="margin-bottom:4px"><div id="list"></div></div></section>
+</main>
+
+<!-- Floating Add Transaction Button -->
+<button class="fab" id="fab" title="เพิ่มรายรับ-รายจ่าย" aria-label="Add transaction">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+
+<!-- Modals & Bottom Sheets -->
+<div class="ov" id="dv"><div class="sh"><div class="grab"></div><div class="dh"><div><div class="mu" id="dk"></div><div class="dtot" id="dtot"></div></div><button class="cls" id="dx">Close</button></div><div class="dscroll" id="dl"></div></div></div>
+<div class="toast" id="ts"><span>Deleted</span><button id="ud">Undo</button></div>
+<div class="ov" id="mv"><div class="sh"><div class="grab"></div><div class="dh"><b>More & Backup</b><button class="cls" id="mx">Close</button></div><div class="dscroll"><h2>Recurring</h2><div id="rl"></div><h2 style="margin-top:20px">Backup</h2><textarea class="f" id="bk" rows="3" placeholder="Paste a backup here, then tap Import" style="resize:none"></textarea><div class="row on"><button class="btn" id="bx" style="flex:1">Copy backup</button><button class="btn" id="bm" style="flex:1;background:var(--bg);color:var(--tx);border:1px solid var(--ln)">Import</button></div><div class="mu" id="bs" style="margin-top:8px"></div><div class="mu" id="ps" style="margin-top:14px"></div><div class="mu" id="hs" style="margin-top:6px"></div></div></div></div>
+
+<div class="ov" id="ov"><div class="sh">
+  <div class="grab"></div>
+  <div class="seg"><button id="be" class="on">Expense</button><button id="bi">Income</button></div>
+  <input class="amt" id="amt" type="number" inputmode="decimal" placeholder="0.00">
+  <div class="pills" id="chips"></div>
+  <div class="row" id="ed"><input class="f" id="cn" placeholder="New category name" maxlength="16"><button class="btn" id="ct" style="margin-bottom:8px;background:var(--bg);color:var(--tx);border:1px solid var(--ln)">Wants</button><button class="btn" id="cs" style="margin-bottom:8px">Add</button></div>
+  <input class="f" id="dt" type="date">
+  <input class="f" id="note" placeholder="Note (optional)">
+  <div class="pills"><button id="rp">Repeat monthly</button></div>
+  <button class="btn sv" id="sv">Save</button>
+</div></div>
+
+<!-- AI Agent Settings Modal -->
+<div class="ov" id="ai-ov"><div class="sh">
+  <div class="grab"></div>
+  <div class="dh">
+    <div>
+      <b style="font-size:17px">👩‍💼 ตั้งค่าเลขา AI ส่วนตัว & เชื่อม Telegram</b>
+      <div class="mu">ตั้งค่าการเรียกชื่อ เสียงพูด แจ้งเตือนอัตโนมัติ และเชื่อมบอทแชท</div>
+    </div>
+    <button class="cls" onclick="$('ai-ov').classList.remove('on')">ปิด</button>
+  </div>
+  <div class="dscroll" style="margin-top:6px">
+    <label class="mu" style="display:block;margin-bottom:4px;font-weight:600">ชื่อของคุณ (ให้เลขาเรียก)</label>
+    <input class="f" id="cfg-username" placeholder="เช่น บอส, คุณภูมิ, เพื่อน">
+
+    <div style="background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin-bottom:12px">
+      <b style="font-size:13.5px;display:block;margin-bottom:8px">🎙️ โหมดการทำงานของเลขา</b>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px;cursor:pointer">
+        <input type="checkbox" id="cfg-voice-reply" style="width:16px;height:16px;accent-color:var(--ac)">
+        <span>ให้เลขาพูดโต้ตอบด้วยเสียงอัตโนมัติเวลาถามหรือสั่งงาน</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+        <input type="checkbox" id="cfg-auto-brief" style="width:16px;height:16px;accent-color:var(--ac)">
+        <span>แจ้งเตือน & ส่งสรุปอัตโนมัติ (Morning Brief 08:30 / สรุปปิดวัน 20:00)</span>
+      </label>
+    </div>
+
+    <div style="background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px">
+        <b style="font-size:13.5px">📲 เชื่อมต่อ Telegram Bot (สั่งงาน 2 ทาง ฟรี 100%)</b>
+        <span class="mu" style="font-size:11.5px">สร้างบอทที่ @BotFather ใน Telegram</span>
+      </div>
+      <label class="mu" style="display:block;margin-bottom:4px;font-size:12px;font-weight:600">1) Telegram Bot Token</label>
+      <input class="f" id="cfg-tg-token" type="password" placeholder="เช่น 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" style="margin-bottom:8px">
+      <label class="mu" style="display:block;margin-bottom:4px;font-size:12px;font-weight:600">2) Telegram Chat ID (ทักแชทบอท 1 คำ แล้วกดปุ่มดึงอัตโนมัติ)</label>
+      <div style="display:flex;gap:6px;margin-bottom:8px">
+        <input class="f" id="cfg-tg-chatid" placeholder="เช่น 987654321" style="margin:0;flex:1">
+        <button type="button" class="btn sec" style="padding:8px 12px;font-size:12px;white-space:nowrap" onclick="autoDetectTelegramChatId()">🔍 ดึง Chat ID</button>
+        <button type="button" class="btn sec" style="padding:8px 12px;font-size:12px;white-space:nowrap" onclick="testTelegramPush()">📨 ทดสอบส่ง</button>
+      </div>
+      <div class="mu" style="font-size:11.5px;line-height:1.5" id="tg-setup-status">
+        💡 เมื่อเชื่อมแล้ว คุณสามารถพิมพ์ในแชท Telegram บนมือถือ เช่น <b>"กาแฟ 65"</b>, <b>"เตือน ประชุมบ่ายสอง"</b>, <b>"today"</b>, <b>"week"</b>, <b>"month"</b> แล้วเลขาจะบันทึกและตอบกลับเข้ามือถือทันที!
+      </div>
+    </div>
+
+    <label class="mu" style="display:block;margin-bottom:4px;font-weight:600">Gemini API Key (ไม่บังคับ - เก็บในเครื่องคุณเท่านั้น)</label>
+    <input class="f" id="cfg-apikey" type="password" placeholder="AIzaSy...">
+    <div style="background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin-bottom:12px;font-size:12.5px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <b>📊 สถิติการใช้ API วันนี้ (ประหยัดด้วย Smart Cache 30 นาที)</b>
+        <button class="lk" style="margin:0;font-size:11.5px" onclick="resetApiStats()">รีเซ็ตสถิติ</button>
+      </div>
+      <div id="api-usage-stats" class="mu" style="line-height:1.6"></div>
+    </div>
+    <button class="btn" style="width:100%" onclick="saveAIConfig()">บันทึกการตั้งค่าเลขา</button>
+  </div>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString("en-US",{maximumFractionDigits:2});
+const MN=["January","February","March","April","May","June","July","August","September","October","November","December"],MS=MN.map(m=>m.slice(0,3));
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const today=iso(new Date());
+
+/* ==================== 1. WALLET CORE STATE & LOGIC ==================== */
+let CATS={e:["Breakfast","Lunch","Dinner","Snacks & drinks","Transport","Shopping","Bills","Entertainment","Other"],i:["Salary","Freelance","Gift","Other"]};
+let type="e",cat="Breakfast",cur=today.slice(0,7),items=[],goal=0,INC=0,HC=false,OP=null,TS=null,DT=null,em=false,view={gc:1,sc:1,ic:1,cc:0,tc:0,lc:1},col={};
+try{items=JSON.parse(localStorage.getItem("tx")||"[]")}catch(e){}
+try{const c=JSON.parse(localStorage.getItem("cats2"));if(c&&c.e&&c.i&&c.e.length&&c.i.length)CATS=c}catch(e){}
+try{goal=+localStorage.getItem("goal")||0;Object.assign(view,JSON.parse(localStorage.getItem("view")||"{}"));col=JSON.parse(localStorage.getItem("col")||"{}")}catch(e){}
+items.forEach((x,k)=>{if(!x.date)x.date=today;if(!x.id)x.id="old"+k});
+const ls=(k,v)=>{try{localStorage.setItem(k,typeof v=="string"?v:JSON.stringify(v))}catch(e){}};
+const PAL=["#6d83f2","#f4a261","#2a9d8f","#e76f8b","#e9c46a","#8ecae6","#b8b8d1"];
+let CUS=false,HELP=false,Q="",EID=null,RP=false,LD=null,REC=[];
+try{REC=JSON.parse(localStorage.getItem("rec")||"[]")}catch(e){}
+const VM=[["sc","Summary"],["ic","Insights"],["cc","Categories"],["tc","Trend"],["lc","Activity"]];
+if(CATS.e.includes("Food")&&!CATS.e.includes("Lunch")){CATS.e.splice(CATS.e.indexOf("Food"),1,"Breakfast","Lunch","Dinner","Snacks & drinks");ls("cats2",CATS)}
+let TAGS={Bills:"n",Transport:"n",Shopping:"w",Entertainment:"w",Other:"w"},RATIO={n:50,w:30,s:20},CT="w";
+try{Object.assign(TAGS,JSON.parse(localStorage.getItem("tags")||"{}"));Object.assign(RATIO,JSON.parse(localStorage.getItem("ratio")||"{}"))}catch(e){}
+const MEAL=["Breakfast","Lunch","Dinner","Snacks & drinks","Food"];
+
+function setType(t){type=t;em=false;$("ct").style.display=t=="e"?"":"none";$("ed").classList.remove("on");cat=CATS[t][0];$("be").className=t=="e"?"on":"";$("bi").className=t=="i"?"on":"";chips()}
+function chips(){$("chips").innerHTML=CATS[type].map(n=>em?`<button data-d="${n}">${n} &times;</button>`:`<button class="${n==cat?"on":""}" data-c="${n}">${n}</button>`).join("")+(em?'<button class="on" data-act="done">Done</button>':'<button data-act="add">+ New</button><button data-act="edit">Remove</button>')}
+function applyView(){
+  VM.forEach(([k])=>{const el=$(k);el.style.display=(view[k]&&(k!="cc"||HC))?"":"none";el.classList.toggle("cl",!!col[k])});
+  $("vm").innerHTML=VM.map(([k,n])=>`<button class="${view[k]?"on":""}" data-v="${k}">${n}</button>`).join("");
+}
+const row=x=>`<div class="itw ${OP==x.id?"open":""}"><div class="it" data-o="${x.id}"><div class="m"><div>${x.c}${x.n?` <span class="mu">· ${x.n.replace(/</g,"&lt;")}</span>`:""}</div><div class="mu">${+x.date.slice(8)} ${MS[+x.date.slice(5,7)-1]}</div></div><b class="${x.t=="i"?"inc":""}">${x.t=="i"?"+":"-"}${fmt(x.a)}</b><i class="chev"></i></div><div class="dt"><div class="dr"><span>Date</span><span>${new Date(x.date+"T00:00:00").toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}</span></div><div class="dr"><span>Type</span><span>${x.t=="i"?"Income":"Expense"}</span></div><div class="dr"><span>Category</span><span>${x.c}</span></div><div class="dr"><span>Amount</span><span>${fmt(x.a)}</span></div><div class="dr"><span>Note</span><span>${x.n?x.n.replace(/</g,"&lt;"):"-"}</span></div><button class="dbtn" style="color:var(--tx);margin-right:8px" data-ed="${x.id}">Edit</button><button class="dbtn" data-id="${x.id}">Delete</button></div></div>`;
+
+function renderDetail(L){
+  if(!DT)return;const D=L.filter(x=>x.t==DT),[y,m]=cur.split("-");
+  $("dk").textContent=(DT=="i"?"Income":"Expense")+" \u00b7 "+MN[+m-1]+" "+y;
+  $("dtot").textContent=fmt(D.reduce((a,x)=>a+x.a,0));
+  $("dl").innerHTML=D.length?D.map(row).join(""):'<div class="empty">Nothing here yet.</div>';
+}
+
+function render(){
+  const [y,m]=cur.split("-"),now=cur==today.slice(0,7);
+  $("mt").textContent=MN[+m-1]+" "+y;$("nx").disabled=now;$("back").style.display=now?"none":"inline-block";
+  const L=items.filter(x=>x.date.slice(0,7)==cur).sort((a,b)=>b.date.localeCompare(a.date));
+  let i=0,e=0,by={};
+  L.forEach(x=>{if(x.t=="i")i+=x.a;else{e+=x.a;by[x.c]=(by[x.c]||0)+x.a}});
+  INC=i;$("inc").textContent=fmt(i);$("exp").textContent=fmt(e);$("bal").textContent=fmt(i-e);
+  const ks=Object.keys(by).sort((a,b)=>by[b]-by[a]),C=2*Math.PI*40;let off=0;
+  $("cats").innerHTML=ks.length?`<div style="display:flex;align-items:center;gap:16px"><svg viewBox="0 0 120 120" width="124" height="124" style="flex:none">`+ks.map((k,j)=>{const l=by[k]/e*C,r=`<circle cx="60" cy="60" r="40" fill="none" stroke="${PAL[j%7]}" stroke-width="14" stroke-dasharray="${Math.max(l-1.5,0)} ${C-Math.max(l-1.5,0)}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`;off+=l;return r}).join("")+`<text x="60" y="59" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--tx)">${fmt(e)}</text><text x="60" y="73" text-anchor="middle" font-size="8" style="fill:var(--mu)">SPENT</text></svg><div style="flex:1;min-width:0">`+ks.map((k,j)=>`<div class="lg"><span><i style="background:${PAL[j%7]}"></i>${k}</span><b><em>${Math.round(by[k]/e*100)}%</em> ${fmt(by[k])}</b></div>`).join("")+`</div></div>`:"";
+  HC=ks.length>0;applyView();
+  const LQ=Q?L.filter(x=>(x.c+" "+(x.n||"")).toLowerCase().includes(Q)):L;
+  $("list").innerHTML=LQ.length?LQ.map(row).join(""):'<div class="empty">'+(L.length?"No matches.":"No transactions this month.<br>Tap + to add one.")+'</div>';
+  renderDetail(L);
+  renderIns(L,i,e,now);renderTrend();renderQuick();renderBk();renderSum();
+  updateAgentWalletMetrics();
+}
+
+const base=x=>{const a=items.filter(y=>y.t=="e"&&y.c==x.c&&y.id!=x.id).map(y=>y.a).sort((p,q)=>p-q);return a.length>=5?a[a.length>>1]:0};
+const isFlag=x=>{if(x.t!="e"||x.rv||!MEAL.includes(x.c))return false;const b=base(x);return b>0&&x.a>2*b};
+const kind=x=>x.t!="e"?null:x.rv?x.rv:MEAL.includes(x.c)?(isFlag(x)?"u":"n"):(TAGS[x.c]||"w");
+
+function renderIns(L,i,e,now){
+  let n=0,w=0,u=0,top={n:{},w:{}},FL=[];
+  L.forEach(x=>{const k=kind(x);if(!k)return;if(k=="u"){u+=x.a;FL.push(x)}else{if(k=="n")n+=x.a;else w+=x.a;top[k][x.c]=(top[k][x.c]||0)+x.a}});
+  const sv=Math.max(i-e,0),R=RATIO,cl=p=>p<.85?"var(--inc)":p<1?"#f59e0b":"var(--exp)";
+  const big=o=>{const k=Object.keys(o).sort((a,b)=>o[b]-o[a])[0];return k?` Biggest: ${k} (${fmt(o[k])}).`:""};
+  const P=[[50,30,20],[60,20,20],[70,20,10]],isP=P.some(r=>r[0]==R.n&&r[1]==R.w&&r[2]==R.s);
+  let h='<div class="pills">'+P.map(r=>`<button class="${r[0]==R.n&&r[1]==R.w&&r[2]==R.s&&!CUS?"on":""}" data-r="${r}">${r.join("/")}</button>`).join("")+`<button class="${!isP||CUS?"on":""}" data-r="custom">${isP?"Custom":"Custom "+R.n+"/"+R.w+"/"+R.s}</button></div>`;
+  if(CUS)h+=`<div class="rowc"><label>Needs %<input class="f" id="kn" type="number" inputmode="numeric" value="${R.n}"></label><label>Wants %<input class="f" id="kw" type="number" inputmode="numeric" value="${R.w}"></label><div class="sv2">Savings<b id="ks">${R.s}%</b></div></div><button class="btn" data-cs="1" style="width:100%;margin-bottom:6px">Apply</button><div class="mu" id="ke" style="margin-bottom:12px">Savings is whatever remains, so the three always add up to 100%.</div>`;
+  if(i<=0)h+='<div class="mu" style="font-size:13px;margin-bottom:8px">Add income for this month to see your breakdown.</div>';
+  else{
+    const ln=i*R.n/100,lw=i*R.w/100,ts=i*R.s/100,pn=ln?n/ln:(n>0?2:0),pw=lw?w/lw:(w>0?2:0),ps=ts?sv/ts:0;
+    const rBar=(t,v,l,p,c)=>`<div class="rowb"><div class="t"><span>${t}</span><span class="mu">${fmt(v)} of ${fmt(l)} &middot; ${Math.round(p*100)}%</span></div><div class="bar"><i style="width:${Math.min(p,1)*100}%;background:${c}"></i></div></div>`;
+    h+=rBar("Needs "+R.n+"%",n,ln,pn,cl(pn))+rBar("Wants "+R.w+"%",w,lw,pw,cl(pw))+rBar("Savings "+R.s+"%",sv,ts,ps,ps>=1?"var(--inc)":ps>=.6?"#f59e0b":"var(--exp)");
+    if(u>0)h+=`<div class="rowb"><div class="t"><span>Unsorted</span><span class="mu">${fmt(u)} &middot; review below</span></div></div>`;
+    const tips=[];
+    if(n>ln)tips.push(`Needs is over its limit by ${fmt(n-ln)}.`+big(top.n));
+    if(w>lw)tips.push(`Wants is over its limit by ${fmt(w-lw)}.`+big(top.w));
+    if(sv<ts)tips.push(`You are currently ${fmt(ts-sv)} short of your savings target.`);
+    {const [yy,mm]=cur.split("-").map(Number),dl=new Date(yy,mm,0).getDate()-new Date().getDate()+1,rem=i*(R.n+R.w)/100-(n+w+u);if(now&&rem>0&&dl>0)tips.push(`About ${fmt(Math.floor(rem/dl))} per day left to stay on plan.`)}
+    if(!tips.length)tips.push("All three buckets are on track this month.");
+    h+=tips.map(t=>`<div class="tip">${t}</div>`).join("");
+  }
+  if(FL.length)h+='<div class="st" style="margin:14px 0 2px">Review large meals</div><div class="mu" style="margin-bottom:6px">These cost over 2x your usual for that meal. Needs or Wants?</div>'+FL.map(x=>`<div class="rv"><div>${x.c} &middot; ${+x.date.slice(8)} ${MS[+x.date.slice(5,7)-1]}<br><span class="mu">${fmt(x.a)} (usual ~${fmt(base(x))})</span></div><div class="pills"><button data-rv="${x.id}|n">Needs</button><button data-rv="${x.id}|w">Wants</button></div></div>`).join("");
+  const mC=CATS.e.filter(c=>MEAL.includes(c)),oC=CATS.e.filter(c=>!MEAL.includes(c)),nC=mC.concat(oC.filter(c=>TAGS[c]=="n")),wC=oC.filter(c=>TAGS[c]!="n");
+  h+=`<button class="lk" data-h="1">${HELP?"Hide explanation":"What do these mean?"}</button>`+(HELP?`<div class="hp"><b>Needs ${R.n}%</b><span>Essentials you cannot easily skip. Right now: ${nC.join(", ")||"none"}.</span><b>Wants ${R.w}%</b><span>Things that are nice to have. Right now: ${wC.join(", ")||"none"}, plus any large meal you mark as Wants.</span><b>Savings ${R.s}%</b><span>Income minus everything you spent.</span></div>`:"");
+  $("ib").innerHTML=h;
+}
+
+function renderTrend(){
+  let [y,m]=cur.split("-").map(Number);const d=[];
+  for(let k=5;k>=0;k--){let mm=m-k,yy=y;while(mm<1){mm+=12;yy--}const key=yy+"-"+String(mm).padStart(2,"0");let i=0,e=0;items.forEach(x=>{if(x.date.slice(0,7)==key)x.t=="i"?i+=x.a:e+=x.a});d.push([MS[mm-1],i,e,key,yy,mm])}
+  const sel=d.find(x=>x[3]==TS)||d[5],mx=Math.max(1,...d.flatMap(x=>[x[1],x[2]]));
+  $("tr").innerHTML='<svg viewBox="0 0 300 125" width="100%">'+d.map((x,g)=>{const h1=x[1]/mx*85,h2=x[2]/mx*85,bx=g*50+8;return `<rect x="${g*50+1}" y="0" width="48" height="125" rx="10" style="fill:${x==sel?"var(--bg)":"none"}"/><rect x="${bx}" y="${95-h1}" width="16" height="${h1}" rx="4" style="fill:var(--inc)"/><rect x="${bx+18}" y="${95-h2}" width="16" height="${h2}" rx="4" style="fill:var(--ac)"/><text x="${bx+17}" y="113" text-anchor="middle" font-size="10" style="fill:var(--mu)">${x[0]}</text><rect data-k="${x[3]}" x="${g*50}" y="0" width="50" height="125" style="fill:transparent"/>`}).join("")+`</svg><div class="mu" style="margin:4px 0 12px"><span class="inc">&#9632;</span> Income &nbsp; <span style="color:var(--ac)">&#9632;</span> Expense &middot; tap a month for details</div><div class="two2"><div><span class="mu">Income</span><b class="inc">+${fmt(sel[1])}</b></div><div><span class="mu">Expense</span><b>-${fmt(sel[2])}</b></div></div><div class="st">${MN[sel[5]-1]} ${sel[4]} &middot; net ${fmt(sel[1]-sel[2])}${sel[1]>0?` &middot; saved ${Math.round((sel[1]-sel[2])/sel[1]*100)}% of income`:""}</div>`;
+}
+
+function shift(d){let [y,m]=cur.split("-").map(Number);m+=d;if(m<1){m=12;y--}if(m>12){m=1;y++}const n=y+"-"+String(m).padStart(2,"0");if(n>today.slice(0,7))return;cur=n;TS=null;OP=null;render()}
+$("pv").onclick=()=>shift(-1);$("nx").onclick=()=>shift(1);
+$("back").onclick=()=>{cur=today.slice(0,7);TS=null;OP=null;render()};
+$("vm").onclick=e=>{const k=e.target.dataset.v;if(k){view[k]=view[k]?0:1;if(view[k])col[k]=false;ls("view",view);ls("col",col);applyView()}};
+document.addEventListener("click",e=>{const h=e.target.closest(".ch");if(!h)return;const k=h.parentElement.id;if(!k)return;if(e.target.dataset.x)view[k]=0;else col[k]=!col[k];ls("view",view);ls("col",col);applyView()});
+$("tr").onclick=e=>{const k=e.target.dataset.k;if(k){TS=k;renderTrend()}};
+$("dl").onclick=$("list").onclick=e=>{const ed=e.target.dataset.ed;if(ed){openEdit(ed);return}const id=e.target.dataset.id;if(id){delItem(id);return}const o=e.target.closest("[data-o]");if(o){OP=OP==o.dataset.o?null:o.dataset.o;render()}};
+document.querySelector(".two").onclick=e=>{const d=e.target.closest("[data-d]");if(d){DT=d.dataset.d;OP=null;render();$("dv").classList.add("on")}};
+$("dv").onclick=e=>{if(e.target.id=="dv"||e.target.id=="dx"){DT=null;OP=null;$("dv").classList.remove("on")}};
+$("fab").onclick=()=>{EID=null;RP=false;$("rp").className="";$("rp").parentElement.style.display="";$("sv").textContent="Save";$("dt").value=today;$("dt").max=today;$("ov").classList.add("on");$("amt").focus()};
+$("ov").onclick=e=>{if(e.target.id=="ov")$("ov").classList.remove("on")};
+$("be").onclick=()=>setType("e");$("bi").onclick=()=>setType("i");
+$("chips").onclick=e=>{const d=e.target.dataset;
+  if(d.c){cat=d.c;chips()}
+  else if(d.d){if(CATS[type].length<2)return;CATS[type]=CATS[type].filter(x=>x!=d.d);if(cat==d.d)cat=CATS[type][0];ls("cats2",CATS);chips()}
+  else if(d.act=="add"){$("ed").classList.toggle("on");$("cn").focus()}
+  else if(d.act=="edit"){em=true;$("ed").classList.remove("on");chips()}
+  else if(d.act=="done"){em=false;chips()}
+};
+$("cs").onclick=()=>{const n=$("cn").value.replace(/[<>"&]/g,"").trim();if(!n||CATS[type].includes(n))return;CATS[type].push(n);if(type=="e"){TAGS[n]=CT;ls("tags",TAGS)}cat=n;ls("cats2",CATS);$("cn").value="";$("ed").classList.remove("on");chips()};
+$("sv").onclick=()=>{
+  const a=parseFloat($("amt").value);if(!(a>0))return;const d=$("dt").value||today,n=$("note").value.trim();
+  if(EID){const x=items.find(y=>y.id==EID);if(x){x.t=type;x.a=a;x.c=cat;x.n=n;x.date=d;delete x.rv}}
+  else{
+    const x={id:Date.now()+""+Math.random(),t:type,a,c:cat,n,date:d};
+    if(RP){const r={id:"r"+Date.now(),t:type,a,c:cat,n,day:+d.slice(8),start:d.slice(0,7),skip:[d.slice(0,7)]};REC.push(r);ls("rec",REC);x.rid=r.id}
+    items.push(x);
+  }
+  EID=null;$("amt").value="";$("note").value="";cur=d.slice(0,7);ls("tx",items);applyRec();render();$("ov").classList.remove("on");
+};
+$("ct").onclick=()=>{CT=CT=="w"?"n":"w";$("ct").textContent=CT=="w"?"Wants":"Needs"};
+$("ic").onclick=e=>{const d=e.target.dataset;if(d.rv){const [id,k]=d.rv.split("|"),it=items.find(x=>x.id==id);if(it){it.rv=k;ls("tx",items);render()}}else if(d.r){if(d.r=="custom")CUS=!CUS;else{const r=d.r.split(",").map(Number);RATIO={n:r[0],w:r[1],s:r[2]};ls("ratio",RATIO);CUS=false}render()}
+else if(d.h){HELP=!HELP;render()}
+else if(d.cs){const n=Math.round(+$("kn").value),w=Math.round(+$("kw").value);if(!(n>=0&&w>=0&&n+w<=100)){$("ke").textContent="Needs + Wants must add up to 100% or less.";$("ke").style.color="var(--exp)";return}RATIO={n,w,s:100-n-w};ls("ratio",RATIO);CUS=false;render()}};
+$("ic").oninput=e=>{if(e.target.id=="kn"||e.target.id=="kw"){const n=+$("kn").value||0,w=+$("kw").value||0;$("ks").textContent=(100-n-w)+"%"}};
+
+function applyRec(){let ch=false;const now=today.slice(0,7);REC.forEach(r=>{let [y,m]=r.start.split("-").map(Number);while((y+"-"+String(m).padStart(2,"0"))<=now){const mo=y+"-"+String(m).padStart(2,"0"),d=mo+"-"+String(Math.min(r.day,new Date(y,m,0).getDate())).padStart(2,"0");if(d<=today&&!(r.skip||[]).includes(mo)&&!items.some(x=>x.rid==r.id&&x.date.slice(0,7)==mo)){items.push({id:r.id+mo,t:r.t,a:r.a,c:r.c,n:r.n,date:d,rid:r.id});ch=true}m++;if(m>12){m=1;y++}}});if(ch)ls("tx",items)}
+let UF=null;function toast(m,f){UF=f;$("ts").firstElementChild.textContent=m;const t=$("ts");t.style.display="flex";clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display="none",6000)}
+function delItem(id){const x=items.find(y=>y.id==id);if(!x)return;if(x.rid){const r=REC.find(z=>z.id==x.rid);if(r){(r.skip=r.skip||[]).push(x.date.slice(0,7));ls("rec",REC)}}LD=x;items=items.filter(y=>y.id!=id);OP=null;ls("tx",items);render();toast("Deleted",()=>restore(x))}
+const restore=x=>{if(x.rid){const r=REC.find(z=>z.id==x.rid);if(r)r.skip=(r.skip||[]).filter(m=>m!=x.date.slice(0,7));ls("rec",REC)}items.push(x);ls("tx",items);render()};
+$("ts").onclick=e=>{if(e.target.id=="ud"&&UF){const f=UF;UF=null;$("ts").style.display="none";f()}};
+
+let QK=[];
+function renderQuick(){const cut=iso(new Date(Date.now()-30*864e5)),m={};
+items.forEach(x=>{if(x.rid||x.date<cut)return;const k=x.t+"|"+x.a+"|"+x.c,o=m[k]||(m[k]={t:x.t,a:x.a,c:x.c,n:0,d:""});o.n++;if(x.date>o.d)o.d=x.date});
+QK=Object.values(m).filter(o=>o.n>=3).sort((p,q)=>q.n-p.n||q.d.localeCompare(p.d)).slice(0,4);
+$("qk").style.display=QK.length?"block":"none";
+$("qr").innerHTML=QK.map((o,k)=>`<button data-q="${k}">${o.c}<b class="${o.t=="i"?"inc":""}">${o.t=="i"?"+":""}${fmt(o.a)}</b></button>`).join("")}
+$("qr").onclick=e=>{const b=e.target.closest("[data-q]");if(!b)return;const q=QK[+b.dataset.q];if(!q)return;const id=Date.now()+""+Math.random();
+items.push({id,t:q.t,a:q.a,c:q.c,n:"",date:today});cur=today.slice(0,7);ls("tx",items);render();
+toast("Added "+q.c+" "+fmt(q.a),()=>{items=items.filter(y=>y.id!=id);ls("tx",items);render()})};
+
+function openEdit(id){const x=items.find(y=>y.id==id);if(!x)return;EID=id;RP=false;setType(x.t);cat=x.c;chips();$("amt").value=x.a;$("dt").value=x.date;$("dt").max=today;$("note").value=x.n||"";$("rp").parentElement.style.display="none";$("sv").textContent="Update";$("ov").classList.add("on")}
+$("rp").onclick=()=>{RP=!RP;$("rp").className=RP?"on":""};
+$("q").oninput=e=>{Q=e.target.value.trim().toLowerCase();render()};
+function renderMore(){$("rl").innerHTML=REC.length?REC.map(r=>`<div class="rv"><div>${r.c} &middot; ${fmt(r.a)}<br><span class="mu">${r.t=="i"?"Income":"Expense"} &middot; monthly on day ${r.day}</span></div><button class="dbtn" style="margin:0" data-rs="${r.id}">Stop</button></div>`).join(""):'<div class="mu">No recurring items yet. Turn on Repeat monthly when adding one.</div>'}
+$("rl").onclick=e=>{const id=e.target.dataset.rs;if(id){REC=REC.filter(r=>r.id!=id);ls("rec",REC);renderMore()}};
+$("mo").onclick=()=>{renderMore();renderPs();$("bs").textContent="";$("mv").classList.add("on")};
+$("mv").onclick=e=>{if(e.target.id=="mv"||e.target.id=="mx")$("mv").classList.remove("on")};
+$("bx").onclick=()=>{const b=$("bk"),txt=JSON.stringify({v:1,items,CATS,TAGS,RATIO,REC});b.value=txt;b.select();
+const done=ok=>{if(ok)ls("lastbk",today);$("bs").textContent=ok?"Copied. Paste it somewhere safe.":"Select all and copy the text above, then paste it somewhere safe.";renderBk()};
+const old=()=>{let ok=false;try{ok=document.execCommand("copy")}catch(e){}done(ok)};
+if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>done(true),old);else old()};
+$("bm").onclick=()=>{try{const d=JSON.parse($("bk").value),cl=t=>String(t).replace(/[<>"&]/g,"").slice(0,30);if(!d||!Array.isArray(d.items))throw 0;const have=new Set(items.map(x=>x.id));let n=0;
+d.items.forEach(x=>{if(x&&x.id&&x.a>0&&x.date&&!have.has(""+x.id)){const o={id:""+x.id,t:x.t=="i"?"i":"e",a:+x.a,c:cl(x.c||"Other"),n:String(x.n||"").slice(0,200),date:String(x.date).slice(0,10)};if(x.rid)o.rid=""+x.rid;if(x.rv)o.rv=x.rv=="n"?"n":"w";items.push(o);n++}});
+if(d.CATS&&d.CATS.e&&d.CATS.i){CATS={e:d.CATS.e.map(cl),i:d.CATS.i.map(cl)};ls("cats2",CATS)}
+if(d.TAGS){Object.keys(d.TAGS).forEach(k=>TAGS[cl(k)]=d.TAGS[k]=="n"?"n":"w");ls("tags",TAGS)}
+if(d.RATIO&&d.RATIO.n){RATIO={n:+d.RATIO.n,w:+d.RATIO.w,s:+d.RATIO.s};ls("ratio",RATIO)}
+if(Array.isArray(d.REC)){d.REC.forEach(r=>{if(r&&r.id&&!REC.some(z=>z.id==r.id)&&r.a>0)REC.push({id:""+r.id,t:r.t=="i"?"i":"e",a:+r.a,c:cl(r.c),n:String(r.n||"").slice(0,200),day:+r.day||1,start:String(r.start).slice(0,7),skip:Array.isArray(r.skip)?r.skip.map(m=>String(m).slice(0,7)):[]})});ls("rec",REC)}
+ls("tx",items);applyRec();setType(type);render();renderMore();$("bs").textContent="Imported "+n+" new transactions."}catch(e){$("bs").textContent="That does not look like a valid backup."}};
+
+let SM="week",SD=0,SW=0;
+const pd=t=>{const [y,m,d]=t.split("-").map(Number);return new Date(y,m-1,d)};
+const ad=(t,n)=>{const d=pd(t);d.setDate(d.getDate()+n);return iso(d)};
+const p2=n=>String(n).padStart(2,"0");
+function sRange(){if(SM=="day"){const d=ad(today,-SD);return{s:d,e:d,ps:ad(d,-1),pe:ad(d,-1)}}
+if(SM=="week"){const mon=ad(today,-((pd(today).getDay()+6)%7)-7*SW);return{s:mon,e:ad(mon,6),ps:ad(mon,-7),pe:ad(mon,-1)}}
+let [y,m]=cur.split("-").map(Number),py=y,pm=m-1;if(pm<1){pm=12;py--}
+return{s:cur+"-01",e:cur+"-"+p2(new Date(y,m,0).getDate()),ps:py+"-"+p2(pm)+"-01",pe:py+"-"+p2(pm)+"-"+p2(new Date(py,pm,0).getDate())}}
+function sTot(a,b){let i=0,x=0,n=0,by={};items.forEach(t=>{if(t.date>=a&&t.date<=b){n++;if(t.t=="i")i+=t.a;else{x+=t.a;by[t.c]=(by[t.c]||0)+t.a}}});return{i,x,n,by}}
+function renderSum(){const r=sRange(),T=sTot(r.s,r.e),P=sTot(r.ps,r.pe),a=r.s.split("-"),b=r.e.split("-");
+let lb,nxOff;
+if(SM=="day"){lb=SD==0?"Today":SD==1?"Yesterday":+a[2]+" "+MS[a[1]-1]+" "+a[0];nxOff=SD==0}
+else if(SM=="week"){lb=(SW==0?"This week \u00b7 ":"")+(+a[2])+" "+MS[a[1]-1]+" \u2013 "+(+b[2])+" "+MS[b[1]-1];nxOff=SW==0}
+else{lb=MN[+a[1]-1]+" "+a[0];nxOff=cur==today.slice(0,7)}
+$("sl").textContent=lb;$("sx").disabled=nxOff;
+document.querySelectorAll("#sg button").forEach(x=>x.className=x.dataset.m==SM?"on":"");
+$("si").textContent=fmt(T.i);$("se").textContent=fmt(T.x);
+const vs=P.x>0?Math.round((T.x-P.x)/P.x*100):null,ks=Object.keys(T.by).sort((p,q)=>T.by[q]-T.by[p]),tp=ks[0],net=T.i-T.x,
+e2=r.e<today?r.e:today,days=Math.max(1,Math.round((pd(e2)-pd(r.s))/864e5)+1);
+const R=(l,v)=>`<div class="dr" style="border-top:1px solid var(--ln);padding:10px 0;font-size:14px"><span>${l}</span><span>${v}</span></div>`;
+$("sr").innerHTML=R("Net",`<span class="${net>0?"inc":net<0?"exp":""}">${net>0?"+":""}${fmt(net)}</span>`)
++R({day:"vs previous day",week:"vs previous week",month:"vs previous month"}[SM],vs===null?'<span class="mu">No data</span>':`<span class="${vs>0?"exp":"inc"}">${vs>0?"+":""}${vs}% spending</span>`)
++R("Top category",tp?tp+" "+fmt(T.by[tp]):"-")
++R(SM=="day"?"Entries":"Daily average",SM=="day"?T.n:fmt(Math.round(T.x/days)))
++(tp?`<div style="margin-top:8px"><div class="bar"><i style="width:${Math.round(T.by[tp]/T.x*100)}%;background:var(--ac)"></i></div><div class="mu" style="margin-top:6px">${tp} is ${Math.round(T.by[tp]/T.x*100)}% of spending</div></div>`:"")}
+$("sg").onclick=e=>{const m=e.target.dataset.m;if(m){SM=m;renderSum()}};
+$("sp").onclick=()=>{if(SM=="day")SD++;else if(SM=="week")SW++;else{shift(-1);return}renderSum()};
+$("sx").onclick=()=>{if(SM=="day"){if(SD>0)SD--}else if(SM=="week"){if(SW>0)SW--}else{shift(1);return}renderSum()};
+
+const g=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const dAgo=d=>Math.floor((new Date(today)-new Date(d))/864e5);
+function renderBk(){let b0=g("bk0");if(!b0&&items.length){b0=today;ls("bk0",today)}
+const last=g("lastbk"),ref=last||b0,sn=g("bksn");
+const show=items.length&&ref&&dAgo(ref)>=14&&!(sn&&sn>today);
+$("bn").style.display=show?"flex":"none";
+if(show)$("bt").textContent=last?"Last backup "+dAgo(last)+" days ago":"You have not backed up yet"}
+$("bb").onclick=()=>$("mo").onclick();
+$("bz").onclick=()=>{ls("bksn",iso(new Date(Date.now()+7*864e5)));renderBk()};
+function renderPs(){const st=navigator.storage;if(st&&st.persisted)st.persisted().then(p=>{$("ps").textContent=p?"Storage: protected from automatic cleanup.":"Storage: not guaranteed by your browser. Back up regularly."}).catch(()=>{});
+const sa=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;
+$("hs").textContent=sa?"":"Tip: add this app to your Home Screen from the browser menu. It keeps your data safer."}
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(renderPs,()=>{})}catch(e){}
+
+/* ==================== 2. FINANCE NEWS, EMERGING TECH & MARKET DATA ==================== */
+const NEWS_API_BASE = "https://finance-news-for-friends.vercel.app";
+const NEWS_CATS = {
+  all: "ทั้งหมด",
+  tech: "🚀 เทคโนโลยี & AI",
+  ev: "🏎️ EV & Roadster",
+  crypto: "💎 คริปโต & Stablecoin",
+  "stock-us": "🇺🇸 หุ้นสหรัฐฯ",
+  "stock-th": "🇹🇭 หุ้นไทย",
+  gold: "🪙 ทองคำ",
+  energy: "⚡ พลังงาน",
+  "stock-eu": "🇪🇺 ตลาดยุโรป"
+};
+const TOPIC_TAGS = [
+  {id:"Stablecoin", label:"🪙 Stablecoin"},
+  {id:"Roadster", label:"🏎️ Roadster & EV"},
+  {id:"AI", label:"🤖 AI & ชิป"},
+  {id:"MAG7", label:"⭐ 7 นางฟ้า"},
+  {id:"BTC", label:"₿ BTC & ETH"},
+  {id:"SET", label:"🇹🇭 หุ้นไทย SET"},
+  {id:"ทอง", label:"🥇 ทองคำ"},
+  {id:"WTI", label:"🛢️ น้ำมัน & พลังงาน"}
+];
+const MKT_GROUPS = {"stock-th":"หุ้นไทย","stock-us":"หุ้นสหรัฐฯ","stock-eu":"หุ้นยุโรป",crypto:"คริปโต",gold:"ทอง",energy:"พลังงาน"};
+const ASSETS = [
+  {id:"SET",c:"stock",group:"stock-th",n:"ดัชนี SET",p:1465.4,u:"",chg:0.42},
+  {id:"PTT",c:"stock",group:"stock-th",n:"ปตท.",p:34.5,u:"฿",chg:0.73},
+  {id:"AOT",c:"stock",group:"stock-th",n:"ท่าอากาศยานไทย",p:58.25,u:"฿",chg:-0.42},
+  {id:"SPX",c:"stock",group:"stock-us",n:"ดัชนี S&P 500",p:5815.2,u:"",chg:0.61},
+  {id:"AAPL",c:"stock",group:"stock-us",n:"Apple",p:235,u:"$",chg:1.15},
+  {id:"MSFT",c:"stock",group:"stock-us",n:"Microsoft",p:424,u:"$",chg:0.54},
+  {id:"NVDA",c:"stock",group:"stock-us",n:"NVIDIA",p:145.8,u:"$",chg:2.35},
+  {id:"AMZN",c:"stock",group:"stock-us",n:"Amazon",p:220,u:"$",chg:0.82},
+  {id:"GOOGL",c:"stock",group:"stock-us",n:"Alphabet",p:175,u:"$",chg:-0.31},
+  {id:"META",c:"stock",group:"stock-us",n:"Meta",p:592,u:"$",chg:1.45},
+  {id:"TSLA",c:"stock",group:"stock-us",n:"Tesla",p:350,u:"$",chg:-1.10},
+  {id:"ASML",c:"stock",group:"stock-eu",n:"ASML (เนเธอร์แลนด์)",p:720,u:"€",chg:-0.85},
+  {id:"SAP",c:"stock",group:"stock-eu",n:"SAP (เยอรมนี)",p:260,u:"€",chg:0.95},
+  {id:"SHEL",c:"stock",group:"stock-eu",n:"Shell (สหราชอาณาจักร)",p:30,u:"£",chg:0.40},
+  {id:"VOW3",c:"stock",group:"stock-eu",n:"Volkswagen (เยอรมนี)",p:100,u:"€",chg:-0.25},
+  {id:"BTC",c:"crypto",group:"crypto",n:"บิตคอยน์",p:68420,u:"$",chg:1.85},
+  {id:"ETH",c:"crypto",group:"crypto",n:"อีเธอเรียม",p:2645,u:"$",chg:1.12},
+  {id:"SOL",c:"crypto",group:"crypto",n:"โซลานา",p:154.6,u:"$",chg:2.94},
+  {id:"XAU",c:"gold",group:"gold",n:"ทองโลก (ต่อออนซ์)",p:2715,u:"$",chg:0.68},
+  {id:"GTH",c:"gold",group:"gold",n:"ทองคำแท่งไทย (บาท)",p:44150,u:"฿",chg:0.34},
+  {id:"WTI",c:"stock",group:"energy",n:"น้ำมันดิบ WTI (ต่อบาร์เรล)",p:71.8,u:"$",chg:-0.55},
+  {id:"BRENT",c:"stock",group:"energy",n:"น้ำมันดิบ Brent (ต่อบาร์เรล)",p:75.6,u:"$",chg:-0.48},
+  {id:"PTTEP",c:"stock",group:"energy",n:"ปตท.สผ.",p:125.5,u:"฿",chg:0.80},
+  {id:"GULF",c:"stock",group:"energy",n:"กัลฟ์ เอ็นเนอร์จี",p:56.25,u:"฿",chg:1.35},
+  {id:"GPSC",c:"stock",group:"energy",n:"โกลบอล เพาเวอร์ ซินเนอร์ยี่",p:45.5,u:"฿",chg:0.55},
+  {id:"XOM",c:"stock",group:"energy",n:"ExxonMobil",p:118,u:"$",chg:0.90},
+  {id:"FSLR",c:"stock",group:"energy",n:"First Solar",p:192,u:"$",chg:1.20},
+  {id:"VWS",c:"stock",group:"energy",n:"Vestas",p:150,u:"kr",chg:-0.15}
+];
+
+const TECH_HIGHLIGHTS = [
+  {id:"th-st1",t:"จับตาตลาด Stablecoin โลกทะลุจุดสูงสุดใหม่! USDT-USDC รุกระบบชำระเงินข้ามพรมแดน (PayFi) และเกณฑ์กำกับดูแลใหม่",c:"crypto",tag:"Stablecoin",src:"FinTech & Crypto Insight",m:18,link:"https://cointelegraph.com/tags/stablecoin",mood:"บวก",points:["มูลค่าตลาด Stablecoin รวมเติบโตต่อเนื่องจากความต้องการใช้โอนเงินข้ามพรมแดนและ DeFi","สถาบันการเงินระดับโลกและฟินเทคเร่งเชื่อมต่อระบบชำระเงินด้วย USDC และ USDT"]},
+  {id:"th-st2",t:"สถาบันการเงินและผู้ให้บริการชำระเงินเร่งทดสอบ Stablecoin Settlement ลดต้นทุนโอนเงินระหว่างประเทศเหลือไม่ถึงวินาที",c:"crypto",tag:"Stablecoin",src:"Global FinTech Watch",m:35,link:"https://cointelegraph.com/tags/stablecoin",mood:"บวก",points:["การใช้ Stablecoin บนเครือข่ายความเร็วสูงช่วยลดค่าธรรมเนียมโอนเงินระหว่างประเทศลงกว่า 80%","จับตาความชัดเจนด้านกฎหมาย Stablecoin ในสหรัฐฯ ยุโรป และเอเชีย"]},
+  {id:"th-ev1",t:"อัปเดตความคืบหน้า Tesla Roadster รุ่นใหม่และเทคโนโลยีขับเคลื่อนอัตโนมัติ FSD: สมรรถนะอัตราเร่ง 0-100 กม./ชม. ต่ำกว่า 1 วินาที",c:"ev",tag:"Roadster",src:"EV & Mobility Tech",m:24,link:"https://electrek.co/guides/tesla-roadster/",mood:"บวก",points:["Tesla Roadster เจเนอเรชันใหม่ชูจุดเด่นชุดขับเคลื่อนพัฒนาร่วมกับเทคโนโลยีอวกาศและแอโรไดนามิกขั้นสูง","ตลาดรถสปอร์ตไฟฟ้าและ Robotaxi กำลังเปลี่ยนผ่านสู่ยุคซอฟต์แวร์และ AI เต็มรูปแบบ"]},
+  {id:"th-ev2",t:"สมรภูมิรถไฟฟ้า EV เดือด! ค่ายรถเร่งพัฒนาแบตเตอรี่ Solid-State ชาร์จไว 10 นาที วิ่งไกลทะลุ 1,000 กม.",c:"ev",tag:"Roadster",src:"Electrek / EV Digest",m:52,link:"https://electrek.co/",mood:"บวก",points:["เทคโนโลยีแบตเตอรี่ความหนาแน่นสูงและสถาปัตยกรรม 800V-1000V ช่วยปลดล็อกข้อจำกัดการชาร์จ","การแข่งขันด้านราคาและระบบช่วยขับขี่อัจฉริยะ (ADAS) ดันยอดใช้ EV เติบโตต่อเนื่อง"]},
+  {id:"th-ai1",t:"ยุคทองของ AI Agent และชิปประมวลผลรุ่นใหม่: บิ๊กเทคเร่งลงทุน Data Center รองรับโมเดลคิดวิเคราะห์อัตโนมัติ",c:"tech",tag:"AI",src:"TechCrunch / AI Briefing",m:29,link:"https://techcrunch.com/category/artificial-intelligence/",mood:"บวก",points:["องค์กรทั่วโลกเริ่มนำ AI Agent มาช่วยงานวิเคราะห์การเงิน เขียนโค้ด และบริหารจัดการอัตโนมัติ","ความต้องการชิป AI ของ NVIDIA และกลุ่มเซมิคอนดักเตอร์ยังแข็งแกร่งต่อเนื่อง"]},
+  {id:"n1",t:"KS มอง SET สัปดาห์หน้าแกว่งกรอบ 1,540-1,605 จุด จับตางบแบงก์-ฟันด์โฟลว์-ตะวันออกกลาง - ข่าวหุ้นธุรกิจออนไลน์",c:"stock-th",tag:"SET",src:"Google News หุ้นไทย",m:42,link:"https://finance-news-for-friends.vercel.app/",mood:"บวก",points:["คาดดัชนี SET แกว่งตัวสร้างฐานพร้อมลุ้นฟันด์โฟลว์ไหลเข้า","จับตาผลประกอบการกลุ่มธนาคารพาณิชย์และทิศทางดอกเบี้ย"]},
+  {id:"n2",t:"Stock market week ahead: Meta, Tesla lead 6 major tech reports - Opening Bell Daily",c:"stock-us",tag:"MAG7",src:"Google News Magnificent Seven",m:65,link:"https://finance-news-for-friends.vercel.app/",mood:"บวก",points:["สัปดาห์สำคัญของหุ้นกลุ่ม 7 นางฟ้า นำโดยการประกาศงบของ Meta และ Tesla","นักลงทุนจับตางบลงทุนด้าน AI (CapEx) และการเติบโตของรายได้คลาวด์"]},
+  {id:"n3",t:"ราคาทองวันนี้ เปิดตลาดทรงตัวในกรอบสูง เช็กราคาทองคำแท่ง-รูปพรรณล่าสุด - Sanook",c:"gold",tag:"ทอง",src:"Google News ทองคำ",m:88,link:"https://finance-news-for-friends.vercel.app/",mood:"บวก",points:["ราคาทองคำโลกยืนเหนือแนวรับสำคัญจากแรงซื้อสินทรัพย์ปลอดภัย","ทองคำไทยได้แรงหนุนคู่จากราคาทองสปอตและค่าเงินบาท"]},
+  {id:"n4",t:"3 U.S. Energy Stocks Investors Are Watching As Oil And Gas Prices Stay High - Yahoo Finance",c:"energy",tag:"WTI",src:"Google News พลังงาน",m:115,link:"https://finance-news-for-friends.vercel.app/",mood:"บวก",points:["หุ้นพลังงานสหรัฐฯ ได้รับความสนใจหลังราคาน้ำมันดิบและก๊าซทรงตัวระดับสูง","กระแสเงินสดกลุ่มพลังงานแข็งแกร่งและมีการจ่ายปันผลต่อเนื่อง"]}
+];
+
+function matchNewsTopic(it, topicId){
+  const txt = `${it.t||""} ${it.tag||""} ${it.src||""}`;
+  switch(topicId){
+    case "Stablecoin": return it.tag==="Stablecoin" || /stablecoin|usdt|usdc|tether|circle|pyusd|rlusd|cbdc|payfi|สเตเบิลคอยน์/i.test(txt);
+    case "Roadster": return it.c==="ev" || it.tag==="Roadster" || /roadster|tesla|เทสลา|รถไฟฟ้า|\bev\b|byd|waymo|robotaxi|cybercab|charging|battery|รถยนต์ไฟฟ้า/i.test(txt);
+    case "AI": return it.c==="tech" || it.tag==="AI" || /\bai\b|openai|chatgpt|gemini|claude|nvidia|nvda|llm|robotics|agent|ชิป|ปัญญาประดิษฐ์|semiconductor|asml|tsmc/i.test(txt);
+    case "MAG7": return it.tag==="MAG7" || /mag7|7 นางฟ้า|magnificent|apple|aapl|microsoft|msft|nvidia|nvda|amazon|amzn|alphabet|google|googl|meta|tesla|tsla/i.test(txt);
+    case "BTC": return it.c==="crypto" || /\bbtc\b|bitcoin|บิตคอยน์|\beth\b|ethereum|\bsol\b|solana|crypto|คริปโต|etf/i.test(txt);
+    case "SET": return it.c==="stock-th" || it.tag==="SET" || /\bset\b|หุ้นไทย|ปตท|\bptt\b|\baot\b|\bgulf\b|\bdelta\b|ธปท|ตลาดหลักทรัพย์/i.test(txt);
+    case "ทอง": return it.c==="gold" || it.tag==="ทอง" || /ทอง|gold|xau/i.test(txt);
+    case "WTI": return it.c==="energy" || it.tag==="WTI" || /น้ำมัน|wti|brent|พลังงาน|pttep|โรงไฟฟ้า|ก๊าซ|oil|solar/i.test(txt);
+    default: return it.tag===topicId || txt.toLowerCase().includes(topicId.toLowerCase());
+  }
+}
+
+function enrichNewsItem(raw){
+  const it = {...raw};
+  const txt = `${it.t||""} ${it.tag||""} ${it.src||""}`;
+  // Re-categorize or enrich items so Tech, EV/Roadster, and Stablecoin are well represented
+  if(/roadster|รถไฟฟ้า|\bev\b|byd|waymo|robotaxi|cybercab|electrek|รถยนต์ไฟฟ้า/i.test(txt) && it.c!=="stock-th"){
+    if(!it.c || it.c==="stock" || it.c==="stock-us") it.c = "ev";
+    if(!it.tag || it.tag==="ทั่วไป") it.tag = "Roadster";
+  } else if(/stablecoin|usdt|usdc|tether|circle|pyusd|rlusd|cbdc|สเตเบิลคอยน์/i.test(txt)){
+    it.c = "crypto";
+    it.tag = "Stablecoin";
+  } else if((/\bai\b|openai|chatgpt|gemini|claude|llm|robotics|agent|ปัญญาประดิษฐ์|techcrunch/i.test(txt)) && (!it.c || it.c==="stock")){
+    it.c = "tech";
+    if(!it.tag || it.tag==="ทั่วไป") it.tag = "AI";
+  }
+  // Improve generic 'ทั่วไป' tag into meaningful badge
+  if(!it.tag || it.tag==="ทั่วไป"){
+    for(const tp of TOPIC_TAGS){
+      if(matchNewsTopic(it, tp.id)){ it.tag = tp.id; break; }
+    }
+  }
+  return it;
+}
+
+let newsItems = TECH_HIGHLIGHTS.map(enrichNewsItem);
+let newsCat = "all", newsTag = "", newsLimit = 35, mktGroup = "stock-th", mktAssetId = "SET", mktRange = "1M", mktType = "candle";
+let aiItemSummaries = {};
+try{ aiItemSummaries = JSON.parse(localStorage.getItem("ag_ai_cache")||"{}"); }catch(e){}
+
+const CACHE_TTL_MS = 30 * 60 * 1000; // แคช 30 นาที ลดการยิง API ซ้ำ
+let apiStats = {date: today, newsCalls: 0, cgCalls: 0, geminiCalls: 0, geminiTokens: 0, cacheHits: 0};
+try{
+  const savedSt = JSON.parse(localStorage.getItem("ag_api_stats")||"null");
+  if(savedSt && savedSt.date === today) apiStats = savedSt;
+}catch(e){}
+function saveApiStats(){
+  ls("ag_api_stats", apiStats);
+  const el = $("api-usage-stats");
+  if(el){
+    el.innerHTML = `• <b>News & Tech Feeds:</b> ${apiStats.newsCalls} ครั้ง · <b>CoinGecko:</b> ${apiStats.cgCalls} ครั้ง<br>` +
+                   `• <b>Gemini AI:</b> ${apiStats.geminiCalls} ครั้ง (~${fmt(apiStats.geminiTokens)} tokens / ฟรีโควตา 1,500 ครั้งต่อวัน)<br>` +
+                   `• <b>ประหยัดด้วย Cache Hit:</b> ${apiStats.cacheHits} ครั้ง (ไม่ต้องยิง API ซ้ำ)`;
+  }
+}
+function resetApiStats(){
+  apiStats = {date: today, newsCalls: 0, cgCalls: 0, geminiCalls: 0, geminiTokens: 0, cacheHits: 0};
+  saveApiStats();
+}
+
+function fmtPrice(asset, val){
+  const v = Number(val ?? asset.p);
+  return (asset.u||"") + v.toLocaleString("th-TH",{maximumFractionDigits:v<1?4:v<100?2:0,minimumFractionDigits:v<100?2:0});
+}
+function fmtAgo(m){
+  const s = Math.max(1, Number(m)||15);
+  if(s<60) return s+" นาทีที่แล้ว";
+  const h = Math.floor(s/60);
+  if(h<24) return h+" ชั่วโมงที่แล้ว";
+  return Math.floor(h/24)+" วันที่แล้ว";
+}
+
+function populateNewsSources(){
+  const sel = $("news-source");
+  if(!sel) return;
+  const curVal = sel.value;
+  const srcs = [...new Set(newsItems.map(x=>x.src).filter(Boolean))];
+  sel.innerHTML = `<option value="all">ทุกแหล่งข่าว (${newsItems.length})</option>` + srcs.map(s=>`<option value="${s}">${s}</option>`).join("");
+  sel.value = srcs.includes(curVal) ? curVal : "all";
+}
+
+async function fetchLiveNews(forceRefresh){
+  const nowMs = Date.now();
+  let usedCache = false;
+  if(!forceRefresh){
+    try{
+      const cached = JSON.parse(localStorage.getItem("ag_news_cache_v3")||"null");
+      if(cached && Array.isArray(cached.items) && cached.items.length >= 50 && (nowMs - cached.ts < CACHE_TTL_MS)){
+        newsItems = cached.items.map(enrichNewsItem);
+        populateNewsSources();
+        const minsLeft = Math.max(1, Math.round((CACHE_TTL_MS - (nowMs - cached.ts))/60000));
+        $("news-updated-at").textContent = `แคชอัจฉริยะ (${newsItems.length} ข่าว · อัปเดตในอีก ${minsLeft} นาที)`;
+        apiStats.cacheHits++;
+        usedCache = true;
+      }
+    }catch(e){}
+  }
+
+  if(!usedCache){
+    try{
+      $("news-updated-at").textContent = "⏳ กำลังดึงข่าวครบทุกหมวด (การเงิน + Tech + Stablecoin + EV)...";
+      apiStats.newsCalls++;
+      // 1) ดึงข่าวจาก Finance News API ครบทั้ง 4 หน้า (สูงสุด 200 ข่าว จากเดิมที่ดึงแค่ 40 ข่าว)
+      const finPromises = [0, 50, 100, 150].map(off =>
+        fetch(`${NEWS_API_BASE}/api/news?category=all&limit=50&offset=${off}`, {signal: AbortSignal.timeout(6500)})
+          .then(r => r.ok ? r.json() : {items:[]})
+          .catch(() => ({items:[]}))
+      );
+      // 2) ดึงข่าวเทคโนโลยีใหม่ๆ สดจาก RSS & HN Algolia (EV/Tesla Roadster, Stablecoin/Crypto, AI/TechCrunch)
+      const rssFeeds = [
+        {url:"https://electrek.co/feed/", c:"ev", tag:"Roadster", src:"Electrek (EV & Tesla)"},
+        {url:"https://cointelegraph.com/rss", c:"crypto", tag:"Stablecoin", src:"CoinTelegraph"},
+        {url:"https://techcrunch.com/feed/", c:"tech", tag:"AI", src:"TechCrunch"}
+      ].map(f =>
+        fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(f.url)}`, {signal: AbortSignal.timeout(5500)})
+          .then(r => r.ok ? r.json() : {items:[]})
+          .then(j => (j.items||[]).map((x, idx) => {
+            const pubMs = x.pubDate ? new Date(x.pubDate.replace(" ","T")+"Z").getTime() : 0;
+            const mins = pubMs ? Math.max(5, Math.round((nowMs - pubMs)/60000)) : (25 + idx*12);
+            return {
+              id: "rss-" + f.c + "-" + idx + "-" + (x.guid || x.link || idx).slice(-12).replace(/[^a-zA-Z0-9]/g,""),
+              t: x.title,
+              c: f.c,
+              tag: f.tag,
+              src: f.src,
+              m: mins,
+              link: x.link
+            };
+          }))
+          .catch(() => [])
+      );
+      // 3) ดึงหัวข้อเจาะจง Stablecoin, Tesla Roadster & AI Agent จาก HackerNews Live API
+      const hnPromise = Promise.all([
+        fetch("https://hn.algolia.com/api/v1/search_by_date?query=stablecoin&restrictSearchableAttributes=title&tags=story&hitsPerPage=8", {signal: AbortSignal.timeout(4500)}).then(r=>r.json()).catch(()=>({hits:[]})),
+        fetch("https://hn.algolia.com/api/v1/search_by_date?query=Roadster&restrictSearchableAttributes=title&tags=story&hitsPerPage=6", {signal: AbortSignal.timeout(4500)}).then(r=>r.json()).catch(()=>({hits:[]})),
+        fetch("https://hn.algolia.com/api/v1/search_by_date?query=Tesla&restrictSearchableAttributes=title&tags=story&hitsPerPage=6", {signal: AbortSignal.timeout(4500)}).then(r=>r.json()).catch(()=>({hits:[]})),
+        fetch("https://hn.algolia.com/api/v1/search_by_date?query=AI%20agent&restrictSearchableAttributes=title&tags=story&hitsPerPage=6", {signal: AbortSignal.timeout(4500)}).then(r=>r.json()).catch(()=>({hits:[]}))
+      ]).then(([st, rd, ts, ai]) => {
+        const mapHit = (h, c, tag, src) => ({
+          id: "hn-" + h.objectID,
+          t: h.title,
+          c,
+          tag,
+          src,
+          m: Math.max(15, Math.min(720, Math.round((nowMs - (h.created_at_i*1000 || nowMs))/60000))),
+          link: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`
+        });
+        return [
+          ...(st.hits||[]).filter(h=>h.title).map(h=>mapHit(h, "crypto", "Stablecoin", "HN FinTech & Stablecoin")),
+          ...(rd.hits||[]).filter(h=>h.title).map(h=>mapHit(h, "ev", "Roadster", "HN EV & Roadster")),
+          ...(ts.hits||[]).filter(h=>h.title).map(h=>mapHit(h, "ev", "Roadster", "HN Tesla & Mobility")),
+          ...(ai.hits||[]).filter(h=>h.title).map(h=>mapHit(h, "tech", "AI", "HN AI & Tech"))
+        ];
+      }).catch(() => []);
+
+      const [p0, p1, p2, p3, r0, r1, r2, hnItems] = await Promise.all([...finPromises, ...rssFeeds, hnPromise]);
+      const combined = [
+        ...TECH_HIGHLIGHTS,
+        ...r0, ...r1, ...r2,
+        ...hnItems,
+        ...(p0.items||[]), ...(p1.items||[]), ...(p2.items||[]), ...(p3.items||[])
+      ];
+      // Deduplicate by normalized title
+      const seen = new Set();
+      const deduped = [];
+      for(const raw of combined){
+        if(!raw || !raw.t) continue;
+        const key = raw.t.trim().toLowerCase().slice(0, 80);
+        if(seen.has(key)) continue;
+        seen.add(key);
+        deduped.push(enrichNewsItem(raw));
+      }
+      if(deduped.length){
+        newsItems = deduped;
+        ls("ag_news_cache_v3", {ts: nowMs, items: newsItems});
+        populateNewsSources();
+        $("news-updated-at").textContent = `อัปเดตสดครบทุกแหล่ง (${newsItems.length} ข่าว · แคช 30 นาที)`;
+        if(forceRefresh) toast("ดึงข่าวครบทุกหมวดแล้ว ("+newsItems.length+" ข่าว)");
+      }
+    }catch(err){
+      $("news-updated-at").textContent = "โหมดแคชอัจฉริยะ (พร้อมใช้งาน)";
+      if(forceRefresh) toast("แสดงข้อมูลข่าวจากแคชล่าสุด");
+    }
+  }
+
+  // Fetch live crypto prices from CoinGecko (with 30-min cache)
+  let cgCached = false;
+  if(!forceRefresh){
+    try{
+      const cgc = JSON.parse(localStorage.getItem("ag_cg_cache")||"null");
+      if(cgc && cgc.data && (nowMs - cgc.ts < CACHE_TTL_MS)){
+        const d = cgc.data;
+        const map = {BTC:d.bitcoin, ETH:d.ethereum, SOL:d.solana};
+        Object.entries(map).forEach(([id,obj])=>{
+          const a = ASSETS.find(x=>x.id===id);
+          if(a && obj && obj.usd){ a.p = obj.usd; a.chg = Number(obj.usd_24h_change||a.chg); }
+        });
+        cgCached = true;
+      }
+    }catch(e){}
+  }
+  if(!cgCached){
+    try{
+      apiStats.cgCalls++;
+      const cg = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true");
+      if(cg.ok){
+        const d = await cg.json();
+        ls("ag_cg_cache", {ts: nowMs, data: d});
+        const map = {BTC:d.bitcoin, ETH:d.ethereum, SOL:d.solana};
+        Object.entries(map).forEach(([id,obj])=>{
+          const a = ASSETS.find(x=>x.id===id);
+          if(a && obj && obj.usd){ a.p = obj.usd; a.chg = Number(obj.usd_24h_change||a.chg); }
+        });
+      }
+    }catch(e){}
+  }
+  saveApiStats();
+  renderNewsSection();
+  renderMarketStrip();
+  renderMarketView();
+  generateAIDailyBriefing(false);
+}
+
+function renderMarketStrip(){
+  const stripIds = ["SET","SPX","NVDA","TSLA","BTC","XAU","GTH","WTI"];
+  const html = stripIds.map(id=>{
+    const a = ASSETS.find(x=>x.id===id);
+    if(!a) return "";
+    const up = (a.chg||0)>=0;
+    return `<button class="chip ${mktAssetId===a.id?"active":""}" onclick="selectAssetFromStrip('${a.id}','${a.group}')">
+      <b>${a.id} · ${a.n}</b>
+      <span>${fmtPrice(a,a.p)}</span>
+      <i class="${up?"up":"dn"}">${up?"▲":"▼"} ${Math.abs(a.chg||0).toFixed(2)}%</i>
+    </button>`;
+  }).join("");
+  $("market-strip").innerHTML = html;
+  $("agent-watchlist").innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">` +
+    ["SET","SPX","NVDA","BTC","XAU","GTH"].map(id=>{
+      const a = ASSETS.find(x=>x.id===id);
+      const up = (a.chg||0)>=0;
+      return `<div style="background:var(--bg);border-radius:14px;padding:10px 12px;cursor:pointer" onclick="switchSection('news');selectAssetFromStrip('${a.id}','${a.group}')">
+        <div style="display:flex;justify-content:space-between;font-size:12px"><b style="color:var(--mu)">${a.id}</b><span class="${up?"up":"dn"}" style="font-weight:700">${up?"+":""}${(a.chg||0).toFixed(2)}%</span></div>
+        <div style="font-size:16px;font-weight:800;margin-top:2px">${fmtPrice(a,a.p)}</div>
+        <div class="mu" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.n}</div>
+      </div>`;
+    }).join("") + `</div>`;
+}
+
+function selectAssetFromStrip(id, group){
+  mktAssetId = id;
+  mktGroup = group;
+  setNewsSubView("market");
+  renderMarketView();
+}
+
+function setNewsSubView(sub){
+  $("nsub-news").className = sub==="news"?"on":"";
+  $("nsub-market").className = sub==="market"?"on":"";
+  $("news-subview-feed").style.display = sub==="news"?"block":"none";
+  $("news-subview-market").style.display = sub==="market"?"block":"none";
+  if(sub==="market") renderMarketView();
+}
+
+function filterNewsByTag(tag){
+  newsTag = newsTag===tag ? "" : tag;
+  newsLimit = 35;
+  renderNewsSection();
+}
+
+function matchNewsCat(it, catKey){
+  if(catKey==="all") return true;
+  if(catKey==="tech") return it.c==="tech" || matchNewsTopic(it, "AI");
+  if(catKey==="ev") return it.c==="ev" || matchNewsTopic(it, "Roadster");
+  if(catKey==="crypto") return it.c==="crypto" || matchNewsTopic(it, "Stablecoin") || matchNewsTopic(it, "BTC");
+  return it.c === catKey;
+}
+
+function getFilteredNews(ignoreTag, overrideCat){
+  const q = ($("news-search")?$("news-search").value:"").trim().toLowerCase();
+  const src = $("news-source")?$("news-source").value:"all";
+  const cKey = overrideCat !== undefined ? overrideCat : newsCat;
+  return newsItems.filter(it=>{
+    if(!matchNewsCat(it, cKey)) return false;
+    if(src!=="all" && it.src!==src) return false;
+    if(!ignoreTag && newsTag){
+      if(!matchNewsTopic(it, newsTag)) return false;
+    }
+    if(q && !(it.t+" "+(it.src||"")+" "+(it.tag||"")).toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function analyzeHeadlineLocally(item){
+  const t = item.t;
+  const isBull = /พุ่ง|บวก|ขึ้น|หนุน|กำไร|โต|ทะลุ|gain|jump|high|beat|bull|rise|rally|support|launch|unveil|backs/i.test(t);
+  const isBear = /ร่วง|ลด|ลง|กังวล|เสี่ยง|ตึงเครียด|กดดัน|fall|drop|break|threaten|low|loss|risk/i.test(t);
+  const mood = item.mood || (isBull && !isBear ? "บวก" : isBear && !isBull ? "ระมัดระวัง" : "ทรงตัว");
+  const points = item.points || [
+    `ประเด็นหลัก: ${t.replace(/ - [^-]+$/,"")}`,
+    `หมวดหมู่: ${NEWS_CATS[item.c]||"เทคโนโลยี & ตลาดโลก"} · แหล่งข่าวจาก ${item.src||"สำนักข่าว"}`
+  ];
+  const watch = item.c==="gold" ? "ทิศทางดอลลาร์สหรัฐฯ (DXY), บอนด์ยีลด์ และค่าเงินบาท" :
+    item.c==="crypto" ? "การเติบโตของ Stablecoin (USDT/USDC), เม็ดเงิน Spot ETF และแนวรับสำคัญของ Bitcoin" :
+    item.c==="ev" ? "กำหนดการส่งมอบรถรุ่นใหม่ (เช่น Tesla Roadster / Robotaxi) และต้นทุนแบตเตอรี่ EV" :
+    item.c==="tech" ? "การเปิดตัวโมเดล AI Agent รุ่นใหม่ และงบลงทุน Data Center ของบิ๊กเทค" :
+    item.c==="stock-th" ? "ฟันด์โฟลว์ต่างชาติ, ผลประกอบการบริษัทจดทะเบียน และกรอบแนวรับ SET" :
+    "รายงานงบหุ้นบิ๊กเทค, ตัวเลขเงินเฟ้อสหรัฐฯ และทิศทางดอกเบี้ย Fed";
+  return {mood, points, watch};
+}
+
+async function summarizeSingleNews(id){
+  const item = newsItems.find(x=>x.id===id);
+  if(!item) return;
+  if(aiItemSummaries[id]){
+    apiStats.cacheHits++;
+    saveApiStats();
+    renderNewsSection();
+    return;
+  }
+  const box = $("ai-sum-"+id);
+  if(box){ box.style.display="block"; box.innerHTML="⏳ กำลังให้ AI วิเคราะห์สรุปข่าวนี้..."; }
+  const apiKey = g("ag_apikey");
+  if(apiKey){
+    try{
+      const prompt = `สรุปข่าวต่อไปนี้เป็นภาษาไทยแบบเข้าใจง่าย:\nหัวข้อข่าว: "${item.t}"\nแหล่งข่าว: ${item.src}\nตอบในรูปแบบ:\n1) แนวโน้ม (บวก/ทรงตัว/ลบ)\n2) สรุปประเด็นสำคัญ 2 ข้อสั้นๆ\n3) สิ่งที่ต้องจับตาต่อ`;
+      const reply = await callGeminiText(prompt);
+      if(reply){
+        aiItemSummaries[id] = {raw: reply};
+        ls("ag_ai_cache", aiItemSummaries);
+        renderNewsSection();
+        return;
+      }
+    }catch(e){}
+  }
+  aiItemSummaries[id] = analyzeHeadlineLocally(item);
+  ls("ag_ai_cache", aiItemSummaries);
+  renderNewsSection();
+}
+
+async function summarizeVisibleNews(){
+  const list = getFilteredNews().slice(0,8);
+  const box = $("news-ai-digest");
+  box.style.display = "block";
+  if(!list.length){ box.innerHTML = "ไม่มีข่าวในตัวกรองปัจจุบัน"; return; }
+  box.innerHTML = "⏳ AI Agent กำลังอ่านและสกัดภาพรวมจาก "+list.length+" ข่าวที่แสดงอยู่...";
+  const apiKey = g("ag_apikey");
+  if(apiKey){
+    try{
+      const headlines = list.map((x,i)=>`${i+1}. [${x.c}] ${x.t}`).join("\n");
+      const prompt = `คุณคือ AI นักวิเคราะห์การเงินและเทคโนโลยีส่วนตัว ช่วยสรุปภาพรวมจากข่าวต่อไปนี้:\n${headlines}\n\nสรุปสั้นๆ อ่านเข้าใจง่ายใน 30 วินาที: 1) ภาพรวมอารมณ์ตลาด 2) ประเด็นสำคัญ 3 ข้อ 3) คำแนะนำสิ่งที่ต้องจับตาวันนี้`;
+      const txt = await callGeminiText(prompt);
+      if(txt){
+        box.innerHTML = `<b>✨ สรุปภาพรวมข่าวที่แสดงอยู่ (โดย Gemini AI)</b><div style="margin-top:6px;white-space:pre-line">${txt.replace(/</g,"&lt;")}</div>`;
+        return;
+      }
+    }catch(e){}
+  }
+  const catsCount = {};
+  list.forEach(x=>{ catsCount[NEWS_CATS[x.c]||"ตลาดโลก"] = (catsCount[NEWS_CATS[x.c]||"ตลาดโลก"]||0)+1; });
+  const topThemes = list.slice(0,4).map(x=>`• <b>${NEWS_CATS[x.c]||"ข่าวเด่น"}:</b> ${x.t.replace(/ - [^-]+$/,"")}`).join("<br>");
+  box.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><b>✨ สรุปภาพรวมจาก ${list.length} ข่าวที่แสดงอยู่</b><button class="cls" style="padding:2px 8px;font-size:11px" onclick="$('news-ai-digest').style.display='none'">ซ่อน</button></div>
+    <div style="margin-top:6px">หัวข้อเด่นในกลุ่ม <b>${Object.keys(catsCount).join(", ")}</b>:<br>${topThemes}</div>
+    <small class="mu" style="display:block;margin-top:6px">💡 กดที่ข่าวแต่ละชิ้นเพื่อดูบทวิเคราะห์เจาะลึก หรือกดถาม AI ต่อได้ทันที</small>`;
+}
+
+function renderNewsSection(){
+  // 1) Category pills — ซ่อนหมวดที่ไม่มีข่าว (0 ข่าว) ออกอัตโนมัติ + แสดงจำนวนข่าวจริง
+  const activeCategories = Object.entries(NEWS_CATS).map(([k, label]) => {
+    const cnt = getFilteredNews(true, k).length;
+    return {k, label, cnt};
+  }).filter(c => c.k === "all" || c.cnt > 0 || c.k === newsCat);
+
+  const hasFilter = newsCat!=="all" || newsTag || ($("news-search")&&$("news-search").value);
+  $("news-cat-pills").innerHTML = activeCategories.map(c =>
+    `<button aria-pressed="${newsCat===c.k}" onclick="newsCat='${c.k}';newsTag='';newsLimit=35;renderNewsSection()">${c.label} <span class="pill-cnt">${c.cnt}</span></button>`
+  ).join("") + (hasFilter ? `<button onclick="newsCat='all';newsTag='';newsLimit=35;$('news-search').value='';renderNewsSection()">✕ ล้างตัวกรอง</button>` : "");
+
+  // 2) Topic Tag pills — คำนวณจำนวนข่าวในหมวดที่เลือก และตัดแท็กที่ดึงข่าวมาไม่ได้ (0 ข่าว) ออกทันที!
+  const baseForTags = getFilteredNews(true, newsCat);
+  const activeTags = TOPIC_TAGS.map(tp => {
+    const cnt = baseForTags.filter(it => matchNewsTopic(it, tp.id)).length;
+    return {...tp, cnt};
+  }).filter(tp => tp.cnt > 0 || tp.id === newsTag);
+
+  const tagContainer = $("news-tag-pills");
+  if(activeTags.length > 1 || newsTag){
+    tagContainer.style.display = "flex";
+    tagContainer.innerHTML = `<span class="tag-lbl">หัวข้อที่มีข่าว:</span>` + activeTags.map(tp =>
+      `<button aria-pressed="${newsTag===tp.id}" onclick="filterNewsByTag('${tp.id}')">${tp.label} <span class="pill-cnt">${tp.cnt}</span></button>`
+    ).join("");
+  } else {
+    tagContainer.style.display = "none";
+    tagContainer.innerHTML = "";
+  }
+
+  const filtered = getFilteredNews();
+  const visible = filtered.slice(0, newsLimit);
+  $("news-Showing-count").textContent = `พบ ${filtered.length} ข่าว (แสดง ${visible.length} ข่าว)`;
+
+  const renderCard = it => {
+    const sum = aiItemSummaries[it.id];
+    let sumHtml = "";
+    if(sum){
+      if(sum.raw){
+        sumHtml = `<div class="ai-box" id="ai-sum-${it.id}"><b>✨ สรุปโดย AI:</b><div style="white-space:pre-line;margin-top:4px">${sum.raw.replace(/</g,"&lt;")}</div></div>`;
+      }else{
+        const mCls = sum.mood==="บวก"?"up":sum.mood==="ระมัดระวัง"?"dn":"";
+        sumHtml = `<div class="ai-box" id="ai-sum-${it.id}">
+          <b class="${mCls}">แนวโน้ม: ${sum.mood}</b>
+          <div style="margin-top:4px">${sum.points.map(p=>`• ${p}`).join("<br>")}</div>
+          <div style="margin-top:4px"><b>จับตา:</b> ${sum.watch}</div>
+        </div>`;
+      }
+    }else{
+      sumHtml = `<div class="ai-box" id="ai-sum-${it.id}" style="display:none"></div>`;
+    }
+    return `<details class="news-item">
+      <summary>
+        ${it.t}
+        <div class="news-meta">
+          <span class="news-badge">${NEWS_CATS[it.c]||"ตลาดโลก"}</span>
+          <span>${it.src||"News"}</span>
+          <span>· ${fmtAgo(it.m)}</span>
+          ${it.tag && it.tag!=="ทั่วไป"?`<span style="color:var(--ac);font-weight:600">· #${it.tag}</span>`:""}
+        </div>
+      </summary>
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="btn sec" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="summarizeSingleNews('${it.id}')">✨ สรุปข่าวนี้ด้วย AI</button>
+        <button class="btn ghost" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="askAgentAboutNews('${it.id}')">💬 ถาม AI ต่อเรื่องนี้</button>
+        <a href="${it.link||'#'}" target="_blank" rel="noopener noreferrer" style="font-size:12.5px;color:var(--ac);font-weight:600;margin-left:auto">อ่านต้นฉบับ &nearr;</a>
+      </div>
+      ${sumHtml}
+    </details>`;
+  };
+
+  const moreBtn = filtered.length > visible.length
+    ? `<button class="btn sec" style="width:100%;margin-top:8px;padding:12px;border-radius:16px" onclick="newsLimit+=40;renderNewsSection()">ดูข่าวเพิ่มเติม (+${Math.min(40, filtered.length - visible.length)} ข่าว · เหลืออีก ${filtered.length - visible.length} ข่าว)</button>`
+    : "";
+
+  $("news-list-container").innerHTML = visible.length ? (visible.map(renderCard).join("") + moreBtn) : `<div class="empty">ไม่พบข่าวที่ตรงกับคำค้นหา ลองกด "ล้างตัวกรอง" เพื่อดูข่าวทั้งหมดนะครับ</div>`;
+  $("agent-top-news").innerHTML = newsItems.slice(0,4).map(renderCard).join("");
+}
+
+/* ==================== 3. MARKET CHART GENERATOR & VIEW ==================== */
+function genSeries(asset, range){
+  let seed = [...(asset.id+range)].reduce((a,c)=>a+31*c.charCodeAt(0),7);
+  const rand = ()=>((seed = 16807*seed % 0x7fffffff)-1)/0x7ffffffe;
+  const mult = range==="1Y"?2.2:range==="1M"?1.3:1;
+  const len = {"1D":36,"1W":42,"1M":50,"1Y":70}[range]||50;
+  let curP = asset.p*(1-(rand()-.45)*.03*mult*5);
+  const raw = Array.from({length:len},()=>{
+    const o = curP;
+    const c = o*(1+(rand()-.48)*.028*mult);
+    curP = c;
+    return {o, h:Math.max(o,c)*(1+.011*rand()), l:Math.min(o,c)*(1-.011*rand()), c};
+  });
+  const scale = asset.p / curP;
+  const stepMs = range==="1D"?18e5:range==="1W"?108e5:range==="1M"?432e5:3456e5;
+  return raw.map((b,idx)=>({
+    o:b.o*scale, h:b.h*scale, l:b.l*scale, c:b.c*scale,
+    time: Date.now() - (raw.length-idx)*stepMs
+  }));
+}
+
+function renderMarketView(){
+  $("market-group-tabs").innerHTML = Object.entries(MKT_GROUPS).map(([k,v])=>
+    `<button aria-pressed="${mktGroup===k}" onclick="mktGroup='${k}';mktAssetId=ASSETS.find(a=>a.group==='${k}').id;renderMarketView()">${v}</button>`
+  ).join("");
+
+  const q = ($("asset-search")?$("asset-search").value:"").trim().toLowerCase();
+  const list = ASSETS.filter(a=> (q ? (a.id+" "+a.n).toLowerCase().includes(q) : a.group===mktGroup));
+  $("asset-sidebar-list").innerHTML = list.map(a=>{
+    const up = (a.chg||0)>=0;
+    return `<button class="asset-row ${a.id===mktAssetId?"active":""}" onclick="mktAssetId='${a.id}';renderMarketView()">
+      <div><b>${a.id}</b><small>${a.n}</small></div>
+      <div style="text-align:right"><b>${fmtPrice(a,a.p)}</b><small class="${up?"up":"dn"}">${up?"▲":"▼"} ${Math.abs(a.chg||0).toFixed(2)}%</small></div>
+    </button>`;
+  }).join("") || `<div class="empty">ไม่พบสินทรัพย์</div>`;
+
+  const asset = ASSETS.find(a=>a.id===mktAssetId) || ASSETS[0];
+  const up = (asset.chg||0)>=0;
+  $("mkt-asset-title").textContent = `${asset.id} · ${asset.n}`;
+  $("mkt-asset-price").textContent = fmtPrice(asset, asset.p);
+  $("mkt-asset-change").innerHTML = `<span class="${up?"up":"dn"}" style="font-weight:700">${up?"▲ +":"▼ -"}${Math.abs(asset.chg||0).toFixed(2)}%</span> <span class="mu">ในช่วง ${mktRange}</span>`;
+
+  $("mkt-range-btns").innerHTML = [["1D","1 วัน"],["1W","1 สัปดาห์"],["1M","1 เดือน"],["1Y","1 ปี"]].map(([r,l])=>
+    `<button aria-pressed="${mktRange===r}" onclick="mktRange='${r}';renderMarketView()" style="padding:4px 10px;font-size:12px">${l}</button>`
+  ).join("");
+  $("mkt-type-btns").innerHTML = [["candle","แท่งเทียน"],["line","เส้น"]].map(([t,l])=>
+    `<button aria-pressed="${mktType===t}" onclick="mktType='${t}';renderMarketView()" style="padding:4px 10px;font-size:12px">${l}</button>`
+  ).join("");
+
+  const series = genSeries(asset, mktRange);
+  const minL = Math.min(...series.map(x=>x.l));
+  const maxH = Math.max(...series.map(x=>x.h));
+  const span = (maxH - minL) || 1;
+  const yPos = v => 94 - ((v - minL)/span)*84;
+
+  let svg = [10,31,52,73,94].map(y=>`<line x1="0" x2="100" y1="${y}" y2="${y}" stroke="var(--ln)" stroke-width="0.4" vector-effect="non-scaling-stroke"/>`).join("");
+  svg += [10,52,94].map(y=>`<text x="99" y="${y-1.5}" text-anchor="end" font-size="3.2" fill="var(--mu)">${fmtPrice(asset, maxH - ((y-10)/84)*span)}</text>`).join("");
+
+  if(mktType==="line"){
+    const pts = series.map((b,i)=>`${(i/(series.length-1))*100},${yPos(b.c)}`).join(" ");
+    svg += `<polyline points="${pts}" fill="none" stroke="var(--ac)" stroke-width="2" vector-effect="non-scaling-stroke"/>`;
+  }else{
+    window._curSeries = series;
+    window._curAsset = asset;
+    svg += series.map((b,i)=>{
+      const x = ((i+0.5)*100)/series.length;
+      const w = 65/series.length;
+      const isUp = b.c >= b.o;
+      const col = isUp ? "var(--inc)" : "var(--exp)";
+      const top = Math.min(yPos(b.o), yPos(b.c));
+      const h = Math.max(1.2, Math.abs(yPos(b.o)-yPos(b.c)));
+      return `<g onmouseenter="showCandleTip(${i})" onclick="showCandleTip(${i})" style="cursor:crosshair">
+        <line x1="${x}" x2="${x}" y1="${yPos(b.h)}" y2="${yPos(b.l)}" stroke="${col}" stroke-width="1" vector-effect="non-scaling-stroke"/>
+        <rect x="${x-w/2}" y="${top}" width="${w}" height="${h}" fill="${col}"/>
+        <rect x="${x-50/series.length}" y="0" width="${100/series.length}" height="100" fill="transparent"/>
+      </g>`;
+    }).join("");
+  }
+  $("mkt-svg").innerHTML = svg;
+  $("mkt-svg").onmouseleave = ()=>{ $("mkt-chart-tooltip").style.display="none"; };
+
+  // Related news
+  $("mkt-related-news-title").textContent = `ข่าวที่เกี่ยวข้องกับ ${asset.id} (${asset.n})`;
+  const rel = newsItems.filter(n=>n.tag===asset.id || n.c===asset.group || n.c===asset.c).slice(0,4);
+  $("mkt-related-news").innerHTML = rel.map(n=>`<div style="padding:9px 0;border-top:1px solid var(--ln);font-size:13.5px">
+    <a href="${n.link||'#'}" target="_blank" rel="noopener noreferrer" style="color:var(--tx);text-decoration:none;font-weight:600">${n.t}</a>
+    <div class="mu">${n.src} · ${fmtAgo(n.m)}</div>
+  </div>`).join("") || `<div class="mu">ยังไม่มีข่าวเฉพาะเจาะจงสำหรับ ${asset.id}</div>`;
+}
+
+function showCandleTip(idx){
+  const b = window._curSeries && window._curSeries[idx];
+  const a = window._curAsset;
+  if(!b || !a) return;
+  const dStr = new Date(b.time).toLocaleDateString("th-TH",{day:"numeric",month:"short"});
+  const el = $("mkt-chart-tooltip");
+  el.style.display = "block";
+  el.innerHTML = `<b>${a.id} · ${dStr} (แท่งที่ ${idx+1})</b><br>
+    เปิด: ${fmtPrice(a,b.o)} · ปิด: <b>${fmtPrice(a,b.c)}</b><br>
+    สูงสุด: <span class="up">${fmtPrice(a,b.h)}</span> · ต่ำสุด: <span class="dn">${fmtPrice(a,b.l)}</span>`;
+}
+
+/* ==================== 4. PERSONAL AI AGENT ENGINE ==================== */
+let todos = [];
+try{ todos = JSON.parse(localStorage.getItem("ag_todos")||"null") || [
+  {id:"t1", text:"เช็กสรุปข่าวตลาด & ราคาทองคำตอนเช้า", done:false},
+  {id:"t2", text:"จดรายรับ-รายจ่ายประจำวันใน Wallet", done:false},
+  {id:"t3", text:"ทบทวนงบ Needs / Wants / Savings (50/30/20)", done:false}
+]; }catch(e){}
+
+function renderTodos(){
+  ls("ag_todos", todos);
+  const doneCount = todos.filter(t=>t.done).length;
+  $("todo-progress").textContent = `${doneCount}/${todos.length} สำเร็จ`;
+  $("todo-list").innerHTML = todos.length ? todos.map(t=>`
+    <div class="todo-item ${t.done?"done":""}">
+      <input type="checkbox" ${t.done?"checked":""} onchange="toggleTodo('${t.id}')">
+      <span style="flex:1">${t.text.replace(/</g,"&lt;")}</span>
+      <button class="todo-del" onclick="deleteTodo('${t.id}')" title="ลบ">&times;</button>
+    </div>
+  `).join("") : `<div class="empty" style="padding:12px 0">ยังไม่มีรายการงานวันนี้ เพิ่มงานด้านบนหรือสั่งผ่านแชท AI ได้เลย!</div>`;
+}
+function addTodoItem(e){
+  if(e) e.preventDefault();
+  const inp = $("todo-input");
+  const txt = inp.value.trim();
+  if(!txt) return;
+  todos.unshift({id:"td"+Date.now(), text:txt, done:false});
+  inp.value = "";
+  renderTodos();
+}
+function toggleTodo(id){
+  const t = todos.find(x=>x.id===id);
+  if(t){ t.done = !t.done; renderTodos(); }
+}
+function deleteTodo(id){
+  todos = todos.filter(x=>x.id!==id);
+  renderTodos();
+}
+
+function getMonthFinanceStats(){
+  const mo = today.slice(0,7);
+  const monthTx = items.filter(x=>x.date.slice(0,7)===mo);
+  let inc=0, exp=0, todayExp=0, byCat={};
+  monthTx.forEach(x=>{
+    if(x.t==="i") inc += x.a;
+    else {
+      exp += x.a;
+      byCat[x.c] = (byCat[x.c]||0) + x.a;
+      if(x.date===today) todayExp += x.a;
+    }
+  });
+  const [yy,mm] = mo.split("-").map(Number);
+  const daysLeft = Math.max(1, new Date(yy,mm,0).getDate() - new Date().getDate() + 1);
+  const spendBudget = inc > 0 ? inc * (RATIO.n + RATIO.w) / 100 : 0;
+  const remSpendBudget = Math.max(0, spendBudget - exp);
+  const dailyAllowance = inc > 0 ? Math.floor(remSpendBudget / daysLeft) : 0;
+  const topCat = Object.keys(byCat).sort((a,b)=>byCat[b]-byCat[a])[0] || null;
+  return {inc, exp, bal: inc-exp, todayExp, daysLeft, dailyAllowance, topCat, topCatAmt: topCat?byCat[topCat]:0, count: monthTx.length};
+}
+
+function updateAgentWalletMetrics(){
+  const st = getMonthFinanceStats();
+  const uname = g("ag_username") || "";
+  const hr = new Date().getHours();
+  const greet = hr<12 ? "สวัสดีตอนเช้าครับ" : hr<17 ? "สวัสดีตอนบ่ายครับ" : "สวัสดีตอนเย็นครับ";
+  $("agent-greeting").textContent = `${greet}${uname?" คุณ"+uname:""}! สรุปประจำวันของคุณ`;
+  $("agent-date-sub").textContent = `วัน${new Date().toLocaleDateString("th-TH",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}`;
+
+  $("ag-bal").textContent = `฿${fmt(st.bal)}`;
+  $("ag-today-spent").textContent = `วันนี้ใช้ไป ฿${fmt(st.todayExp)} (เดือนนี้จ่าย ฿${fmt(st.exp)})`;
+  $("ag-daily-allowance").textContent = st.inc>0 ? `฿${fmt(st.dailyAllowance)} / วัน` : `ตั้งรายรับก่อน`;
+  $("ag-budget-status").textContent = st.inc>0 ? `เหลืออีก ${st.daysLeft} วันในเดือนนี้ (แผน ${RATIO.n}/${RATIO.w}/${RATIO.s})` : `แตะเพื่อเพิ่มรายรับใน Wallet`;
+  {
+    const ring = $("ag-ring"), rt = $("ag-ring-t"), C = 2*Math.PI*18;
+    const todayBudget = st.dailyAllowance + st.todayExp;
+    if(st.inc>0 && todayBudget>0){
+      const pct = Math.min(1, st.todayExp/todayBudget);
+      ring.style.strokeDasharray = `${pct*C} ${C}`;
+      ring.style.stroke = pct<.7 ? "var(--inc)" : pct<1 ? "#f59e0b" : "var(--exp)";
+      rt.textContent = Math.round(pct*100)+"%";
+    }else{
+      ring.style.strokeDasharray = `0 ${C}`;
+      rt.textContent = "–";
+    }
+  }
+
+  // Wallet insights list in Daily Briefing
+  const wList = [];
+  if(st.inc===0 && st.exp===0){
+    wList.push(`ยังไม่มีรายการบันทึกในเดือนนี้ คุณสามารถพิมพ์สั่งในช่องด้านบน เช่น <b>"เงินเดือน 35000"</b> หรือ <b>"กาแฟ 65"</b> ให้ AI บันทึกให้ทันที`);
+  }else{
+    wList.push(`เดือนนี้มีรายรับ <b>฿${fmt(st.inc)}</b> · รายจ่ายสะสม <b>฿${fmt(st.exp)}</b> · คงเหลือสุทธิ <b>฿${fmt(st.bal)}</b>`);
+    if(st.topCat) wList.push(`หมวดที่ใช้จ่ายสูงสุดเดือนนี้คือ <b>${st.topCat}</b> (฿${fmt(st.topCatAmt)})`);
+    if(st.inc>0){
+      wList.push(`เพื่อให้เป็นไปตามแผนออมเงิน ${RATIO.s}% คุณสามารถใช้จ่ายได้เฉลี่ยวันละ <b>฿${fmt(st.dailyAllowance)}</b> สำหรับ ${st.daysLeft} วันที่เหลือ`);
+    }
+  }
+  $("brief-wallet-list").innerHTML = wList.map(x=>`<li>${x}</li>`).join("");
+}
+
+let briefPeriod = "today";
+
+function getPeriodMeta(period){
+  if(period==="week") return {key:"week", title:"สรุปธีมใหญ่ประจำสัปดาห์ (Weekly Theme & Sector Rotation)", badge:"📆 WEEKLY REPORT", maxMins:10080};
+  if(period==="month") return {key:"month", title:"สรุปกลยุทธ์ & เมกะเทรนด์รายเดือน (Monthly Macro & Strategy)", badge:"🗓️ MONTHLY STRATEGY", maxMins:43200};
+  return {key:"today", title:"สรุปเกาะติดตลาดวันนี้ (Daily Flash & Action)", badge:"📅 TODAY'S BRIEF", maxMins:1440};
+}
+
+function calcRangePct(asset, rangeKey){
+  if(!asset) return 0;
+  if(rangeKey==="1D") return Number(asset.chg||0);
+  const ser = genSeries(asset, rangeKey);
+  if(!ser || ser.length<2) return Number(asset.chg||0);
+  return ((ser[ser.length-1].c - ser[0].o) / ser[0].o) * 100;
+}
+
+function fmtPctBadge(pct){
+  const v = Number(pct||0);
+  const up = v >= 0;
+  return `<span class="${up?"up":"dn"}" style="font-weight:700">${up?"▲ +":"▼ -"}${Math.abs(v).toFixed(2)}%</span>`;
+}
+function fmtPctText(pct){
+  const v = Number(pct||0);
+  return (v>=0?"+":"-") + Math.abs(v).toFixed(2) + "%";
+}
+
+function buildStructuredPatternData(period){
+  const pKey = period || briefPeriod;
+  const meta = getPeriodMeta(pKey);
+  const cleanTitle = t => String(t||"").replace(/ - [^-]+$/,"").trim();
+  const safe = s => String(s||"").replace(/</g,"&lt;");
+
+  const stockAll = newsItems.filter(x => ["stock-us","stock-th","gold","energy","stock-eu","stock"].includes(x.c));
+  const cryptoAll = newsItems.filter(x => x.c==="crypto" || matchNewsTopic(x,"Stablecoin") || matchNewsTopic(x,"BTC"));
+  const techAll = newsItems.filter(x => x.c==="tech" || x.c==="ev" || matchNewsTopic(x,"Roadster") || matchNewsTopic(x,"AI"));
+
+  const setA = ASSETS.find(x=>x.id==="SET"), spxA = ASSETS.find(x=>x.id==="SPX"), xauA = ASSETS.find(x=>x.id==="XAU"), gthA = ASSETS.find(x=>x.id==="GTH"), btcA = ASSETS.find(x=>x.id==="BTC"), ethA = ASSETS.find(x=>x.id==="ETH"), solA = ASSETS.find(x=>x.id==="SOL"), nvdaA = ASSETS.find(x=>x.id==="NVDA"), tslaA = ASSETS.find(x=>x.id==="TSLA"), wtiA = ASSETS.find(x=>x.id==="WTI");
+  const mood = marketMoodFromNews();
+  const dateStr = new Date().toLocaleDateString("th-TH",{day:"numeric",month:"short",year:"numeric"});
+
+  /* ==================== PATTERN 1: TODAY (DAILY FLASH & INTRADAY ACTION) ==================== */
+  if(pKey === "today"){
+    const sorted1D = [...ASSETS].sort((a,b)=>(b.chg||0)-(a.chg||0));
+    const topGain = sorted1D[0], topLose = sorted1D[sorted1D.length-1];
+    const pickStock = [
+      stockAll.find(x=>x.c==="stock-th") || stockAll[0],
+      stockAll.find(x=>x.c==="stock-us") || stockAll[1],
+      stockAll.find(x=>x.c==="gold") || stockAll[2],
+      stockAll.find(x=>x.c==="energy") || stockAll[3]
+    ].filter(Boolean);
+    const pickCrypto = cryptoAll.slice(0, 3);
+    const pickTech = techAll.slice(0, 3);
+
+    const html = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+        <b>${meta.badge} · ${meta.title} (${dateStr})</b>
+        <span class="news-badge">${mood.label} · เกาะติดรายวัน</span>
+      </div>
+      <div style="display:grid;gap:10px;font-size:13.5px;line-height:1.6">
+        <div style="background:var(--ac2);border:1px solid var(--ln);border-radius:12px;padding:10px 13px">
+          <b>⚡ ไฮไลต์ด่วน 24 ชม. (Intraday Pulse):</b>
+          เด่นสุดวันนี้คือ <b>${topGain.id} (${topGain.n})</b> ${fmtPctBadge(topGain.chg)} ที่ ${fmtPrice(topGain)} · ส่วนตัวที่ย่อตัวคือ <b>${topLose.id}</b> ${fmtPctBadge(topLose.chg)} · ทองไทยแท่ง <b>${fmtPrice(gthA)}</b>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+          <div style="font-weight:700;color:var(--ac);margin-bottom:5px">📈 1. หุ้น & ทองคำวันนี้ (SET ${fmtPrice(setA)} ${fmtPctBadge(setA.chg)} · S&P500 ${fmtPrice(spxA)} ${fmtPctBadge(spxA.chg)} · ทองโลก ${fmtPrice(xauA)})</div>
+          ${pickStock.map(x=>{
+            const an = analyzeHeadlineLocally(x);
+            return `<div style="margin-bottom:5px">• <b>[${NEWS_CATS[x.c]||"ตลาด"}]</b> ${safe(cleanTitle(x.t))}<br><span class="mu" style="font-size:12px;padding-left:12px">↳ จุดสังเกตวันนี้: ${safe(an.watch)}</span></div>`;
+          }).join("")}
+        </div>
+        <div style="background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+          <div style="font-weight:700;color:var(--ac);margin-bottom:5px">💎 2. คริปโต & Stablecoin วันนี้ (BTC ${fmtPrice(btcA)} ${fmtPctBadge(btcA.chg)} · ETH ${fmtPrice(ethA)} · SOL ${fmtPrice(solA)})</div>
+          ${pickCrypto.map(x=>`<div style="margin-bottom:4px">• <b>[${x.tag||"Crypto"}]</b> ${safe(cleanTitle(x.t))} <span class="mu">(${fmtAgo(x.m)})</span></div>`).join("")}
+          <div class="mu" style="font-size:12px;margin-top:4px">💡 <b>กลยุทธ์วันนี้:</b> จับตาเม็ดเงินไหลเข้า Stablecoin (USDT/USDC) และกรอบแนวรับจิตวิทยาของ Bitcoin ในเซสชันสหรัฐฯ คืนนี้</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+          <div style="font-weight:700;color:var(--ac);margin-bottom:5px">🚀 3. เทคโนโลยี · AI & รถ EV วันนี้ (NVDA ${fmtPrice(nvdaA)} ${fmtPctBadge(nvdaA.chg)} · TSLA ${fmtPrice(tslaA)} ${fmtPctBadge(tslaA.chg)})</div>
+          ${pickTech.map(x=>`<div style="margin-bottom:4px">• <b>[${x.tag||"Tech"}]</b> ${safe(cleanTitle(x.t))} <span class="mu">(${safe(x.src)})</span></div>`).join("")}
+        </div>
+      </div>
+    `;
+
+    const plainText =
+`📅 [TODAY'S BRIEF] สรุปเกาะติดตลาดวันนี้ (${dateStr})
+อารมณ์ตลาด: ${mood.label} | เด่นสุดวันนี้: ${topGain.id} (${fmtPctText(topGain.chg)}) | ทองไทย: ${fmtPrice(gthA)}
+
+📈 1. หุ้น & ทองคำวันนี้ (SET ${fmtPrice(setA)} | S&P500 ${fmtPrice(spxA)} | ทองโลก ${fmtPrice(xauA)})
+${pickStock.map(x=>`• [${NEWS_CATS[x.c]||"ตลาด"}] ${cleanTitle(x.t)}`).join("\n")}
+
+💎 2. คริปโต & Stablecoin วันนี้ (BTC ${fmtPrice(btcA)} ${fmtPctText(btcA.chg)} | ETH ${fmtPrice(ethA)} | SOL ${fmtPrice(solA)})
+${pickCrypto.map(x=>`• [${x.tag||"Crypto"}] ${cleanTitle(x.t)}`).join("\n")}
+
+🚀 3. เทคโนโลยี, AI & รถ EV วันนี้ (NVDA ${fmtPrice(nvdaA)} | TSLA ${fmtPrice(tslaA)})
+${pickTech.map(x=>`• [${x.tag||"Tech"}] ${cleanTitle(x.t)}`).join("\n")}
+
+🎯 สิ่งที่ต้องจับตาคืนนี้: ตัวเลขเศรษฐกิจสหรัฐฯ, ทิศทางบอนด์ยีลด์ และแรงซื้อหุ้นเทค-คริปโต`;
+
+    return {meta, html, plainText, srcCount: newsItems.length};
+  }
+
+  /* ==================== PATTERN 2: WEEKLY (7-DAY SECTOR ROTATION & 3 DEEP THEMES) ==================== */
+  if(pKey === "week"){
+    const wkAssets = [
+      {a:spxA, name:"หุ้นสหรัฐฯ (S&P500)"},
+      {a:nvdaA, name:"ชิป AI (NVDA)"},
+      {a:tslaA, name:"EV & Roadster (TSLA)"},
+      {a:setA, name:"หุ้นไทย (SET)"},
+      {a:btcA, name:"คริปโต (BTC)"},
+      {a:xauA, name:"ทองคำโลก (XAU)"},
+      {a:wtiA, name:"น้ำมันดิบ (WTI)"}
+    ].map(item => ({...item, wkPct: calcRangePct(item.a, "1W")})).sort((a,b)=>b.wkPct - a.wkPct);
+
+    // เลือกข่าวคนละชุดกับ Today เพื่อสรุปภาพรวมระดับสัปดาห์
+    const wkTech = techAll.slice(2, 6).length ? techAll.slice(2, 6) : techAll.slice(0, 3);
+    const wkCrypto = cryptoAll.slice(2, 6).length ? cryptoAll.slice(2, 6) : cryptoAll.slice(0, 3);
+    const wkStock = [
+      stockAll.filter(x=>x.c==="stock-us")[1] || stockAll[0],
+      stockAll.filter(x=>x.c==="stock-th")[1] || stockAll[1],
+      stockAll.filter(x=>x.c==="energy"||x.c==="gold")[1] || stockAll[2]
+    ].filter(Boolean);
+
+    const html = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+        <b>${meta.badge} · ${meta.title}</b>
+        <span class="news-badge">สังเคราะห์ภาพรวม 7 วัน</span>
+      </div>
+      <div style="display:grid;gap:10px;font-size:13.5px;line-height:1.6">
+        <div style="background:var(--ac2);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+          <div style="font-weight:700;margin-bottom:6px">📊 จัดอันดับผลตอบแทนรายสัปดาห์ (7-Day Sector Rotation)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            ${wkAssets.map((w,i)=>`<span style="background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:4px 9px;font-size:12px"><b>#${i+1} ${w.a.id}</b> ${fmtPrice(w.a)} ${fmtPctBadge(w.wkPct)}</span>`).join("")}
+          </div>
+          <div class="mu" style="font-size:12px;margin-top:6px">↳ <b>ผู้นำตลาดสัปดาห์นี้:</b> ${wkAssets[0].name} (${fmtPctText(wkAssets[0].wkPct)}) · <b>กลุ่มพักฐาน:</b> ${wkAssets[wkAssets.length-1].name} (${fmtPctText(wkAssets[wkAssets.length-1].wkPct)})</div>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+          <div style="font-weight:700;color:var(--ac);margin-bottom:5px">🔥 ธีมสัปดาห์ที่ 1: สมรภูมิ AI Agent, ชิปประมวลผล & ยานยนต์ EV / Roadster</div>
+          <div class="mu" style="font-size:12.5px;margin-bottom:5px">สัปดาห์นี้กลุ่มเทคโนโลยียังคงเป็นหัวจักรหลัก โดยนักลงทุนให้น้ำหนักกับความคืบหน้าของโมเดล AI Agent, การส่งมอบรถ EV รุ่นใหม่ (Tesla Roadster / แบตเตอรี่ชาร์จไว) และงบลงทุน Data Center:</div>
+          ${wkTech.map(x=>`<div>• ${safe(cleanTitle(x.t))} <span class="mu">[${safe(x.src)}]</span></div>`).join("")}
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+          <div style="font-weight:700;color:var(--ac);margin-bottom:5px">💎 ธีมสัปดาห์ที่ 2: โครงสร้างพื้นฐาน Stablecoin (PayFi) & กระแสเงินทุนคริปโต</div>
+          <div class="mu" style="font-size:12.5px;margin-bottom:5px">ตลาดสินทรัพย์ดิจิทัลสัปดาห์นี้โดดเด่นด้วยการขยายตัวของ Stablecoin (USDT/USDC) ในระบบชำระเงินระดับสถาบัน และการสะสม Bitcoin ในกรอบสำคัญ:</div>
+          ${wkCrypto.map(x=>`<div>• ${safe(cleanTitle(x.t))} <span class="mu">[${safe(x.src)}]</span></div>`).join("")}
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+          <div style="font-weight:700;color:var(--ac);margin-bottom:5px">📈 ธีมสัปดาห์ที่ 3: ฟันด์โฟลว์หุ้นสหรัฐฯ-หุ้นไทย (SET) & ทิศทางทองคำ-พลังงาน</div>
+          ${wkStock.map(x=>`<div>• <b>[${NEWS_CATS[x.c]||"ตลาด"}]</b> ${safe(cleanTitle(x.t))}</div>`).join("")}
+          <div style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--ln);font-size:12.5px">
+            <b>🗓️ การบ้านเตรียมรับมือสัปดาห์หน้า:</b> 1) จับตารายงานผลประกอบการหุ้นกลุ่ม 7 นางฟ้าและกลุ่มธนาคารไทย 2) ติดตามตัวเลขเงินเฟ้อและถ้อยแถลง Fed 3) วางแผนทยอยสะสมในจังหวะย่อตัวตามกรอบแนวรับ
+          </div>
+        </div>
+      </div>
+    `;
+
+    const plainText =
+`📆 [WEEKLY REPORT] สรุปธีมใหญ่ประจำสัปดาห์ & จัดอันดับตลาด (7 วัน)
+📊 อันดับผลตอบแทนรายสัปดาห์ (7D):
+${wkAssets.map((w,i)=>`#${i+1} ${w.name}: ${fmtPrice(w.a)} (${fmtPctText(w.wkPct)})`).join("\n")}
+
+🔥 [ธีมที่ 1: เทคโนโลยี AI, ชิป & รถ EV / Roadster]
+• ภาพรวมสัปดาห์: นักลงทุนจับตาการเปิดตัว AI Agent, ชิป Data Center และความคืบหน้าเทคโนโลยีรถ EV / Tesla Roadster
+${wkTech.map(x=>`  - ${cleanTitle(x.t)}`).join("\n")}
+
+💎 [ธีมที่ 2: คริปโต & ระบบการเงิน Stablecoin (PayFi)]
+• ภาพรวมสัปดาห์: เม็ดเงินสภาพคล่องไหลเข้า Stablecoin (USDT/USDC) และการชำระเงินข้ามพรมแดน
+${wkCrypto.map(x=>`  - ${cleanTitle(x.t)}`).join("\n")}
+
+📈 [ธีมที่ 3: หุ้นสหรัฐฯ, หุ้นไทย SET & สินทรัพย์ปลอดภัย]
+${wkStock.map(x=>`  - [${NEWS_CATS[x.c]||"ตลาด"}] ${cleanTitle(x.t)}`).join("\n")}
+
+🗓️ เช็กลิสต์สัปดาห์หน้า: จับตางบบิ๊กเทค/แบงก์ไทย, ทิศทางดอกเบี้ย Fed และฟันด์โฟลว์ต่างชาติ`;
+
+    return {meta, html, plainText, srcCount: newsItems.length};
+  }
+
+  /* ==================== PATTERN 3: MONTHLY (30-DAY MACRO, MEGATRENDS & WEALTH REVIEW) ==================== */
+  const moAssets = [
+    {a:spxA, name:"หุ้นสหรัฐฯ (S&P500)"},
+    {a:nvdaA, name:"กลุ่ม AI (NVDA)"},
+    {a:btcA, name:"บิตคอยน์ (BTC)"},
+    {a:xauA, name:"ทองคำโลก (XAU)"},
+    {a:setA, name:"หุ้นไทย (SET)"},
+    {a:wtiA, name:"พลังงาน (WTI)"}
+  ].map(item => ({...item, moPct: calcRangePct(item.a, "1M")}));
+
+  const catBreakdown = Object.entries(NEWS_CATS).filter(([k])=>k!=="all").map(([k,label])=>{
+    const c = newsItems.filter(it=>matchNewsCat(it,k)).length;
+    return {label, c};
+  }).filter(x=>x.c>0).sort((a,b)=>b.c-a.c);
+
+  const st = getMonthFinanceStats();
+  const savRate = st.inc > 0 ? Math.max(0, Math.round(((st.inc - st.exp)/st.inc)*100)) : 0;
+  const moStockPick = stockAll[4] || stockAll[0];
+  const moCryptoPick = cryptoAll[3] || cryptoAll[0];
+  const moTechPick = techAll[4] || techAll[0];
+
+  const html = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+      <b>${meta.badge} · ${meta.title}</b>
+      <span class="news-badge">ภาพใหญ่ 30 วัน & พอร์ตส่วนตัว</span>
+    </div>
+    <div style="display:grid;gap:10px;font-size:13.5px;line-height:1.6">
+      <div style="background:var(--ac2);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+        <div style="font-weight:700;margin-bottom:6px">🌍 1. ภาพรวมสินทรัพย์หลักรอบ 30 วัน (1-Month Macro Scorecard)</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:6px">
+          ${moAssets.map(m=>`<div style="background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:6px 10px;font-size:12px"><div class="mu">${m.name}</div><b>${fmtPrice(m.a)}</b> ${fmtPctBadge(m.moPct)}</div>`).join("")}
+        </div>
+        <div class="mu" style="font-size:12px;margin-top:6px">📊 <b>สัดส่วนความสนใจตลาดเดือนนี้ (${newsItems.length} ข่าว):</b> ${catBreakdown.slice(0,5).map(x=>`${x.label} (${x.c})`).join(" · ")}</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+        <div style="font-weight:700;color:var(--ac);margin-bottom:5px">🔭 2. เจาะลึก 3 เมกะเทรนด์โลกประจำเดือนนี้ (Monthly Megatrends)</div>
+        <div style="margin-bottom:6px">• <b>Megatrend 1 — ยุค Physical AI & Autonomous Mobility:</b> การผสานโมเดล AI Agent เข้ากับชิปประมวลผลและยานยนต์ไฟฟ้าเจเนอเรชันใหม่ (อาทิ Tesla Roadster, Robotaxi และแบตเตอรี่ Solid-State) กำลังเปลี่ยนโครงสร้างอุตสาหกรรมเทคฯ <span class="mu">(ข่าวเด่น: ${safe(cleanTitle(moTechPick?.t||""))})</span></div>
+        <div style="margin-bottom:6px">• <b>Megatrend 2 — โครงสร้างการเงินดิจิทัล & Stablecoin Standard:</b> Stablecoin (USDT/USDC) ก้าวขึ้นมาเป็นตัวกลางโอนมูลค่าข้ามพรมแดนของฟินเทคและสถาบันการเงิน ควบคู่กับการถือครอง Bitcoin ในฐานะสินทรัพย์สำรองดิจิทัล <span class="mu">(ข่าวเด่น: ${safe(cleanTitle(moCryptoPick?.t||""))})</span></div>
+        <div>• <b>Megatrend 3 — การจัดพอร์ตสมดุล (Barbell Strategy) หุ้น-ทองคำ-พลังงาน:</b> นักลงทุนถ่วงน้ำหนักระหว่างหุ้นเติบโตสหรัฐฯ หุ้นปันผลไทย (SET) และทองคำเพื่อป้องกันความเสี่ยงเงินเฟ้อและภูมิรัฐศาสตร์ <span class="mu">(ข่าวเด่น: ${safe(cleanTitle(moStockPick?.t||""))})</span></div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:11px 13px">
+        <div style="font-weight:700;color:var(--ac);margin-bottom:5px">💼 3. สรุปสุขภาพการเงิน & แผนจัดพอร์ตประจำเดือนของคุณ (Monthly Wealth Review)</div>
+        <div>• <b>กระแสเงินสดเดือนนี้:</b> รายรับรวม <b class="inc">฿${fmt(st.inc)}</b> · รายจ่ายสะสม <b class="exp">฿${fmt(st.exp)}</b> · คงเหลือสุทธิ <b>฿${fmt(st.bal)}</b> (อัตราการออม <b>${savRate}%</b> เทียบเป้า ${RATIO.s}%)</div>
+        <div>• <b>กลยุทธ์แนะนำประจำเดือน:</b> ${st.inc>0 ? `รักษาวินัยการใช้จ่ายไม่เกินวันละ <b>฿${fmt(st.dailyAllowance)}</b> ในอีก ${st.daysLeft} วันที่เหลือ และแบ่งส่วนเงินออม ${RATIO.s}% (฿${fmt(Math.round(st.inc*RATIO.s/100))}) กระจายสะสมในสินทรัพย์หลักตามเมกะเทรนด์` : `บันทึกข้อมูลรายรับ-รายจ่ายในเดือนนี้เพื่อให้ระบบคำนวณงบลงทุน DCA รายเดือนตามสัดส่วน ${RATIO.n}/${RATIO.w}/${RATIO.s}`}</div>
+      </div>
+    </div>
+  `;
+
+  const plainText =
+`🗓️ [MONTHLY STRATEGY] สรุปภาพรวมกลยุทธ์ & เมกะเทรนด์รายเดือน (30 วัน)
+
+🌍 1. ผลตอบแทนสินทรัพย์หลักรอบ 1 เดือน (30D Scorecard):
+${moAssets.map(m=>`• ${m.name}: ${fmtPrice(m.a)} (${fmtPctText(m.moPct)})`).join("\n")}
+
+🔭 2. เจาะลึก 3 เมกะเทรนด์ประจำเดือน:
+• [Physical AI & Next-Gen EV]: การเติบโตของ AI Agent, ชิปเซมิคอนดักเตอร์ และเทคโนโลยีรถ EV / Tesla Roadster (${cleanTitle(moTechPick?.t||"")})
+• [Stablecoin & Digital Finance]: การใช้ Stablecoin (USDT/USDC) เป็นรางชำระเงินโลกและกระแสเงินทุนสถาบันใน BTC (${cleanTitle(moCryptoPick?.t||"")})
+• [Macro & Barbell Portfolio]: การถ่วงสมดุลพอร์ตระหว่างหุ้นเติบโตสหรัฐฯ, หุ้นปันผลไทย (SET) และทองคำ (${cleanTitle(moStockPick?.t||"")})
+
+💼 3. สรุปสุขภาพการเงินประจำเดือน:
+• รายรับ: ฿${fmt(st.inc)} | รายจ่าย: ฿${fmt(st.exp)} | คงเหลือ: ฿${fmt(st.bal)} (ออมได้ ${savRate}%)
+• งบใช้ได้ต่อวันสำหรับ ${st.daysLeft} วันที่เหลือ: ฿${fmt(st.dailyAllowance)}/วัน`;
+
+  return {meta, html, plainText, srcCount: newsItems.length};
+}
+
+function switchBriefPeriod(p){
+  briefPeriod = p;
+  document.querySelectorAll("#brief-period-seg button").forEach(b => {
+    b.className = b.dataset.p === p ? "on" : "";
+  });
+  generateAIDailyBriefing(false);
+}
+
+function copyBriefingPattern(period){
+  const rep = buildStructuredPatternData(period || briefPeriod);
+  const done = () => toast("📋 คัดลอกฟอร์แมตสรุปแล้ว! นำไปวางส่งใน LINE / Telegram ได้เลย");
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(rep.plainText).then(done).catch(done);
+  }else{
+    done();
+  }
+}
+
+function summarizePeriodInNews(period){
+  const rep = buildStructuredPatternData(period);
+  const box = $("news-ai-digest");
+  box.style.display = "block";
+  box.innerHTML = rep.html + `<div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
+    <button class="btn sec" style="padding:5px 12px;font-size:12px;border-radius:999px" onclick="copyBriefingPattern('${period}')">📋 คัดลอกส่ง LINE / Telegram</button>
+    <button class="cls" style="padding:5px 12px;font-size:12px" onclick="$('news-ai-digest').style.display='none'">ซ่อน</button>
+  </div>`;
+}
+
+async function generateAIDailyBriefing(useLLM){
+  updateAgentWalletMetrics();
+  { const mm = marketMoodFromNews();
+    $("ag-market-mood").textContent = mm.label;
+    $("ag-news-count").textContent = `จากพาดหัว ${newsItems.length} ข่าว · บวก ${mm.b} · ระวัง ${mm.d}`; }
+  $("brief-time").textContent = "อัปเดตเมื่อ " + new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})+" น.";
+
+  const rep = buildStructuredPatternData(briefPeriod);
+  if(useLLM && g("ag_apikey")){
+    $("brief-pattern-box").innerHTML = `<div class="mu">⏳ กำลังให้ Gemini AI เรียบเรียงแพทเทิร์นสรุป (${rep.meta.title})...</div>`;
+    try{
+      const prompt = `ช่วยเรียบเรียงสรุปข่าวตามฟอร์มแพทเทิร์น 3 หมวดต่อไปนี้ให้กระชับ น่าอ่าน สำหรับส่งต่อในแชท:\n${rep.plainText}`;
+      const res = await callGeminiText(prompt);
+      if(res){
+        $("brief-pattern-box").innerHTML = `<div style="white-space:pre-line;font-size:13.5px;line-height:1.6">${res.replace(/</g,"&lt;")}</div>`;
+        return;
+      }
+    }catch(e){}
+  }
+
+  $("brief-pattern-box").innerHTML = rep.html;
+}
+
+function marketMoodFromNews(){
+  let b = 0, d = 0;
+  newsItems.slice(0,25).forEach(x=>{
+    const m = analyzeHeadlineLocally(x).mood;
+    if(m==="บวก") b++; else if(m==="ระมัดระวัง"||m==="ลบ") d++;
+  });
+  if(b>0 && b>d*1.3) return {label:"🟢 โน้มบวก", b, d};
+  if(d>0 && d>b*1.3) return {label:"🔴 ระมัดระวัง", b, d};
+  return {label:"🟡 ทรงตัว", b, d};
+}
+
+/* Natural Language Parser for Expense / Income / Todo / News Queries */
+function tryParseTransactionCommand(text){
+  const t = text.trim();
+  // Avoid matching questions about news or today/week/month summaries
+  if(/ข่าว|สรุป|ราคา|วิเคราะห์|หุ้น|แนวโน้ม|คืออะไร|ทำไม|today|week|weekly|month|monthly|วันนี้มีอะไร|สัปดาห์นี้|เดือนนี้/i.test(t) && !/^(จด|บันทึก|จ่าย|ซื้อ|กิน|เติม|รับ)/.test(t)) return null;
+
+  // Match Todo command
+  const todoMatch = t.match(/^(?:เตือน|เพิ่มงาน|งานวันนี้|todo|ต้องทำ)\s*[:：-]?\s*(.+)$/i);
+  if(todoMatch){
+    return {action:"todo", todoText: todoMatch[1].trim()};
+  }
+
+  // Match number in string (e.g., "กาแฟ 65", "กินข้าวเที่ยง 120 บาท", "เงินเดือนเข้า 35,000")
+  const numMatch = t.match(/(?:^|\s)([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{1,2})?)\s*(?:บาท|บ\.|฿|baht)?$/i) ||
+                   t.match(/([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{1,2})?)/);
+  if(!numMatch) return null;
+  const amount = parseFloat(numMatch[1].replace(/,/g,""));
+  if(!(amount > 0 && amount < 100000000)) return null;
+
+  const desc = t.replace(numMatch[0],"").replace(/^(จด|บันทึก|จ่ายค่า|จ่าย|ซื้อ|ค่า|กิน|รับเงิน|ได้เงิน)\s*/i,"").replace(/(บาท|บ\.|฿)$/i,"").trim() || "รายการทั่วไป";
+
+  // Classify Income vs Expense & Category
+  let txType = "e", category = "Other";
+  if(/เงินเดือน|โบนัส|salary|payroll/i.test(t)){ txType="i"; category="Salary"; }
+  else if(/ฟรีแลนซ์|รับจ้าง|งานเสริม|คอมมิชชั่น|freelance/i.test(t)){ txType="i"; category="Freelance"; }
+  else if(/ของขวัญ|ได้เงิน|แม่ให้|ถูกหวย|คืนเงิน|gift/i.test(t)){ txType="i"; category="Gift"; }
+  else if(/กาแฟ|ชานม|ชาเขียว|ขนม|น้ำ|เครื่องดื่ม|คาเฟ่|สตาร์บัค|อเมซอน|coffee|drink|snack/i.test(t)){ txType="e"; category="Snacks & drinks"; }
+  else if(/ข้าวเช้า|มื้อเช้า|โจ๊ก|ปาท่องโก๋|breakfast/i.test(t)){ txType="e"; category="Breakfast"; }
+  else if(/ข้าวเที่ยง|มื้อเที่ยง|อาหารกลางวัน|ก๋วยเตี๋ยว|ตามสั่ง|ส้มตำ|lunch/i.test(t)){ txType="e"; category="Lunch"; }
+  else if(/ข้าวเย็น|มื้อเย็น|อาหารเย็น|หมูกระทะ|ชาบู|บุฟเฟต์|ดินเนอร์|dinner|ข้าว/i.test(t)){ txType="e"; category="Dinner"; }
+  else if(/รถไฟฟ้า|bts|mrt|แกร็บ|grab|แท็กซี่|วิน|น้ำมัน|ทางด่วน|เดินทาง|ค่ารถ|transport/i.test(t)){ txType="e"; category="Transport"; }
+  else if(/ค่าไฟ|ค่าน้ำ|ค่าเน็ต|ค่าบ้าน|ค่าเช่า|บัตรเครดิต|บิล|โทรศัพท์|ผ่อน|bill/i.test(t)){ txType="e"; category="Bills"; }
+  else if(/ช้อปปิ้ง|เสื้อผ้า|รองเท้า|shopee|lazada|ของใช้|เซเว่น|7-11|shopping/i.test(t)){ txType="e"; category="Shopping"; }
+  else if(/ดูหนัง|เกม|netflix|spotify|คอนเสิร์ต|สังสรรค์|เที่ยว|entertainment/i.test(t)){ txType="e"; category="Entertainment"; }
+
+  if(!CATS[txType].includes(category)) category = CATS[txType][0] || "Other";
+  return {action:"tx", txType, category, amount, note: desc};
+}
+
+let lastUsedVoice = false;
+
+function speakSecretaryText(rawText){
+  if(!("speechSynthesis" in window)) return;
+  try{
+    window.speechSynthesis.cancel();
+    const clean = String(rawText||"").replace(/<[^>]+>/g," ").replace(/[•▪▸↳✦⚡📈💎🚀💡💰📊📋📲🎙️]/g,"").replace(/\s+/g," ").trim().slice(0, 260);
+    if(!clean) return;
+    const utter = new SpeechSynthesisUtterance(clean);
+    utter.lang = "th-TH";
+    utter.rate = 1.06;
+    window.speechSynthesis.speak(utter);
+  }catch(e){}
+}
+
+function appendChatMessage(role, html){
+  const feed = $("chat-feed");
+  $("chat-wrap").style.display = "block";
+  const div = document.createElement("div");
+  div.className = `msg ${role}`;
+  div.innerHTML = html;
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+  if(role === "ai" && !html.includes("⏳") && (g("ag_voice_reply")==="1" || lastUsedVoice)){
+    lastUsedVoice = false;
+    speakSecretaryText(div.textContent);
+  }
+}
+function clearChat(){
+  $("chat-feed").innerHTML = "";
+  $("chat-wrap").style.display = "none";
+}
+
+function quickPrompt(txt){
+  $("cmd-input").value = txt;
+  handleAgentCommand(new Event("submit"));
+}
+function prefillCmd(txt){
+  const inp = $("cmd-input");
+  inp.value = txt;
+  inp.focus();
+  inp.setSelectionRange(txt.length, txt.length);
+}
+
+async function handleAgentCommand(e){
+  if(e) e.preventDefault();
+  const inp = $("cmd-input");
+  const text = inp.value.trim();
+  if(!text) return;
+  inp.value = "";
+  appendChatMessage("user", text.replace(/</g,"&lt;"));
+
+  // 1. Check if it's a transaction or todo command
+  const parsed = tryParseTransactionCommand(text);
+  if(parsed && parsed.action === "todo"){
+    todos.unshift({id:"td"+Date.now(), text:parsed.todoText, done:false});
+    renderTodos();
+    updateProactiveSecretary();
+    appendChatMessage("ai", `✅ <b>เลขารับทราบค่ะ! เพิ่มในรายการงานวันนี้แล้ว:</b> "${parsed.todoText.replace(/</g,"&lt;")}"`);
+    return;
+  }
+  if(parsed && parsed.action === "tx"){
+    const newId = Date.now()+""+Math.random();
+    const entry = {id:newId, t:parsed.txType, a:parsed.amount, c:parsed.category, n:parsed.note, date:today};
+    items.push(entry);
+    cur = today.slice(0,7);
+    ls("tx", items);
+    render();
+    updateProactiveSecretary();
+    const st = getMonthFinanceStats();
+    appendChatMessage("ai", `✅ <b>เลขาบันทึกลงกระเป๋าตังค์เรียบร้อยค่ะ!</b><br>
+      <span class="tag-pill">${parsed.txType==="i"?"รายรับ":"รายจ่าย"}</span>
+      <span class="tag-pill">หมวด: ${parsed.category}</span>
+      <b>${parsed.txType==="i"?"+":"-"}฿${fmt(parsed.amount)}</b> (${parsed.note.replace(/</g,"&lt;")})<br>
+      <small class="mu">คงเหลือเดือนนี้: ฿${fmt(st.bal)} · วันนี้ใช้ไปรวม ฿${fmt(st.todayExp)}</small>`);
+    toast(`บันทึก ${parsed.category} ฿${fmt(parsed.amount)} แล้ว`, ()=>{
+      items = items.filter(x=>x.id!==newId);
+      ls("tx", items);
+      render();
+      updateProactiveSecretary();
+    });
+    return;
+  }
+
+  // 2. Check if user is asking for Today / Weekly / Monthly Structured Pattern Digest!
+  const lower = text.toLowerCase();
+  if(/today|daily|วันนี้มีอะไร|สรุปวันนี้|week|weekly|สัปดาห์นี้|อาทิตย์นี้|วีคนี้|month|monthly|เดือนนี้มีอะไร|สรุปเดือนนี้|สรุปตลาด/.test(lower) && !/การเงินส่วนตัว|กระเป๋าตัง/.test(lower)){
+    const p = /week|weekly|สัปดาห์|อาทิตย์|วีค/.test(lower) ? "week" : /month|monthly|เดือน/.test(lower) ? "month" : "today";
+    switchBriefPeriod(p);
+    const rep = buildStructuredPatternData(p);
+    appendChatMessage("ai", rep.html + `<div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <button class="btn sec" style="padding:5px 12px;font-size:12px;border-radius:999px" onclick="copyBriefingPattern('${p}')">📋 คัดลอกฟอร์แมต</button>
+      <button class="btn sec" style="padding:5px 12px;font-size:12px;border-radius:999px" onclick="pushBriefingToTelegram('${p}')">📲 ส่งเข้า Telegram</button>
+    </div>`);
+    return;
+  }
+
+  // 3. If Gemini API Key is configured, use Gemini with full context (Wallet + Live News)
+  const apiKey = g("ag_apikey");
+  if(apiKey){
+    appendChatMessage("ai", "⏳ เลขากำลังคิดและวิเคราะห์ข้อมูลให้คุณ...");
+    const lastMsg = $("chat-feed").lastElementChild;
+    try{
+      const st = getMonthFinanceStats();
+      const headlines = newsItems.slice(0,12).map(x=>`- [${x.c}] ${x.t}`).join("\n");
+      const sysPrompt = `คุณคือ Personal AI Secretary (เลขาส่วนตัวอัจฉริยะ) ด้านการเงิน ข่าวตลาดหุ้น/คริปโต/Stablecoin/เทคโนโลยี/EV และการจัดการชีวิตประจำวัน
+ข้อมูลกระเป๋าตังค์ของผู้ใช้เดือนนี้: รายรับ ฿${fmt(st.inc)}, รายจ่าย ฿${fmt(st.exp)}, คงเหลือ ฿${fmt(st.bal)}, วันนี้ใช้ไป ฿${fmt(st.todayExp)}, งบใช้ได้ต่อวัน ฿${fmt(st.dailyAllowance)}, หมวดใช้จ่ายสูงสุด: ${st.topCat||"ยังไม่มี"}
+ข่าวล่าสุดในระบบ:
+${headlines}
+
+คำสั่งของผู้ใช้: "${text}"
+ตอบในบทบาทเลขาส่วนตัวที่สุภาพ กระชับ แบ่งหัวข้อชัดเจน และนำไปใช้ตัดสินใจได้จริง`;
+      const reply = await callGeminiText(sysPrompt);
+      if(reply){
+        lastMsg.innerHTML = reply.replace(/</g,"&lt;").replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
+        if(g("ag_voice_reply")==="1" || lastUsedVoice){ lastUsedVoice = false; speakSecretaryText(lastMsg.textContent); }
+        return;
+      }
+    }catch(err){}
+    lastMsg.remove();
+  }
+
+  // 4. Built-in Smart Local Agent Response (works 100% offline/without API key)
+  if(/การเงิน|กระเป๋า|ใช้จ่าย|งบ|ออม|wallet/.test(lower)){
+    const st = getMonthFinanceStats();
+    appendChatMessage("ai", `💰 <b>เลขารายงานสุขภาพการเงินเดือนนี้ค่ะ:</b><br>
+      • รายรับรวม: <b class="inc">฿${fmt(st.inc)}</b> · รายจ่ายรวม: <b class="exp">฿${fmt(st.exp)}</b> (คงเหลือ <b>฿${fmt(st.bal)}</b>)<br>
+      • วันนี้ใช้จ่ายไป: <b>฿${fmt(st.todayExp)}</b><br>
+      • หมวดที่ใช้เยอะสุด: <b>${st.topCat ? `${st.topCat} (฿${fmt(st.topCatAmt)})` : "ยังไม่มีข้อมูลรายจ่าย"}</b><br>
+      • คำแนะนำจากเลขา: ${st.inc>0 ? `คุณมีงบใช้จ่ายได้อีกวันละ <b>฿${fmt(st.dailyAllowance)}</b> เพื่อให้บรรลุเป้าออมเงิน ${RATIO.s}% ของเดือนนี้ค่ะ` : `ลองสั่งเลขาเพิ่มรายรับ เช่น <b>"เงินเดือน 35000"</b> เพื่อให้เลขาคำนวณงบรายวันตามสูตร 50/30/20 ให้ค่ะ`}`);
+    return;
+  }
+
+  // Match specific news topics
+  let matchedNews = newsItems;
+  let topicLabel = "ตลาดและการเงินวันนี้";
+  if(/stablecoin|usdt|usdc|คริปโต|บิตคอยน์|btc|eth|crypto/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"Stablecoin")||matchNewsTopic(x,"BTC")); topicLabel = "คริปโต & Stablecoin"; }
+  else if(/roadster|ev|รถไฟฟ้า|tesla|เทสลา/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"Roadster")); topicLabel = "รถ EV & Tesla Roadster"; }
+  else if(/ทอง|gold|xau/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"ทอง")); topicLabel = "ทองคำ (Gold)"; }
+  else if(/7 นางฟ้า|mag7|ai|เทค|nvda|meta|apple/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"AI")||matchNewsTopic(x,"MAG7")); topicLabel = "เทคโนโลยี AI & 7 นางฟ้า"; }
+  else if(/ไทย|set|ptt|aot|gulf/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"SET")); topicLabel = "ตลาดหุ้นไทย (SET)"; }
+  else if(/พลังงาน|น้ำมัน|wti|oil|energy/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"WTI")); topicLabel = "กลุ่มพลังงาน & น้ำมัน"; }
+
+  const topItems = (matchedNews.length ? matchedNews : newsItems).slice(0,4);
+  const bullets = topItems.map(x=>`• <b>[${NEWS_CATS[x.c]||"ข่าว"}]</b> ${x.t.replace(/ - [^-]+$/,"")}`).join("<br>");
+  appendChatMessage("ai", `📊 <b>สรุปเจาะลึกหมวด ${topicLabel} จากเลขาค่ะ:</b><br>${bullets}<br><small class="mu">💡 ทิป: กดปุ่มไมค์ 🎤 เพื่อพูดสั่งงาน หรือพิมพ์ <b>"today มีอะไรบ้าง"</b> / <b>"week นี้มีอะไรบ้าง"</b> ได้เลยค่ะ</small>`);
+}
+
+function askAgentAboutNews(id){
+  const it = newsItems.find(x=>x.id===id);
+  if(!it) return;
+  switchSection("agent");
+  quickPrompt(`วิเคราะห์ผลกระทบจากข่าวนี้ให้หน่อย: ${it.t}`);
+}
+function askAgentAboutAsset(){
+  const a = ASSETS.find(x=>x.id===mktAssetId) || ASSETS[0];
+  switchSection("agent");
+  quickPrompt(`วิเคราะห์แนวโน้มและข่าวของ ${a.id} (${a.n}) ราคาปัจจุบัน ${fmtPrice(a,a.p)}`);
+}
+
+/* ==================== 5. VOICE INPUT (SPEECH-TO-TEXT) ==================== */
+let recognition = null, isRecording = false;
+function toggleVoiceInput(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){
+    toast("เบราว์เซอร์นี้ไม่รองรับการสั่งงานด้วยเสียง (แนะนำ Chrome / Edge / Safari)");
+    return;
+  }
+  const btn = $("btn-mic");
+  if(isRecording && recognition){
+    recognition.stop();
+    return;
+  }
+  recognition = new SR();
+  recognition.lang = "th-TH";
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  recognition.onstart = ()=>{
+    isRecording = true;
+    btn.classList.add("rec");
+    $("cmd-input").placeholder = "🎙️ เลขากำลังฟังคุณพูด... (เช่น กาแฟ 65, วันนี้มีอะไรบ้าง)";
+  };
+  recognition.onresult = e=>{
+    let transcript = "";
+    for(let i=0;i<e.results.length;i++) transcript += e.results[i][0].transcript;
+    $("cmd-input").value = transcript;
+  };
+  recognition.onend = ()=>{
+    isRecording = false;
+    btn.classList.remove("rec");
+    $("cmd-input").placeholder = "พิมพ์หรือกดไมค์พูดกับเลขา… เช่น “กาแฟ 65”, “วันนี้มีอะไรบ้าง”";
+    const finalTxt = $("cmd-input").value.trim();
+    if(finalTxt){
+      lastUsedVoice = true;
+      handleAgentCommand(new Event("submit"));
+    }
+  };
+  recognition.onerror = ()=>{
+    isRecording = false;
+    btn.classList.remove("rec");
+    toast("ไม่ได้ยินเสียงพูด ลองกดไมค์แล้วพูดอีกครั้งนะคะ");
+  };
+  recognition.start();
+}
+
+/* ==================== 6. PROACTIVE SECRETARY ROUTINE & NOTIFICATIONS ==================== */
+function getProactiveRoutineData(){
+  const hr = new Date().getHours();
+  const uname = g("ag_username") ? "คุณ" + g("ag_username") : "บอส";
+  const st = getMonthFinanceStats();
+  const pendingTodos = todos.filter(t=>!t.done);
+  const mood = marketMoodFromNews();
+  const gthA = ASSETS.find(x=>x.id==="GTH"), btcA = ASSETS.find(x=>x.id==="BTC");
+  const leadNews = newsItems[0] ? newsItems[0].t.replace(/ - [^-]+$/,"") : "";
+
+  if(hr >= 5 && hr < 12){
+    return {
+      slot: "morning",
+      title: `☀️ รายงานเลขาตอนเช้า (Morning Brief) สำหรับ${uname}`,
+      msg: `เช้านี้บรรยากาศตลาด <b>${mood.label}</b> (ทองแท่ง ${fmtPrice(gthA)} · BTC ${fmtPrice(btcA)}) · วันนี้คุณมีงานที่ต้องทำ <b>${pendingTodos.length} รายการ</b>${pendingTodos[0]?` (เริ่มด้วย "${pendingTodos[0].text.replace(/</g,"&lt;")}")`:""} และมีงบใช้จ่ายได้ <b>฿${fmt(st.dailyAllowance)}</b> ค่ะ`,
+      speech: `สวัสดีตอนเช้าค่ะ${uname} เช้านี้ตลาด${mood.label.replace(/[^ก-๙a-zA-Z\s]/g,"")} ราคาทองแท่งอยู่ที่ ${gthA.p} บาท วันนี้คุณมีงานต้องทำ ${pendingTodos.length} รายการ และมีงบใช้จ่ายได้ ${st.dailyAllowance} บาทค่ะ ประเด็นข่าวเด่นเช้านี้คือ ${leadNews}`
+    };
+  }
+  if(hr >= 12 && hr < 17){
+    const remToday = Math.max(0, st.dailyAllowance - st.todayExp);
+    return {
+      slot: "afternoon",
+      title: `☕ เลขาอัปเดตช่วงบ่าย (Midday Check-in) สำหรับ${uname}`,
+      msg: `วันนี้คุณบันทึกค่าใช้จ่ายไปแล้ว <b>฿${fmt(st.todayExp)}</b> ${st.inc>0?`(เหลืองบใช้ได้วันนี้ <b>฿${fmt(remToday)}</b>)`:""} · เหลืองานค้าง <b>${pendingTodos.length} รายการ</b> · ข่าวเด่นบ่ายนี้: <i>"${leadNews.slice(0,75).replace(/</g,"&lt;")}..."</i>`,
+      speech: `อัปเดตช่วงบ่ายค่ะ${uname} วันนี้คุณใช้จ่ายไปแล้ว ${st.todayExp} บาท เหลืองานค้าง ${pendingTodos.length} รายการ ข่าวเด่นบ่ายนี้คือ ${leadNews}`
+    };
+  }
+  return {
+    slot: "evening",
+    title: `🌙 เลขาสรุปปิดวัน (Evening Wrap-up) สำหรับ${uname}`,
+    msg: `สรุปวันนี้ใช้จ่ายรวม <b>฿${fmt(st.todayExp)}</b> (คงเหลือเดือนนี้ <b>฿${fmt(st.bal)}</b>) · เคลียร์งานสำเร็จ <b>${todos.filter(t=>t.done).length}/${todos.length} รายการ</b> · คืนนี้จับตาตลาดหุ้นสหรัฐฯ (NVDA / TSLA) และคริปโต (BTC ${fmtPrice(btcA)}) ค่ะ`,
+    speech: `สรุปปิดวันค่ะ${uname} วันนี้คุณใช้จ่ายรวม ${st.todayExp} บาท คงเหลือสุทธิเดือนนี้ ${st.bal} บาท และทำงานสำเร็จแล้ว ${todos.filter(t=>t.done).length} จาก ${todos.length} รายการค่ะ`
+  };
+}
+
+function updateProactiveSecretary(){
+  const r = getProactiveRoutineData();
+  if($("sec-routine-title")) $("sec-routine-title").innerHTML = r.title;
+  if($("sec-routine-msg")) $("sec-routine-msg").innerHTML = r.msg;
+  const hasTg = !!(g("ag_tg_token") && g("ag_tg_chatid"));
+  const badge = $("tg-sync-badge");
+  if(badge){
+    badge.textContent = hasTg ? "🟢 เชื่อม Telegram เลขาแล้ว (สั่งงาน 2 ทาง)" : "⚙️ ตั้งค่าเชื่อม Telegram";
+  }
+}
+
+function checkAutoSecretarySchedule(){
+  if(g("ag_auto_brief") !== "1") return;
+  const now = new Date();
+  const hr = now.getHours();
+  const r = getProactiveRoutineData();
+  const slotKey = today + "-" + (hr >= 19 ? "eve" : hr >= 8 && hr < 12 ? "morn" : "");
+  if(!slotKey.endsWith("eve") && !slotKey.endsWith("morn")) return;
+  if(g("ag_last_auto_slot") === slotKey) return;
+  ls("ag_last_auto_slot", slotKey);
+
+  // Trigger Browser Notification if permitted
+  if("Notification" in window && Notification.permission === "granted"){
+    try{ new Notification(r.title, {body: r.speech}); }catch(e){}
+  }
+  // Also auto-push to Telegram if configured
+  if(g("ag_tg_token") && g("ag_tg_chatid")){
+    const rep = buildStructuredPatternData("today");
+    sendTelegramMsg(`👩‍💼 ${r.title}\n\n${r.speech}\n\n${rep.plainText}`, true);
+  }
+}
+
+/* ==================== 7. TELEGRAM BOT 2-WAY SECRETARY INTEGRATION ==================== */
+async function sendTelegramMsg(text, silentToast){
+  const token = (g("ag_tg_token") || ($("cfg-tg-token")?$("cfg-tg-token").value:"")).trim();
+  const chatId = (g("ag_tg_chatid") || ($("cfg-tg-chatid")?$("cfg-tg-chatid").value:"")).trim();
+  if(!token || !chatId){
+    if(!silentToast){
+      $("btn-ai-cfg").onclick();
+      toast("กรุณาใส่ Telegram Bot Token และ Chat ID ในหน้าตั้งค่าก่อนนะคะ");
+    }
+    return false;
+  }
+  try{
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({chat_id: chatId, text, disable_web_page_preview: true})
+    });
+    const j = await res.json();
+    if(j && j.ok){
+      if(!silentToast) toast("📲 เลขาส่งรายงานเข้าแชท Telegram ของคุณเรียบร้อยแล้วค่ะ!");
+      return true;
+    }
+    if(!silentToast) toast("ส่ง Telegram ไม่สำเร็จ: " + (j.description || "ตรวจสอบ Token/Chat ID"));
+  }catch(e){
+    if(!silentToast) toast("เชื่อมต่อ Telegram API ไม่สำเร็จ");
+  }
+  return false;
+}
+
+function pushBriefingToTelegram(period){
+  const rep = buildStructuredPatternData(period || briefPeriod);
+  const r = getProactiveRoutineData();
+  sendTelegramMsg(`👩‍💼 ${r.title}\n\n${rep.plainText}`);
+}
+
+async function autoDetectTelegramChatId(){
+  const token = ($("cfg-tg-token").value || g("ag_tg_token") || "").trim();
+  const stEl = $("tg-setup-status");
+  if(!token){
+    stEl.innerHTML = `<span class="dn">⚠️ กรุณาวาง Telegram Bot Token ในช่องที่ 1 ก่อน แล้วทักแชทบอทของคุณไป 1 ข้อความค่ะ</span>`;
+    return;
+  }
+  stEl.textContent = "⏳ กำลังค้นหา Chat ID ล่าสุดจากข้อความที่คุณทักหาบอท...";
+  try{
+    const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?limit=10`);
+    const j = await res.json();
+    if(!j.ok){
+      stEl.innerHTML = `<span class="dn">❌ Token ไม่ถูกต้อง: ${j.description||""}</span>`;
+      return;
+    }
+    const msgs = (j.result || []).map(u => u.message || u.edited_message || u.channel_post).filter(Boolean);
+    if(!msgs.length){
+      stEl.innerHTML = `<span class="dn">⚠️ ยังไม่พบข้อความ! กรุณาเปิดแอป Telegram แล้วกด Start หรือพิมพ์ "สวัสดี" ส่งหาบอทของคุณ 1 ครั้ง แล้วกดปุ่มนี้อีกทีค่ะ</span>`;
+      return;
+    }
+    const lastChat = msgs[msgs.length - 1].chat;
+    $("cfg-tg-chatid").value = String(lastChat.id);
+    ls("ag_tg_token", token);
+    ls("ag_tg_chatid", String(lastChat.id));
+    stEl.innerHTML = `<span class="up">✅ พบ Chat ID เรียบร้อยค่ะ! (${lastChat.first_name||lastChat.title||lastChat.id}) กดปุ่ม "📨 ทดสอบส่ง" ได้เลย</span>`;
+    updateProactiveSecretary();
+  }catch(e){
+    stEl.innerHTML = `<span class="dn">❌ เชื่อมต่อ Telegram ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต</span>`;
+  }
+}
+
+async function testTelegramPush(){
+  const token = $("cfg-tg-token").value.trim();
+  const chatId = $("cfg-tg-chatid").value.trim();
+  ls("ag_tg_token", token);
+  ls("ag_tg_chatid", chatId);
+  const r = getProactiveRoutineData();
+  const ok = await sendTelegramMsg(`👩‍💼 สวัสดีค่ะ! เลขา AI ส่วนตัวเชื่อมต่อกับ Telegram ของคุณสำเร็จแล้วค่ะ\n\nคุณสามารถพิมพ์สั่งงานในแชทนี้ได้เลย เช่น:\n• "กาแฟ 65" (จดรายจ่าย)\n• "เตือน ประชุมบ่ายสอง" (เพิ่มงาน)\n• "today" / "week" / "month" (ขอดูสรุปข่าว 3 หมวด)\n• "งบ" (เช็กยอดเงินคงเหลือ)\n\n${r.speech}`);
+  if(ok) $("tg-setup-status").innerHTML = `<span class="up">🎉 ส่งข้อความทดสอบเข้า Telegram สำเร็จแล้ว! ลองพิมพ์ "today" หรือ "กาแฟ 65" ตอบกลับมาใน Telegram ได้เลยค่ะ</span>`;
+}
+
+let tgPollOffset = Number(g("ag_tg_offset") || 0);
+async function pollTelegramUpdates(){
+  const token = g("ag_tg_token");
+  const myChatId = g("ag_tg_chatid");
+  if(!token || !myChatId) return;
+  try{
+    const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?offset=${tgPollOffset + 1}&timeout=1`, {signal: AbortSignal.timeout(4500)});
+    if(!res.ok) return;
+    const j = await res.json();
+    if(!j.ok || !Array.isArray(j.result) || !j.result.length) return;
+
+    for(const upd of j.result){
+      tgPollOffset = Math.max(tgPollOffset, upd.update_id);
+      ls("ag_tg_offset", String(tgPollOffset));
+      const msg = upd.message;
+      if(!msg || !msg.text || String(msg.chat.id) !== String(myChatId)) continue;
+      const txt = msg.text.trim();
+      // Ignore old messages (> 5 mins ago)
+      if(msg.date && (Date.now()/1000 - msg.date > 300)) continue;
+
+      const parsed = tryParseTransactionCommand(txt);
+      if(parsed && parsed.action === "todo"){
+        todos.unshift({id:"td"+Date.now(), text:parsed.todoText, done:false});
+        renderTodos();
+        updateProactiveSecretary();
+        await sendTelegramMsg(`✅ เลขาเพิ่มงานวันนี้ให้แล้วค่ะ: "${parsed.todoText}" (รวมงานค้าง ${todos.filter(t=>!t.done).length} รายการ)`, true);
+        toast(`📲 รับคำสั่งจาก Telegram: เพิ่มงาน "${parsed.todoText}"`);
+      } else if(parsed && parsed.action === "tx"){
+        const newId = Date.now()+""+Math.random();
+        items.push({id:newId, t:parsed.txType, a:parsed.amount, c:parsed.category, n:parsed.note, date:today});
+        cur = today.slice(0,7);
+        ls("tx", items);
+        render();
+        updateProactiveSecretary();
+        const st = getMonthFinanceStats();
+        await sendTelegramMsg(`✅ เลขาบันทึก${parsed.txType==="i"?"รายรับ":"รายจ่าย"}ให้แล้วค่ะ!\n• หมวด: ${parsed.category} (${parsed.note})\n• จำนวน: ${parsed.txType==="i"?"+":"-"}฿${fmt(parsed.amount)}\n• คงเหลือเดือนนี้: ฿${fmt(st.bal)} (วันนี้ใช้ไป ฿${fmt(st.todayExp)})`, true);
+        toast(`📲 รับคำสั่งจาก Telegram: บันทึก ${parsed.category} ฿${fmt(parsed.amount)}`);
+      } else if(/week|weekly|สัปดาห์|วีค/i.test(txt)){
+        await sendTelegramMsg(buildStructuredPatternData("week").plainText, true);
+      } else if(/month|monthly|เดือน/i.test(txt)){
+        await sendTelegramMsg(buildStructuredPatternData("month").plainText, true);
+      } else if(/งบ|กระเป๋า|เงิน|bal|wallet/i.test(txt)){
+        const st = getMonthFinanceStats();
+        await sendTelegramMsg(`💰 สรุปกระเป๋าตังค์เดือนนี้ค่ะ:\n• รายรับ: ฿${fmt(st.inc)} | รายจ่าย: ฿${fmt(st.exp)}\n• คงเหลือสุทธิ: ฿${fmt(st.bal)}\n• วันนี้ใช้ไป: ฿${fmt(st.todayExp)}\n• งบใช้ได้ต่อวัน: ฿${fmt(st.dailyAllowance)}/วัน`, true);
+      } else {
+        await sendTelegramMsg(buildStructuredPatternData("today").plainText, true);
+      }
+    }
+  }catch(e){}
+}
+setInterval(pollTelegramUpdates, 6500);
+setInterval(checkAutoSecretarySchedule, 60000);
+
+/* Gemini API Helper */
+async function callGeminiText(prompt){
+  const key = g("ag_apikey");
+  if(!key) return null;
+  apiStats.geminiCalls++;
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+  });
+  if(!res.ok){ saveApiStats(); throw new Error("Gemini API error"); }
+  const data = await res.json();
+  const txt = data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+  const usedTok = data?.usageMetadata?.totalTokenCount || Math.ceil((prompt.length + (txt?txt.length:0))/3.2);
+  apiStats.geminiTokens += usedTok;
+  saveApiStats();
+  return txt;
+}
+
+/* Audio Briefing (Text-to-Speech) */
+$("btn-speak-brief").onclick = ()=>{
+  if(!("speechSynthesis" in window)){ toast("เบราว์เซอร์นี้ไม่รองรับระบบอ่านออกเสียง"); return; }
+  if(window.speechSynthesis.speaking){
+    window.speechSynthesis.cancel();
+    $("btn-speak-brief").textContent = "🔊 ให้เลขาอ่านสรุป";
+    return;
+  }
+  const r = getProactiveRoutineData();
+  const utter = new SpeechSynthesisUtterance(r.speech);
+  utter.lang = "th-TH";
+  utter.rate = 1.05;
+  utter.onend = ()=>{ $("btn-speak-brief").textContent = "🔊 ให้เลขาอ่านสรุป"; };
+  $("btn-speak-brief").textContent = "⏹️ หยุดฟัง";
+  window.speechSynthesis.speak(utter);
+};
+
+$("btn-refresh-brief").onclick = ()=> fetchLiveNews(true);
+
+/* Navigation & Theme & Settings & PWA */
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if($("btn-install-pwa")) $("btn-install-pwa").style.display = "inline-flex";
+});
+function installPWA(){
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(()=>{
+      deferredInstallPrompt = null;
+      if($("btn-install-pwa")) $("btn-install-pwa").style.display = "none";
+    });
+  }else{
+    toast("กดปุ่มเมนูเบราว์เซอร์ แล้วเลือก 'เพิ่มไปยังหน้าจอโฮม (Add to Home Screen)' ได้เลยค่ะ");
+  }
+}
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+
+function switchSection(sec){
+  ["agent","news","wallet"].forEach(s=>{
+    $("sec-"+s).style.display = s===sec ? "block" : "none";
+    $("tab-"+s).className = s===sec ? "on" : "";
+  });
+}
+
+$("btn-theme").onclick = ()=>{
+  const curTheme = document.documentElement.dataset.theme;
+  const next = curTheme==="dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  ls("ag_theme", next);
+  $("btn-theme").textContent = next==="dark" ? "☀️" : "🌙";
+};
+
+$("btn-ai-cfg").onclick = ()=>{
+  $("cfg-username").value = g("ag_username") || "";
+  $("cfg-apikey").value = g("ag_apikey") || "";
+  $("cfg-tg-token").value = g("ag_tg_token") || "";
+  $("cfg-tg-chatid").value = g("ag_tg_chatid") || "";
+  $("cfg-voice-reply").checked = g("ag_voice_reply") === "1";
+  $("cfg-auto-brief").checked = g("ag_auto_brief") === "1";
+  saveApiStats();
+  $("ai-ov").classList.add("on");
+};
+function saveAIConfig(){
+  ls("ag_username", $("cfg-username").value.trim());
+  ls("ag_apikey", $("cfg-apikey").value.trim());
+  ls("ag_tg_token", $("cfg-tg-token").value.trim());
+  ls("ag_tg_chatid", $("cfg-tg-chatid").value.trim());
+  ls("ag_voice_reply", $("cfg-voice-reply").checked ? "1" : "0");
+  ls("ag_auto_brief", $("cfg-auto-brief").checked ? "1" : "0");
+  if($("cfg-auto-brief").checked && "Notification" in window && Notification.permission === "default"){
+    Notification.requestPermission().catch(()=>{});
+  }
+  $("ai-engine-status").textContent = g("ag_apikey") ? "🟢 Gemini 2.5 Flash เชื่อมต่อแล้ว" : "Smart Secretary พร้อมดูแล";
+  $("ai-ov").classList.remove("on");
+  updateAgentWalletMetrics();
+  updateProactiveSecretary();
+  toast("บันทึกการตั้งค่าเลขา AI เรียบร้อยค่ะ");
+}
+
+/* Init App */
+(function init(){
+  const savedTheme = g("ag_theme");
+  if(savedTheme){
+    document.documentElement.dataset.theme = savedTheme;
+    $("btn-theme").textContent = savedTheme==="dark" ? "☀️" : "🌙";
+  }
+  if(g("ag_apikey")) $("ai-engine-status").textContent = "🟢 Gemini 2.5 Flash เชื่อมต่อแล้ว";
+  applyRec();
+  setType("e");
+  render();
+  renderTodos();
+  renderMarketStrip();
+  renderNewsSection();
+  generateAIDailyBriefing(false);
+  updateProactiveSecretary();
+  fetchLiveNews(false).then(()=>updateProactiveSecretary());
+})();
+</script>
+</body>
+</html>
