@@ -467,8 +467,8 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
 .chat-feed{margin-top:8px}
 .cmd-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--mu)}
 
-/* KPI cards */
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+/* KPI cards (2-column clean layout) */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 .kpi{background:var(--card);border:1px solid var(--ln);border-radius:20px;padding:16px 18px;box-shadow:var(--sh);cursor:pointer;
   display:flex;flex-direction:column;gap:2px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
 .kpi:hover{border-color:var(--ac);transform:translateY(-2px);box-shadow:var(--sh-lg)}
@@ -481,30 +481,24 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
 .kpi-bal .kpi-l,.kpi-bal .kpi-s{color:rgba(255,255,255,.85)}
 .kpi-bal:hover{border:0}
 .kpi-ring{flex-direction:row;align-items:center;gap:14px}
-.ringwrap{position:relative;width:64px;height:64px;flex:none}
-.ring{width:64px;height:64px;transform:rotate(-90deg)}
+.ringwrap{position:relative;width:56px;height:56px;flex:none}
+.ring{width:56px;height:56px;transform:rotate(-90deg)}
 .ring circle{fill:none;stroke-width:5}
 .ring-bg{stroke:var(--ln)}
 .ring-fg{stroke:var(--inc);stroke-linecap:round;stroke-dasharray:0 113.1;transition:stroke-dasharray .7s cubic-bezier(.2,.8,.2,1),stroke .3s}
-.ring-t{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800}
+.ring-t{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;font-weight:800}
 
-.agent-grid{margin-top:4px}
-.c-digest{margin-top:16px}
+.agent-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:14px;margin-top:14px;align-items:start}
+.agent-grid .card{margin-top:0}
 
-@media(max-width:900px){.kpis{grid-template-columns:1fr 1fr}.kpi-bal{grid-column:1/-1}}
-@media(max-width:720px){
-  .greet h1{font-size:23px}
-  .greet-actions{width:100%}
-  .chipbtn{flex:1;justify-content:center}
-  .kpi{padding:14px 15px}
-  .kpi-v{font-size:21px}
-  .kpi-ring{flex-direction:column;align-items:flex-start;gap:8px}
-  .kpi-bal .kpi-v{font-size:28px}
-  /* on phones: reorder cards by importance across both columns */
-  .agent-grid>div{display:contents}
-  .c-digest{order:1}.c-todo{order:2}.c-watch{order:3}.c-news{order:4}
-  .agent-grid{display:flex;flex-direction:column}
-  .cmd-foot span:first-child{display:none}
+@media(max-width:760px){
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:14px}
+  .kpi-v{font-size:20px}
+  .kpi-bal .kpi-v{font-size:22px}
+  .kpi-ring{flex-direction:row;align-items:center;gap:10px}
+  .ringwrap,.ring{width:46px;height:46px}
+  .agent-grid{grid-template-columns:1fr;gap:12px}
   .news-filter-scroll,#news-cat-pills,#news-tag-pills,#market-group-tabs{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
   #news-cat-pills::-webkit-scrollbar,#news-tag-pills::-webkit-scrollbar,#market-group-tabs::-webkit-scrollbar{display:none}
   #news-cat-pills button,#news-tag-pills button,#market-group-tabs button{flex:none;white-space:nowrap}
@@ -522,9 +516,9 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
 #news-tag-pills button:hover{border-color:var(--ac);color:var(--ac);background:var(--ac2)}
 #news-tag-pills button[aria-pressed="true"]{background:var(--ac2);color:var(--ac);border-color:var(--ac);font-weight:700;box-shadow:none}
 #news-tag-pills button[aria-pressed="true"] .pill-cnt{background:var(--ac);color:var(--actx)}
-/* AI Secretary Banner & Voice Mic */
-.sec-banner{background:linear-gradient(135deg,color-mix(in srgb,var(--ac) 14%,var(--card)),var(--card));border:1px solid color-mix(in srgb,var(--ac) 35%,var(--ln));border-radius:20px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;box-shadow:var(--sh)}
-.sec-avatar{width:40px;height:40px;border-radius:14px;background:var(--ac-grad);color:#fff;display:grid;place-items:center;font-size:20px;flex:none;box-shadow:0 6px 14px rgba(124,77,240,.3)}
+/* AI Secretary Unified Header & Voice Mic */
+.sec-banner{background:linear-gradient(135deg,color-mix(in srgb,var(--ac) 12%,var(--card)),var(--card));border:1px solid color-mix(in srgb,var(--ac) 30%,var(--ln));border-radius:22px;padding:15px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;box-shadow:var(--sh)}
+.sec-avatar{width:44px;height:44px;border-radius:14px;background:var(--ac-grad);color:#fff;display:grid;place-items:center;font-size:22px;flex:none;box-shadow:0 6px 14px rgba(124,77,240,.3)}
 .mic-btn{width:44px;height:44px;border-radius:14px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);display:grid;place-items:center;cursor:pointer;flex:none}
 .mic-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--ac2)}
 .mic-btn.rec{background:var(--exp);color:#fff;border-color:var(--exp);animation:micPulse 1.2s infinite}
@@ -554,77 +548,57 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
   </div>
 </header>
 
-<!-- ==================== SECTION 1: AI AGENT HUB ==================== -->
+<!-- ==================== SECTION 1: AI AGENT HUB (CLEAN & MINIMAL) ==================== -->
 <main class="shell" id="sec-agent">
-  <!-- Greeting -->
-  <div class="greet">
-    <div>
-      <span class="eyebrow"><span class="pulse"></span> เลขาส่วนตัวพร้อมดูแลคุณ</span>
-      <h1 id="agent-greeting">สวัสดีครับ!</h1>
-      <p id="agent-date-sub"></p>
-    </div>
-    <div class="greet-actions">
-      <button class="chipbtn" id="btn-speak-brief">🔊 ให้เลขาอ่านสรุป</button>
-      <button class="chipbtn" onclick="pushBriefingToTelegram()">📲 ส่งเข้า Telegram</button>
-      <button class="chipbtn" id="btn-refresh-brief">🔄 อัปเดต</button>
-    </div>
-  </div>
-
-  <!-- Proactive Secretary Check-in Banner -->
+  <!-- 1. Unified Secretary Greeting & Brief Status -->
   <div class="sec-banner" id="sec-proactive-banner">
-    <div style="display:flex;gap:12px;align-items:flex-start;flex:1;min-width:240px">
+    <div style="display:flex;gap:12px;align-items:center;flex:1;min-width:220px">
       <div class="sec-avatar">👩‍💼</div>
-      <div style="font-size:13.5px;line-height:1.55">
+      <div style="min-width:0;flex:1">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <b id="sec-routine-title" style="color:var(--ac)">รายงานจากเลขาประจำช่วงเวลา</b>
-          <span class="news-badge" id="tg-sync-badge" onclick="$('btn-ai-cfg').onclick()" style="cursor:pointer">⚙️ ตั้งค่าเชื่อม Telegram</span>
+          <b id="agent-greeting" style="font-size:16px">สวัสดีครับ!</b>
+          <span class="mu" id="agent-date-sub" style="font-size:12px"></span>
         </div>
-        <div id="sec-routine-msg" style="margin-top:3px">กำลังเตรียมข้อมูลสรุปการเงิน งานวันนี้ และข่าวตลาดให้คุณ...</div>
+        <div id="sec-routine-msg" style="font-size:13px;color:var(--mu);margin-top:2px;line-height:1.45">กำลังเตรียมสรุปประจำวันให้คุณ...</div>
       </div>
     </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <button class="chipbtn" id="btn-speak-brief" style="padding:6px 12px;font-size:12.5px">🔊 ฟังสรุป</button>
+      <button class="chipbtn" onclick="pushBriefingToTelegram()" style="padding:6px 12px;font-size:12.5px">📲 Telegram</button>
+      <button class="ib" id="btn-refresh-brief" title="อัปเดตข้อมูลล่าสุด" style="width:34px;height:34px;font-size:13px">🔄</button>
+    </div>
   </div>
 
-  <!-- Composer: the single primary action with Voice Mic -->
+  <!-- 2. Primary Command Bar (Type or Voice) + 1 Single Row of Essential Shortcuts -->
   <div class="cmd-box">
     <form class="cmd-row" id="cmd-form" onsubmit="handleAgentCommand(event)">
       <span class="cmd-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></span>
-      <input class="cmd-input" id="cmd-input" placeholder="พิมพ์หรือกดไมค์พูดกับเลขา… เช่น “กาแฟ 65”, “วันนี้มีอะไรบ้าง”" autocomplete="off">
+      <input class="cmd-input" id="cmd-input" placeholder="พิมพ์หรือกดไมค์สั่งเลขา… เช่น “กาแฟ 65”, “เตือน ประชุมบ่ายสอง”, “today”" autocomplete="off">
       <button type="button" class="mic-btn" id="btn-mic" onclick="toggleVoiceInput()" title="กดเพื่อพูดสั่งงานเลขาด้วยเสียง (ภาษาไทย)">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
       </button>
       <button type="submit" class="btn" id="cmd-submit">ส่ง</button>
     </form>
     <div class="chip-group">
-      <span class="lbl">จดเร็ว</span>
       <button type="button" class="qchip add" onclick="prefillCmd('กาแฟ ')">☕ กาแฟ</button>
       <button type="button" class="qchip add" onclick="prefillCmd('ข้าวเที่ยง ')">🍱 ข้าวเที่ยง</button>
       <button type="button" class="qchip add" onclick="prefillCmd('เดินทาง ')">🚕 เดินทาง</button>
-      <button type="button" class="qchip add" onclick="prefillCmd('ช้อปปิ้ง ')">🛍️ ช้อปปิ้ง</button>
-      <button type="button" class="qchip add" onclick="prefillCmd('ค่าไฟ ')">🧾 บิล</button>
-      <button type="button" class="qchip add" onclick="prefillCmd('เงินเดือน ')">💰 รายรับ</button>
-    </div>
-    <div class="chip-group">
-      <span class="lbl">ถามเลขา</span>
-      <button type="button" class="qchip" onclick="quickPrompt('today มีอะไรบ้าง')">📅 Today มีอะไรบ้าง</button>
-      <button type="button" class="qchip" onclick="quickPrompt('week นี้มีอะไรบ้าง')">📆 Week นี้มีอะไรบ้าง</button>
-      <button type="button" class="qchip" onclick="quickPrompt('month นี้มีอะไรบ้าง')">🗓️ Month นี้มีอะไรบ้าง</button>
-      <button type="button" class="qchip" onclick="quickPrompt('สรุปข่าว Stablecoin และคริปโตล่าสุด')">🪙 Stablecoin</button>
-      <button type="button" class="qchip" onclick="quickPrompt('สรุปข่าวรถ EV และ Tesla Roadster ล่าสุด')">🏎️ Roadster & EV</button>
-      <button type="button" class="qchip" onclick="quickPrompt('วิเคราะห์สุขภาพการเงินเดือนนี้ให้หน่อย')">💡 วิเคราะห์การเงิน</button>
+      <button type="button" class="qchip" onclick="quickPrompt('today มีอะไรบ้าง')">📅 สรุป Today</button>
+      <button type="button" class="qchip" onclick="quickPrompt('week นี้มีอะไรบ้าง')">📆 สรุป Weekly</button>
+      <button type="button" class="qchip" onclick="quickPrompt('month นี้มีอะไรบ้าง')">🗓️ สรุป Monthly</button>
     </div>
     <div class="chat-wrap" id="chat-wrap" style="display:none">
-      <div class="chat-head"><span>บทสนทนากับเลขา</span><button type="button" class="lk" onclick="clearChat()">ล้าง</button></div>
+      <div class="chat-head"><span>💬 บทสนทนากับเลขา</span><button type="button" class="lk" onclick="clearChat()">ปิดแชท</button></div>
       <div class="chat-feed" id="chat-feed"></div>
     </div>
-    <div class="cmd-foot"><span>🎤 กดปุ่มไมค์เพื่อพูดสั่งงาน หรือพิมพ์ “today มีอะไรบ้าง” / “กาแฟ 65”</span><span id="ai-engine-status">Smart Secretary พร้อมดูแล</span></div>
   </div>
 
-  <!-- KPIs -->
+  <!-- 3. 2 Core Personal Finance KPIs (Tap to open Wallet) -->
   <div class="kpis">
     <div class="kpi kpi-bal" onclick="switchSection('wallet')">
-      <div class="kpi-l">คงเหลือเดือนนี้</div>
+      <div class="kpi-l">เงินคงเหลือเดือนนี้</div>
       <div class="kpi-v" id="ag-bal">฿0</div>
-      <div class="kpi-s" id="ag-today-spent">ใช้ไปวันนี้ ฿0</div>
+      <div class="kpi-s" id="ag-today-spent">วันนี้ใช้ไป ฿0</div>
     </div>
     <div class="kpi kpi-ring" onclick="switchSection('wallet')">
       <div class="ringwrap"><svg class="ring" viewBox="0 0 44 44"><circle class="ring-bg" cx="22" cy="22" r="18"/><circle class="ring-fg" id="ag-ring" cx="22" cy="22" r="18"/></svg><span class="ring-t" id="ag-ring-t">–</span></div>
@@ -634,75 +608,43 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
         <div class="kpi-s" id="ag-budget-status">แผน 50/30/20</div>
       </div>
     </div>
-    <div class="kpi" onclick="switchSection('news')">
-      <div class="kpi-l">ทิศทางตลาดจากข่าว</div>
-      <div class="kpi-v" id="ag-market-mood">กำลังโหลด…</div>
-      <div class="kpi-s" id="ag-news-count">ดึงข่าวสดอัตโนมัติ</div>
-    </div>
   </div>
 
+  <!-- 4. Only Essential Secretary Cards: To-Do List + Pattern Digest (No duplicate news/market cards) -->
   <div class="agent-grid">
-    <div>
-      <section class="card c-digest">
-        <div class="card-head" style="flex-wrap:wrap">
-          <div>
-            <h2>⚡ สรุปข่าวตามแพทเทิร์น (หุ้น · คริปโต · เทค)</h2>
-            <span class="mu" style="font-size:12px" id="brief-time"></span>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-            <div class="seg" style="margin:0;padding:3px" id="brief-period-seg">
-              <button type="button" data-p="today" class="on" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('today')">Today</button>
-              <button type="button" data-p="week" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('week')">Weekly</button>
-              <button type="button" data-p="month" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('month')">Monthly</button>
-            </div>
-            <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="copyBriefingPattern()">📋 คัดลอก</button>
-            <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="pushBriefingToTelegram()">📲 ส่ง Telegram</button>
-            <button class="btn" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="generateAIDailyBriefing(true)">✨ AI สรุป</button>
-          </div>
-        </div>
-        <div id="daily-briefing-body">
-          <div class="brief-section" id="brief-pattern-box">
-            <ul class="brief-list" id="brief-news-list">
-              <li>กำลังดึงข้อมูลข่าวสารล่าสุด...</li>
-            </ul>
-          </div>
-          <div class="brief-section" style="margin-bottom:0">
-            <h3><span>💡 สรุปการเงินส่วนตัว & แผนใช้จ่าย</span></h3>
-            <ul class="brief-list" id="brief-wallet-list"></ul>
-          </div>
-        </div>
-      </section>
+    <section class="card c-todo">
+      <div class="card-head">
+        <h2>✅ งานที่ต้องทำวันนี้</h2>
+        <span class="mu" id="todo-progress">0/0</span>
+      </div>
+      <form style="display:flex;gap:6px;margin-bottom:10px" onsubmit="addTodoItem(event)">
+        <input class="f" id="todo-input" placeholder="เพิ่มงานวันนี้..." style="margin:0;padding:9px 12px">
+        <button class="btn" type="submit" style="padding:9px 14px">+</button>
+      </form>
+      <div id="todo-list"></div>
+    </section>
 
-      <section class="card c-news">
-        <div class="card-head">
-          <h2>🔥 ข่าวเด่นตอนนี้</h2>
-          <button class="lk" style="margin:0" onclick="switchSection('news')">ดูทั้งหมด &rsaquo;</button>
+    <section class="card c-digest">
+      <div class="card-head" style="flex-wrap:wrap">
+        <div>
+          <h2>⚡ บรีฟสรุปจากเลขา</h2>
+          <span class="mu" style="font-size:11.5px" id="brief-time"></span>
         </div>
-        <div id="agent-top-news"></div>
-      </section>
-    </div>
-
-    <div>
-      <section class="card c-todo">
-        <div class="card-head">
-          <h2>✅ สิ่งที่ต้องทำวันนี้</h2>
-          <span class="mu" id="todo-progress">0/0</span>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <div class="seg" style="margin:0;padding:3px" id="brief-period-seg">
+            <button type="button" data-p="today" class="on" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('today')">Today</button>
+            <button type="button" data-p="week" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('week')">Weekly</button>
+            <button type="button" data-p="month" style="padding:4px 10px;font-size:12px" onclick="switchBriefPeriod('month')">Monthly</button>
+          </div>
+          <button class="btn sec" style="padding:5px 10px;font-size:12px;border-radius:999px" onclick="copyBriefingPattern()">📋 คัดลอก</button>
         </div>
-        <form style="display:flex;gap:6px;margin-bottom:10px" onsubmit="addTodoItem(event)">
-          <input class="f" id="todo-input" placeholder="เพิ่มงานวันนี้..." style="margin:0;padding:9px 12px">
-          <button class="btn" type="submit" style="padding:9px 14px">+</button>
-        </form>
-        <div id="todo-list"></div>
-      </section>
-
-      <section class="card c-watch">
-        <div class="card-head">
-          <h2>📊 ตลาดที่ติดตาม</h2>
-          <button class="lk" style="margin:0" onclick="switchSection('news');setNewsSubView('market')">ดูกราฟ &rsaquo;</button>
-        </div>
-        <div id="agent-watchlist"></div>
-      </section>
-    </div>
+      </div>
+      <div class="brief-section" id="brief-pattern-box" style="margin-bottom:0">
+        <ul class="brief-list" id="brief-news-list">
+          <li>กำลังดึงข้อมูลสรุปล่าสุด...</li>
+        </ul>
+      </div>
+    </section>
   </div>
 </main>
 
@@ -1424,16 +1366,6 @@ function renderMarketStrip(){
     </button>`;
   }).join("");
   $("market-strip").innerHTML = html;
-  $("agent-watchlist").innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">` +
-    ["SET","SPX","NVDA","BTC","XAU","GTH"].map(id=>{
-      const a = ASSETS.find(x=>x.id===id);
-      const up = (a.chg||0)>=0;
-      return `<div style="background:var(--bg);border-radius:14px;padding:10px 12px;cursor:pointer" onclick="switchSection('news');selectAssetFromStrip('${a.id}','${a.group}')">
-        <div style="display:flex;justify-content:space-between;font-size:12px"><b style="color:var(--mu)">${a.id}</b><span class="${up?"up":"dn"}" style="font-weight:700">${up?"+":""}${(a.chg||0).toFixed(2)}%</span></div>
-        <div style="font-size:16px;font-weight:800;margin-top:2px">${fmtPrice(a,a.p)}</div>
-        <div class="mu" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.n}</div>
-      </div>`;
-    }).join("") + `</div>`;
 }
 
 function selectAssetFromStrip(id, group){
@@ -1628,7 +1560,6 @@ function renderNewsSection(){
     : "";
 
   $("news-list-container").innerHTML = visible.length ? (visible.map(renderCard).join("") + moreBtn) : `<div class="empty">ไม่พบข่าวที่ตรงกับคำค้นหา ลองกด "ล้างตัวกรอง" เพื่อดูข่าวทั้งหมดนะครับ</div>`;
-  $("agent-top-news").innerHTML = newsItems.slice(0,4).map(renderCard).join("");
 }
 
 /* ==================== 3. MARKET CHART GENERATOR & VIEW ==================== */
@@ -1796,14 +1727,14 @@ function updateAgentWalletMetrics(){
   const st = getMonthFinanceStats();
   const uname = g("ag_username") || "";
   const hr = new Date().getHours();
-  const greet = hr<12 ? "สวัสดีตอนเช้าครับ" : hr<17 ? "สวัสดีตอนบ่ายครับ" : "สวัสดีตอนเย็นครับ";
-  $("agent-greeting").textContent = `${greet}${uname?" คุณ"+uname:""}! สรุปประจำวันของคุณ`;
-  $("agent-date-sub").textContent = `วัน${new Date().toLocaleDateString("th-TH",{weekday:"long",day:"numeric",month:"long",year:"numeric"})}`;
+  const greet = hr<12 ? "สวัสดีตอนเช้าค่ะ" : hr<17 ? "สวัสดีตอนบ่ายค่ะ" : "สวัสดีตอนเย็นค่ะ";
+  if($("agent-greeting")) $("agent-greeting").textContent = `${greet}${uname?" คุณ"+uname:""}`;
+  if($("agent-date-sub")) $("agent-date-sub").textContent = `· ${new Date().toLocaleDateString("th-TH",{weekday:"short",day:"numeric",month:"short"})}`;
 
   $("ag-bal").textContent = `฿${fmt(st.bal)}`;
-  $("ag-today-spent").textContent = `วันนี้ใช้ไป ฿${fmt(st.todayExp)} (เดือนนี้จ่าย ฿${fmt(st.exp)})`;
+  $("ag-today-spent").textContent = `วันนี้ใช้ไป ฿${fmt(st.todayExp)} · เดือนนี้จ่าย ฿${fmt(st.exp)}`;
   $("ag-daily-allowance").textContent = st.inc>0 ? `฿${fmt(st.dailyAllowance)} / วัน` : `ตั้งรายรับก่อน`;
-  $("ag-budget-status").textContent = st.inc>0 ? `เหลืออีก ${st.daysLeft} วันในเดือนนี้ (แผน ${RATIO.n}/${RATIO.w}/${RATIO.s})` : `แตะเพื่อเพิ่มรายรับใน Wallet`;
+  $("ag-budget-status").textContent = st.inc>0 ? `เหลืออีก ${st.daysLeft} วัน (แผน ${RATIO.n}/${RATIO.w}/${RATIO.s})` : `แตะเพื่อเพิ่มรายรับในกระเป๋าตังค์`;
   {
     const ring = $("ag-ring"), rt = $("ag-ring-t"), C = 2*Math.PI*18;
     const todayBudget = st.dailyAllowance + st.todayExp;
@@ -1817,19 +1748,6 @@ function updateAgentWalletMetrics(){
       rt.textContent = "–";
     }
   }
-
-  // Wallet insights list in Daily Briefing
-  const wList = [];
-  if(st.inc===0 && st.exp===0){
-    wList.push(`ยังไม่มีรายการบันทึกในเดือนนี้ คุณสามารถพิมพ์สั่งในช่องด้านบน เช่น <b>"เงินเดือน 35000"</b> หรือ <b>"กาแฟ 65"</b> ให้ AI บันทึกให้ทันที`);
-  }else{
-    wList.push(`เดือนนี้มีรายรับ <b>฿${fmt(st.inc)}</b> · รายจ่ายสะสม <b>฿${fmt(st.exp)}</b> · คงเหลือสุทธิ <b>฿${fmt(st.bal)}</b>`);
-    if(st.topCat) wList.push(`หมวดที่ใช้จ่ายสูงสุดเดือนนี้คือ <b>${st.topCat}</b> (฿${fmt(st.topCatAmt)})`);
-    if(st.inc>0){
-      wList.push(`เพื่อให้เป็นไปตามแผนออมเงิน ${RATIO.s}% คุณสามารถใช้จ่ายได้เฉลี่ยวันละ <b>฿${fmt(st.dailyAllowance)}</b> สำหรับ ${st.daysLeft} วันที่เหลือ`);
-    }
-  }
-  $("brief-wallet-list").innerHTML = wList.map(x=>`<li>${x}</li>`).join("");
 }
 
 let briefPeriod = "today";
@@ -2108,10 +2026,7 @@ function summarizePeriodInNews(period){
 
 async function generateAIDailyBriefing(useLLM){
   updateAgentWalletMetrics();
-  { const mm = marketMoodFromNews();
-    $("ag-market-mood").textContent = mm.label;
-    $("ag-news-count").textContent = `จากพาดหัว ${newsItems.length} ข่าว · บวก ${mm.b} · ระวัง ${mm.d}`; }
-  $("brief-time").textContent = "อัปเดตเมื่อ " + new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})+" น.";
+  if($("brief-time")) $("brief-time").textContent = "อัปเดตเมื่อ " + new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})+" น.";
 
   const rep = buildStructuredPatternData(briefPeriod);
   if(useLLM && g("ag_apikey")){
@@ -2605,14 +2520,14 @@ $("btn-speak-brief").onclick = ()=>{
   if(!("speechSynthesis" in window)){ toast("เบราว์เซอร์นี้ไม่รองรับระบบอ่านออกเสียง"); return; }
   if(window.speechSynthesis.speaking){
     window.speechSynthesis.cancel();
-    $("btn-speak-brief").textContent = "🔊 ให้เลขาอ่านสรุป";
+    $("btn-speak-brief").textContent = "🔊 ฟังสรุป";
     return;
   }
   const r = getProactiveRoutineData();
   const utter = new SpeechSynthesisUtterance(r.speech);
   utter.lang = "th-TH";
   utter.rate = 1.05;
-  utter.onend = ()=>{ $("btn-speak-brief").textContent = "🔊 ให้เลขาอ่านสรุป"; };
+  utter.onend = ()=>{ $("btn-speak-brief").textContent = "🔊 ฟังสรุป"; };
   $("btn-speak-brief").textContent = "⏹️ หยุดฟัง";
   window.speechSynthesis.speak(utter);
 };
@@ -2676,7 +2591,7 @@ function saveAIConfig(){
   if($("cfg-auto-brief").checked && "Notification" in window && Notification.permission === "default"){
     Notification.requestPermission().catch(()=>{});
   }
-  $("ai-engine-status").textContent = g("ag_apikey") ? "🟢 Gemini 2.5 Flash เชื่อมต่อแล้ว" : "Smart Secretary พร้อมดูแล";
+  if($("ai-engine-status")) $("ai-engine-status").textContent = g("ag_apikey") ? "🟢 Gemini 2.5 Flash เชื่อมต่อแล้ว" : "Smart Secretary พร้อมดูแล";
   $("ai-ov").classList.remove("on");
   updateAgentWalletMetrics();
   updateProactiveSecretary();
@@ -2690,7 +2605,7 @@ function saveAIConfig(){
     document.documentElement.dataset.theme = savedTheme;
     $("btn-theme").textContent = savedTheme==="dark" ? "☀️" : "🌙";
   }
-  if(g("ag_apikey")) $("ai-engine-status").textContent = "🟢 Gemini 2.5 Flash เชื่อมต่อแล้ว";
+  if(g("ag_apikey") && $("ai-engine-status")) $("ai-engine-status").textContent = "🟢 Gemini 2.5 Flash เชื่อมต่อแล้ว";
   applyRec();
   setType("e");
   render();
