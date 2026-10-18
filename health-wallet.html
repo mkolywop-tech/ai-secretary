@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10b981">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Health & Wallet Cowork">
+<link rel="manifest" href="manifest.json">
+<title>AI Health & Wallet Cowork · โค้ชสุขภาพ โภชนาการ & กระเป๋าตังค์</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#f4f7f5;--card:#ffffff;--tx:#14241b;--mu:#63766b;--ln:#dce6e0;
+  --inc:#059669;--exp:#e11d48;--warn:#d97706;--info:#0284c7;
+  --hero:linear-gradient(135deg,#059669 0%,#0d9488 55%,#0284c7 100%);--herotx:#fff;
+  --ac:#059669;--ac2:#ecfdf5;--actx:#fff;
+  --sh:0 4px 18px rgba(15,40,28,.06);--sh-lg:0 12px 28px rgba(5,150,105,.18);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1410;--card:#14201a;--tx:#e9f4ee;--mu:#8ba395;--ln:#22352b;
+    --inc:#34d399;--exp:#fb7185;--warn:#fbbf24;--info:#38bdf8;
+    --hero:linear-gradient(135deg,#047857 0%,#0f766e 55%,#0369a1 100%);--herotx:#fff;
+    --ac:#34d399;--ac2:#193126;--actx:#06120c;
+    --sh:0 4px 20px rgba(0,0,0,.35);--sh-lg:0 12px 30px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1410;--card:#14201a;--tx:#e9f4ee;--mu:#8ba395;--ln:#22352b;
+  --inc:#34d399;--exp:#fb7185;--warn:#fbbf24;--info:#38bdf8;
+  --hero:linear-gradient(135deg,#047857 0%,#0f766e 55%,#0369a1 100%);--herotx:#fff;
+  --ac:#34d399;--ac2:#193126;--actx:#06120c;
+  --sh:0 4px 20px rgba(0,0,0,.35);--sh-lg:0 12px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{
+  background:var(--bg);color:var(--tx);
+  font-family:"Inter","Noto Sans Thai",system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+}
+button,input,select,textarea{font-family:inherit;color:inherit}
+button{cursor:pointer}
+main.shell{max-width:1040px;margin:0 auto;padding:12px 16px 120px}
+main.shell.narrow{max-width:560px}
+
+/* Suite Top Bar */
+.suite-bar{
+  background:var(--card);border-bottom:1px solid var(--ln);padding:8px 16px;
+  font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.suite-links{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.suite-links::-webkit-scrollbar{display:none}
+.suite-links a{
+  text-decoration:none;padding:5px 11px;border-radius:999px;font-weight:600;
+  color:var(--mu);border:1px solid var(--ln);white-space:nowrap;transition:.15s;
+}
+.suite-links a.active{background:var(--ac2);color:var(--ac);border-color:var(--ac);font-weight:700}
+.suite-links a:hover{border-color:var(--ac);color:var(--ac)}
+
+.app-bar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  max-width:1040px;margin:0 auto;padding:14px 16px 4px;flex-wrap:wrap;
+}
+.brand-wrap{display:flex;align-items:center;gap:10px}
+.brand-logo{
+  width:40px;height:40px;border-radius:12px;background:var(--hero);color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:20px;box-shadow:var(--sh-lg);
+}
+.brand{font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1.15}
+.brand-sub{font-size:12px;color:var(--mu)}
+.mode-nav{
+  display:flex;gap:4px;background:var(--card);border:1px solid var(--ln);
+  border-radius:999px;padding:4px;box-shadow:var(--sh);
+}
+.mode-nav button{
+  border:0;background:none;color:var(--mu);padding:7px 14px;border-radius:999px;
+  font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;transition:.15s;
+}
+.mode-nav button.on{background:var(--ac);color:var(--actx)}
+.top-actions{display:flex;align-items:center;gap:8px}
+.ib{width:36px;height:36px;border-radius:50%;border:1px solid var(--ln);background:var(--card);color:var(--tx);display:grid;place-items:center;box-shadow:var(--sh)}
+
+/* Common UI */
+.card{background:var(--card);border:1px solid var(--ln);border-radius:22px;padding:18px 20px;margin-top:14px;box-shadow:var(--sh)}
+h2{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);font-weight:700;margin:0 0 12px}
+.mu{color:var(--mu);font-size:12px}
+.inc,.up{color:var(--inc)}.exp,.dn{color:var(--exp)}.warn{color:var(--warn)}
+.f{width:100%;padding:10px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--bg);font-size:14px;margin-bottom:8px;outline:none}
+.f:focus{border-color:var(--ac)}
+.btn{border:0;background:var(--ac);color:var(--actx);padding:10px 16px;border-radius:12px;font-weight:700;font-size:13.5px;transition:.15s}
+.btn.sec{background:var(--bg);color:var(--tx);border:1px solid var(--ln);font-weight:600}
+.btn.sec:hover{border-color:var(--ac);color:var(--ac)}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pills button{border:1px solid var(--ln);background:var(--bg);color:var(--mu);padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600}
+.pills button.on{background:var(--ac);color:var(--actx);border-color:var(--ac)}
+.seg{display:flex;background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:3px;margin-bottom:10px}
+.seg button{flex:1;border:0;background:none;padding:7px 10px;border-radius:9px;font-size:12.5px;font-weight:600;color:var(--mu)}
+.seg button.on{background:var(--card);color:var(--tx);box-shadow:0 2px 6px rgba(0,0,0,.07)}
+
+/* Banner & Command Box */
+.sec-banner{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--ac) 14%,var(--card)),var(--card));
+  border:1px solid color-mix(in srgb,var(--ac) 35%,var(--ln));border-radius:22px;padding:16px 18px;
+  margin-bottom:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;box-shadow:var(--sh)
+}
+.sec-avatar{width:46px;height:46px;border-radius:14px;background:var(--hero);color:#fff;display:grid;place-items:center;font-size:23px;flex:none;box-shadow:var(--sh-lg)}
+.cmd-box{background:var(--card);border:1.5px solid color-mix(in srgb,var(--ac) 40%,var(--ln));border-radius:22px;padding:12px 14px;box-shadow:var(--sh)}
+.cmd-row{display:flex;gap:8px;align-items:center}
+.cmd-ic{width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center;background:var(--hero);color:#fff}
+.cmd-input{flex:1;min-width:0;border:0;outline:none;background:transparent;font-size:14.5px;color:var(--tx)}
+.mic-btn{width:40px;height:40px;border-radius:12px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);display:grid;place-items:center;flex:none}
+.mic-btn.rec{background:var(--exp);color:#fff;border-color:var(--exp);animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(225,29,72,.5)}70%{box-shadow:0 0 0 10px rgba(225,29,72,0)}100%{box-shadow:0 0 0 0 rgba(225,29,72,0)}}
+.chip-group{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:10px 2px 2px;scrollbar-width:none}
+.chip-group::-webkit-scrollbar{display:none}
+.qchip{flex:none;border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;white-space:nowrap}
+.qchip.add{background:var(--ac2);color:var(--ac);border-color:color-mix(in srgb,var(--ac) 30%,transparent)}
+.qchip:hover{border-color:var(--ac);background:var(--ac);color:var(--actx)}
+
+/* Chat Feed */
+.chat-wrap{margin-top:12px;padding-top:10px;border-top:1px dashed var(--ln)}
+.chat-feed{max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px}
+.msg{padding:11px 14px;border-radius:16px;font-size:13.5px;line-height:1.55;max-width:92%}
+.msg.user{align-self:flex-end;background:var(--ac);color:var(--actx);border-bottom-right-radius:4px;font-weight:500}
+.msg.ai{align-self:flex-start;background:var(--bg);border:1px solid var(--ln);border-bottom-left-radius:4px}
+.tag-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:var(--ac2);color:var(--ac);margin-right:4px}
+
+/* KPI Grid (4 cards: Calories, Protein, Budget Today, Month Balance) */
+.kpis-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.kpi{background:var(--card);border:1px solid var(--ln);border-radius:20px;padding:15px 16px;box-shadow:var(--sh);display:flex;flex-direction:column;justify-content:space-between;gap:4px}
+.kpi.hero-kpi{background:var(--hero);color:#fff;border:0;box-shadow:var(--sh-lg)}
+.kpi.hero-kpi .kpi-l,.kpi.hero-kpi .kpi-s{color:rgba(255,255,255,.86)}
+.kpi-l{font-size:11.5px;color:var(--mu);font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.kpi-v{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.25}
+.kpi-s{font-size:11.5px;color:var(--mu)}
+.pbar{height:7px;background:var(--bg);border-radius:999px;overflow:hidden;margin-top:4px}
+.kpi.hero-kpi .pbar{background:rgba(255,255,255,.22)}
+.pbar>i{display:block;height:100%;background:var(--ac);border-radius:999px;transition:width .4s ease}
+.kpi.hero-kpi .pbar>i{background:#fff}
+
+/* Two Column Cowork Grid */
+.cowork-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;margin-top:14px;align-items:start}
+.cowork-grid .card{margin-top:0}
+
+/* Portion Estimator & Food Quick Adder */
+.portion-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 12px}
+.p-card{border:1.5px solid var(--ln);background:var(--bg);border-radius:14px;padding:8px 6px;text-align:center;cursor:pointer;transition:.15s}
+.p-card.on{border-color:var(--ac);background:var(--ac2);color:var(--ac);font-weight:700}
+.p-card .ic{font-size:20px;display:block}
+.p-card .nm{font-size:12px;display:block;margin-top:2px}
+.p-card .gm{font-size:10.5px;color:var(--mu);display:block}
+
+/* Habit Tracker */
+.habit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.habit-box{background:var(--bg);border:1px solid var(--ln);border-radius:16px;padding:12px}
+.habit-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;margin-bottom:6px}
+.habit-ctrl{display:flex;gap:6px;align-items:center;margin-top:8px}
+
+/* Meal Log Item */
+.meal-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--ln);gap:10px}
+.meal-row:last-child{border-bottom:0}
+.macro-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.mbadge{font-size:11px;padding:1px 7px;border-radius:6px;background:var(--bg);border:1px solid var(--ln);color:var(--mu);font-weight:600}
+
+/* Wallet Original Styles Preserved */
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px;flex-wrap:wrap}
+.mn{display:flex;align-items:center;background:var(--card);border:1px solid var(--ln);border-radius:999px;padding:3px;box-shadow:var(--sh)}
+.mn button{width:30px;height:30px;border:0;border-radius:50%;background:none;color:var(--tx);font-size:18px}
+.mn button:disabled{opacity:.25}
+.mn b{font-size:13px;font-weight:600;min-width:110px;text-align:center}
+.hero{background:var(--hero);color:var(--herotx);border-radius:26px;box-shadow:var(--sh-lg);padding:22px}
+.hr{display:flex;justify-content:space-between;align-items:center;min-height:26px}
+.lb{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;font-weight:600}
+.bal{font-size:40px;font-weight:800;letter-spacing:-.03em;margin:6px 0 18px}
+.two{display:flex;gap:10px}
+.two>div{cursor:pointer;flex:1;background:rgba(255,255,255,.16);border-radius:16px;padding:12px 14px;backdrop-filter:blur(6px)}
+.two b{display:block;font-size:18px;margin-top:4px}
+.back{border:0;background:rgba(255,255,255,.22);color:inherit;border-radius:999px;padding:5px 12px;font-size:12px;display:none}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin:14px 0 0;scrollbar-width:none}
+.tabs button{flex:none;border:1px solid var(--ln);background:var(--card);color:var(--mu);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600}
+.tabs button.on{background:var(--ac);color:var(--actx);border-color:var(--ac)}
+.ch{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.chev{display:inline-block;width:7px;height:7px;border-right:1.6px solid var(--mu);border-bottom:1.6px solid var(--mu);transform:rotate(45deg);transition:.2s;margin:0 4px 3px 0}
+.x{color:var(--mu);font-size:18px;line-height:1;padding:0 4px 0 12px}
+.card.cl .cbody{display:none}.card.cl .chev{transform:rotate(-45deg)}.card.cl h2{margin-bottom:0}
+.itw{border-bottom:1px solid var(--ln)}.itw:last-child{border-bottom:0}
+.it{display:flex;align-items:center;gap:10px;padding:12px 4px;cursor:pointer}
+.it .m{flex:1;min-width:0}
+.itw .dt{display:none;background:var(--bg);border-radius:14px;padding:12px;margin-bottom:10px;font-size:13px}
+.itw.open .dt{display:block}
+.dr{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--ln)}
+.dbtn{border:0;background:none;color:var(--exp);font-weight:700;padding:8px 4px 0;font-size:13px}
+.rowb{margin-bottom:10px}.rowb .t{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.bar{height:8px;background:var(--bg);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;border-radius:99px}
+.tip{font-size:12.5px;background:var(--bg);padding:8px 12px;border-radius:10px;margin-top:6px}
+.lg{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}.lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.two2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.qk{margin-top:12px}.ql{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;margin-bottom:6px}
+.qr{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.qr button{flex:none;border:1px solid var(--ln);background:var(--card);padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600}
+.sn{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sn button{border:1px solid var(--ln);background:var(--bg);width:28px;height:28px;border-radius:50%}
+
+/* Modals & FAB */
+.fab{position:fixed;right:20px;bottom:24px;width:56px;height:56px;border-radius:50%;border:0;background:var(--hero);color:#fff;box-shadow:var(--sh-lg);display:grid;place-items:center;z-index:40}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.48);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:60}
+.ov.on{display:flex}
+.sh{background:var(--card);width:100%;max-width:560px;border-radius:26px 26px 0 0;padding:16px 20px 28px;max-height:90vh;overflow-y:auto}
+.grab{width:40px;height:4px;background:var(--ln);border-radius:99px;margin:0 auto 12px}
+.dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cls{border:1px solid var(--ln);background:var(--bg);padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600}
+.amt{width:100%;font-size:32px;font-weight:800;text-align:center;border:0;background:var(--bg);border-radius:16px;padding:12px;margin-bottom:12px;outline:none}
+.row{display:none;gap:6px}.row.on{display:flex}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#14241b;color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;display:none;gap:12px;align-items:center;z-index:80;box-shadow:var(--sh-lg)}
+.toast button{border:0;background:none;color:#34d399;font-weight:700}
+.lk{border:0;background:none;color:var(--ac);font-weight:600;padding:0;font-size:12.5px;text-decoration:underline}
+
+@media(max-width:820px){
+  .kpis-4{grid-template-columns:1fr 1fr}
+  .cowork-grid{grid-template-columns:1fr}
+  .portion-cards{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- Suite Navigation Bar (Switch between the 3 Standalone Cowork Apps) -->
+<div class="suite-bar">
+  <span style="font-weight:700;color:var(--mu)">🤖 AI Cowork Suite (3 แอปแยกอิสระ):</span>
+  <div class="suite-links">
+    <a href="health-wallet.html" class="active">🥗💰 1. Health &amp; Wallet Cowork</a>
+    <a href="productivity-coach.html">⚡ 2. Productivity &amp; Habit Cowork</a>
+    <a href="ceo-business.html">🧠📈 3. AI CEO &amp; Market Strategist</a>
+    <a href="index.html" title="หน้าต้นฉบับ">🏠 หน้าหลักเดิม</a>
+  </div>
+</div>
+
+<header class="app-bar">
+  <div class="brand-wrap">
+    <div class="brand-logo">🥗</div>
+    <div>
+      <div class="brand">AI Health &amp; Wallet Cowork</div>
+      <div class="brand-sub">โค้ชสุขภาพ โภชนาการ ประเมินน้ำหนักอาหาร &amp; กระเป๋าตังค์ในที่เดียว</div>
+    </div>
+  </div>
+  <nav class="mode-nav" aria-label="เมนูหลัก">
+    <button id="tab-cowork" class="on" onclick="switchTab('cowork')">🥗💰 โค้ชสุขภาพ &amp; การเงิน</button>
+    <button id="tab-mealdb" onclick="switchTab('mealdb')">⚖️ ประเมินอาหาร &amp; เมนูประหยัด</button>
+    <button id="tab-wallet" onclick="switchTab('wallet')">👛 กระเป๋าตังค์เต็มรูปแบบ</button>
+  </nav>
+  <div class="top-actions">
+    <button class="ib" id="btn-goal-cfg" title="ตั้งเป้าหมายร่างกาย TDEE & น้ำหนัก" onclick="openProfileModal()">🎯</button>
+    <button class="ib" id="btn-theme" title="สลับโหมดมืด/สว่าง">🌙</button>
+    <button class="ib" id="btn-ai-cfg" title="ตั้งค่า Gemini API & Telegram">⚙️</button>
+  </div>
+</header>
+
+<!-- ==================== TAB 1: HEALTH x WALLET COWORK HUB ==================== -->
+<main class="shell" id="sec-cowork">
+  <!-- Proactive Coach Banner -->
+  <div class="sec-banner">
+    <div style="display:flex;gap:12px;align-items:flex-start;flex:1;min-width:240px;width:100%">
+      <div class="sec-avatar">🥗</div>
+      <div style="min-width:0;flex:1">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div>
+            <b id="coach-greeting" style="font-size:16px">สวัสดีครับ! โค้ชสุขภาพ &amp; CFO พร้อมดูแลคุณแล้ว</b>
+            <span class="mu" id="coach-goal-badge" style="margin-left:6px"></span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <button class="btn sec" style="padding:5px 10px;font-size:12px;border-radius:999px" onclick="speakCoachBrief()">🔊 ฟังโค้ชสรุป</button>
+            <button class="btn sec" style="padding:5px 10px;font-size:12px;border-radius:999px" onclick="pushHealthWalletTelegram()">📲 ส่ง Telegram</button>
+            <button class="btn sec" style="padding:5px 10px;font-size:12px;border-radius:999px" onclick="openProfileModal()">🎯 ตั้งเป้า TDEE</button>
+          </div>
+        </div>
+        <div id="coach-proactive-msg" style="font-size:13.5px;margin-top:6px;line-height:1.55">กำลังคำนวณสมดุลแคลอรี่ โปรตีน และงบรายวันให้คุณ...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1-Click Cowork Command Bar -->
+  <div class="cmd-box">
+    <form class="cmd-row" onsubmit="handleCoworkCommand(event)">
+      <span class="cmd-ic">✦</span>
+      <input class="cmd-input" id="cmd-input" placeholder="สั่งคำเดียวได้ครบ! เช่น “ข้าวมันไก่พิเศษ 250 กรัม 65 บาท”, “อกไก่ปั่น 150g 45 บาท”, “แนะนำมื้อเย็นไม่เกิน 80 บาท”" autocomplete="off">
+      <button type="button" class="mic-btn" id="btn-mic" onclick="toggleVoice()" title="สั่งด้วยเสียง">🎙️</button>
+      <button type="submit" class="btn">ส่งคำสั่ง</button>
+    </form>
+    <div class="chip-group">
+      <button type="button" class="qchip add" onclick="prefillCmd('ข้าวมันไก่ 200 กรัม 60 บาท')">🍗 ข้าวมันไก่ 200g 60฿</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('กะเพราอกไก่ไข่ดาว 250 กรัม 65 บาท')">🍳 กะเพราอกไก่ไข่ดาว 250g 65฿</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('เวย์โปรตีน 1 สกู๊ป 45 บาท')">🥤 เวย์โปรตีน 45฿</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('อเมริกาโน่ไม่หวาน 55 บาท')">☕ อเมริกาโน่ไม่หวาน 55฿</button>
+      <button type="button" class="qchip" onclick="quickPrompt('แนะนำมื้อถัดไปที่โปรตีนสูงและอยู่ในงบวันนี้')">💡 แนะนำมื้อถัดไปตามงบ+แคลที่เหลือ</button>
+      <button type="button" class="qchip" onclick="quickPrompt('วิเคราะห์สมดุลสุขภาพและการเงินวันนี้ให้หน่อย')">📊 วิเคราะห์สุขภาพ x การเงิน</button>
+    </div>
+    <div class="chat-wrap" id="chat-wrap" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span class="mu" style="font-weight:700">🤝 AI Health &amp; CFO Cowork Log</span>
+        <button class="lk" onclick="clearChat()">ล้างแชท</button>
+      </div>
+      <div class="chat-feed" id="chat-feed"></div>
+    </div>
+  </div>
+
+  <!-- 4 Core KPIs: Calories, Protein, Daily Budget, Month Balance -->
+  <div class="kpis-4">
+    <div class="kpi hero-kpi" onclick="openProfileModal()" style="cursor:pointer">
+      <div class="kpi-l"><span>🔥 แคลอรี่วันนี้</span><span id="kpi-cal-pct">0%</span></div>
+      <div class="kpi-v" id="kpi-cal-val">0 / 2,000</div>
+      <div class="pbar"><i id="kpi-cal-bar" style="width:0%"></i></div>
+      <div class="kpi-s" id="kpi-cal-rem">เหลือโควตา 2,000 kcal</div>
+    </div>
+    <div class="kpi" onclick="openProfileModal()" style="cursor:pointer">
+      <div class="kpi-l"><span>💪 โปรตีน &amp; สารอาหาร</span><span id="kpi-pro-pct" class="inc">0%</span></div>
+      <div class="kpi-v" id="kpi-pro-val">0 / 120g</div>
+      <div class="pbar"><i id="kpi-pro-bar" style="width:0%"></i></div>
+      <div class="kpi-s" id="kpi-macro-sub">คาร์บ 0g · ไขมัน 0g</div>
+    </div>
+    <div class="kpi" onclick="switchTab('wallet')" style="cursor:pointer">
+      <div class="kpi-l"><span>💸 งบกิน/ใช้วันนี้</span><span id="kpi-daybudget-badge">50/30/20</span></div>
+      <div class="kpi-v" id="kpi-daybudget-val">฿0 / ฿0</div>
+      <div class="pbar"><i id="kpi-daybudget-bar" style="width:0%"></i></div>
+      <div class="kpi-s" id="kpi-daybudget-sub">ค่าอาหารวันนี้ ฿0</div>
+    </div>
+    <div class="kpi" onclick="switchTab('wallet')" style="cursor:pointer">
+      <div class="kpi-l"><span>🏦 เงินคงเหลือเดือนนี้</span><span>แตะดูกราฟ &rsaquo;</span></div>
+      <div class="kpi-v" id="kpi-bal-val">฿0</div>
+      <div class="kpi-s" id="kpi-bal-sub">รายรับ ฿0 · จ่าย ฿0</div>
+    </div>
+  </div>
+
+  <!-- Main Cowork Two-Column Workspace -->
+  <div class="cowork-grid">
+    <!-- Left Column: Today's Meal + Expense Log & Quick Portion Recorder -->
+    <div>
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+          <h2 style="margin:0">🍽️ บันทึกมื้ออาหาร + น้ำหนักกรัม + ตัดเงินอัตโนมัติ</h2>
+          <button class="lk" onclick="switchTab('mealdb')">ดูตารางเทียบน้ำหนักอาหาร &rsaquo;</button>
+        </div>
+        <form onsubmit="submitQuickMealForm(event)">
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:8px">
+            <div>
+              <label class="mu">ชื่อเมนูอาหาร / เครื่องดื่ม</label>
+              <input class="f" id="qm-name" placeholder="เช่น ข้าวมันไก่, อกไก่, กาแฟ" required oninput="previewMealEstimate()">
+            </div>
+            <div>
+              <label class="mu">น้ำหนัก/ปริมาณ (กรัม)</label>
+              <input class="f" id="qm-grams" type="number" value="250" min="10" max="2000" oninput="previewMealEstimate()">
+            </div>
+            <div>
+              <label class="mu">ราคา (บาท)</label>
+              <input class="f" id="qm-price" type="number" placeholder="0 = ทำเอง/ฟรี" min="0" step="any">
+            </div>
+          </div>
+
+          <div class="mu" style="font-weight:600;margin-top:2px">กะปริมาณง่ายๆ ด้วยสายตา (แตะเลือกน้ำหนักอัตโนมัติ):</div>
+          <div class="portion-cards" id="portion-selector">
+            <div class="p-card" onclick="selectPortionPreset(100, this)">
+              <span class="ic">🤜</span><span class="nm">1 กำมือ / ชิ้นเล็ก</span><span class="gm">~100 กรัม (0.5x)</span>
+            </div>
+            <div class="p-card" onclick="selectPortionPreset(180, this)">
+              <span class="ic">🫱</span><span class="nm">1 ฝ่ามือ / ถ้วยเล็ก</span><span class="gm">~180 กรัม (0.8x)</span>
+            </div>
+            <div class="p-card on" onclick="selectPortionPreset(250, this)">
+              <span class="ic">🍽️</span><span class="nm">1 จานปกติ</span><span class="gm">~250 กรัม (1.0x)</span>
+            </div>
+            <div class="p-card" onclick="selectPortionPreset(380, this)">
+              <span class="ic">🍲</span><span class="nm">จานพิเศษ / ชามใหญ่</span><span class="gm">~380 กรัม (1.5x)</span>
+            </div>
+          </div>
+
+          <div id="qm-preview" style="background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:9px 12px;font-size:12.5px;margin-bottom:10px">
+            ⚖️ พิมพ์ชื่ออาหารเพื่อดูการประเมินแคลอรี่ โปรตีน คาร์บ และไขมันตามน้ำหนักกรัม...
+          </div>
+          <button type="submit" class="btn" style="width:100%">✅ บันทึกมื้ออาหาร + ตัดเงินในกระเป๋าตังค์ทันที</button>
+        </form>
+      </section>
+
+      <section class="card" style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h2 style="margin:0">🧾 รายการอาหาร &amp; ค่าใช้จ่ายวันนี้</h2>
+          <span class="mu" id="today-meal-count">0 มื้อ</span>
+        </div>
+        <div id="today-meal-list"></div>
+      </section>
+    </div>
+
+    <!-- Right Column: Daily Habits + Smart Budget-Friendly Meal Coach -->
+    <div>
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h2 style="margin:0">⚡ ติดตามนิสัยสุขภาพรายวัน (Daily Habits)</h2>
+          <span class="mu" id="habit-score-lbl">คะแนนวันนี้ 0/4</span>
+        </div>
+        <div class="habit-grid">
+          <!-- Water -->
+          <div class="habit-box">
+            <div class="habit-head"><span>💧 ดื่มน้ำ</span><span id="hb-water-txt" class="inc">0 / 8 แก้ว</span></div>
+            <div class="pbar"><i id="hb-water-bar" style="width:0%"></i></div>
+            <div class="habit-ctrl">
+              <button class="btn sec" style="padding:5px 10px;font-size:12px;flex:1" onclick="adjustHabit('water',-1)">-</button>
+              <button class="btn" style="padding:5px 10px;font-size:12px;flex:2" onclick="adjustHabit('water',1)">+1 แก้ว (250ml)</button>
+            </div>
+          </div>
+          <!-- Workout / Steps -->
+          <div class="habit-box">
+            <div class="habit-head"><span>🏃 ออกกำลัง/เผาผลาญ</span><span id="hb-burn-txt" class="inc">0 kcal</span></div>
+            <div class="pbar"><i id="hb-burn-bar" style="width:0%"></i></div>
+            <div class="habit-ctrl">
+              <button class="btn sec" style="padding:5px 8px;font-size:11.5px;flex:1" onclick="adjustHabit('burn',150)">+เดิน/วิ่ง 150</button>
+              <button class="btn" style="padding:5px 8px;font-size:11.5px;flex:1" onclick="adjustHabit('burn',300)">+เวท/คาร์ดิโอ 300</button>
+            </div>
+          </div>
+          <!-- Sleep -->
+          <div class="habit-box">
+            <div class="habit-head"><span>😴 ชั่วโมงการนอน</span><span id="hb-sleep-txt">0 ชม.</span></div>
+            <div class="habit-ctrl">
+              <input class="f" id="hb-sleep-inp" type="number" step="0.5" min="0" max="16" placeholder="ชม. นอน" style="margin:0;padding:6px 8px;font-size:13px" onchange="setHabitDirect('sleep',this.value)">
+              <button class="btn sec" style="padding:6px 10px;font-size:12px" onclick="setHabitDirect('sleep',7.5)">7.5 ชม.</button>
+            </div>
+          </div>
+          <!-- Body Weight -->
+          <div class="habit-box">
+            <div class="habit-head"><span>⚖️ น้ำหนักตัววันนี้</span><span id="hb-weight-txt">– กก.</span></div>
+            <div class="habit-ctrl">
+              <input class="f" id="hb-weight-inp" type="number" step="0.1" min="25" max="250" placeholder="กก." style="margin:0;padding:6px 8px;font-size:13px" onchange="setHabitDirect('weight',this.value)">
+              <button class="btn sec" style="padding:6px 10px;font-size:12px" onclick="openProfileModal()">เป้า</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Health x CFO Meal Recommender -->
+      <section class="card" style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <h2 style="margin:0">🥗💰 เมนูแนะนำตอนนี้ (คำนวณจากงบ + แคลที่เหลือจริง)</h2>
+          <button class="lk" onclick="renderSmartMealRecommendations()">สุ่มใหม่ 🔄</button>
+        </div>
+        <div class="mu" id="smart-rec-context" style="margin-bottom:10px"></div>
+        <div id="smart-rec-list"></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ==================== TAB 2: PORTION GUIDE & THAI FOOD DATABASE ==================== -->
+<main class="shell" id="sec-mealdb" style="display:none">
+  <div class="top">
+    <div>
+      <div class="brand" style="font-size:21px">⚖️ คลังโภชนาการอาหารไทย &amp; ตัวช่วยกะน้ำหนักกรัม</div>
+      <div class="mu">เลือกเมนูอาหาร ปรับน้ำหนักกรัมตามจริง แล้วกดบันทึกทั้งแคลอรี่และรายจ่ายในคลิกเดียว</div>
+    </div>
+    <input class="f" id="food-db-search" type="search" placeholder="ค้นหาเมนู เช่น อกไก่, ข้าวมันไก่, ส้มตำ, เวย์..." style="max-width:280px;margin:0" oninput="renderFoodDatabase()">
+  </div>
+
+  <section class="card">
+    <h2>🖐️ ภาษามือช่วยกะน้ำหนักอาหาร (เมื่อไม่มีตาชั่งดิจิทัล)</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;font-size:13px">
+      <div style="background:var(--bg);padding:12px;border-radius:14px;border:1px solid var(--ln)">
+        <b>✋ เนื้อสัตว์ 1 ฝ่ามือ (ไม่รวมนิ้ว)</b><br>
+        <span class="mu">เท่ากับเนื้อสัตว์สุกประมาณ <b>100 - 120 กรัม</b> ได้โปรตีนราว <b>22 - 28 กรัม</b></span>
+      </div>
+      <div style="background:var(--bg);padding:12px;border-radius:14px;border:1px solid var(--ln)">
+        <b>✊ ข้าว/แป้ง 1 กำปั้น</b><br>
+        <span class="mu">เท่ากับข้าวสวยประมาณ <b>100 - 130 กรัม (1.5 ทัพพี)</b> พลังงานราว <b>130 - 160 kcal</b></span>
+      </div>
+      <div style="background:var(--bg);padding:12px;border-radius:14px;border:1px solid var(--ln)">
+        <b>👍 น้ำมัน/ไขมัน 1 นิ้วโป้ง</b><br>
+        <span class="mu">เท่ากับน้ำมันหรือเนยถั่ว <b>1 ช้อนโต๊ะ (~14 กรัม)</b> พลังงานราว <b>120 kcal</b></span>
+      </div>
+      <div style="background:var(--bg);padding:12px;border-radius:14px;border:1px solid var(--ln)">
+        <b>🍽️ อาหารตามสั่ง 1 จานมาตรฐาน</b><br>
+        <span class="mu">น้ำหนักรวมข้าวและกับข้าวประมาณ <b>250 - 300 กรัม</b> (พิเศษ ~350-400 กรัม)</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>🍱 เลือกเมนูยอดฮิต (กดปุ่ม "+ บันทึก" เพื่อตัดเงินและนับแคลทันที)</h2>
+    <div id="food-db-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px"></div>
+  </section>
+</main>
+
+<!-- ==================== TAB 3: FULL WALLET (100% PRESERVED & SYNCED) ==================== -->
+<main class="shell narrow" id="sec-wallet" style="display:none">
+  <header class="top">
+    <div class="brand">Wallet · รายรับรายจ่ายทั้งหมด</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="mn">
+        <button id="pv" aria-label="Previous month">&#8249;</button>
+        <b id="mt"></b>
+        <button id="nx" aria-label="Next month">&#8250;</button>
+      </div>
+      <button class="ib" id="mo" aria-label="More">⋯</button>
+    </div>
+  </header>
+  <section class="hero">
+    <div class="hr"><span class="lb">Balance คงเหลือสุทธิ</span><button class="back" id="back">กลับเดือนปัจจุบัน</button></div>
+    <div class="bal" id="bal">0</div>
+    <div class="two">
+      <div data-d="i"><span class="lb">Income รายรับ &rsaquo;</span><b id="inc">0</b></div>
+      <div data-d="e"><span class="lb">Expense รายจ่าย &rsaquo;</span><b id="exp">0</b></div>
+    </div>
+  </section>
+  <nav class="tabs" id="vm"></nav>
+  <div class="qk" id="qk"><div class="ql">Quick add</div><div class="qr" id="qr"></div></div>
+  <section class="card" id="sc"><h2 class="ch"><span>Summary</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><div class="sn"><button id="sp">&#8249;</button><span id="sl"></span><button id="sx">&#8250;</button></div><div class="seg" id="sg"><button data-m="day">Day</button><button data-m="week">Week</button><button data-m="month">Month</button></div><div class="two2"><div class="sm"><span class="mu">Income</span><b class="inc" id="si"></b></div><div class="sm"><span class="mu">Expense</span><b id="se"></b></div></div><div id="sr"></div></div></section>
+  <section class="card" id="ic"><h2 class="ch"><span>Insights (แผนงบ 50/30/20)</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><div id="ib"></div></div></section>
+  <section class="card" id="cc"><h2 class="ch"><span>Spending by category</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><div id="cats"></div></div></section>
+  <section class="card" id="tc"><h2 class="ch"><span>6-month trend</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><div id="tr"></div></div></section>
+  <section class="card" id="lc"><h2 class="ch"><span>Activity รายการทั้งหมด</span><span><i class="chev"></i><span class="x" data-x="1">&times;</span></span></h2><div class="cbody"><input class="f" id="q" placeholder="ค้นหารายการ..." style="margin-bottom:4px"><div id="list"></div></div></section>
+</main>
+
+<!-- Floating Add Transaction Button -->
+<button class="fab" id="fab" title="เพิ่มรายรับ-รายจ่าย">+</button>
+
+<!-- Wallet Detail & Backup Modals -->
+<div class="ov" id="dv"><div class="sh"><div class="grab"></div><div class="dh"><div><div class="mu" id="dk"></div><div style="font-size:24px;font-weight:800" id="dtot"></div></div><button class="cls" id="dx">Close</button></div><div id="dl"></div></div></div>
+<div class="toast" id="ts"><span>Deleted</span><button id="ud">Undo</button></div>
+<div class="ov" id="mv"><div class="sh"><div class="grab"></div><div class="dh"><b>สำรองข้อมูล &amp; รายการประจำเดือน</b><button class="cls" id="mx">ปิด</button></div><div><h2>Recurring</h2><div id="rl"></div><h2 style="margin-top:20px">Backup JSON</h2><textarea class="f" id="bk" rows="3" placeholder="วางโค้ด Backup ที่นี่เพื่อ Import"></textarea><div class="row on"><button class="btn" id="bx" style="flex:1">คัดลอก Backup</button><button class="btn sec" id="bm" style="flex:1">Import</button></div><div class="mu" id="bs" style="margin-top:8px"></div></div></div></div>
+
+<!-- Add/Edit Wallet Transaction Modal -->
+<div class="ov" id="ov"><div class="sh">
+  <div class="grab"></div>
+  <div class="seg"><button id="be" class="on">Expense รายจ่าย</button><button id="bi">Income รายรับ</button></div>
+  <input class="amt" id="amt" type="number" inputmode="decimal" placeholder="0.00">
+  <div class="pills" id="chips"></div>
+  <div class="row" id="ed"><input class="f" id="cn" placeholder="ชื่อหมวดใหม่" maxlength="16"><button class="btn sec" id="ct" style="margin-bottom:8px">Wants</button><button class="btn" id="cs" style="margin-bottom:8px">Add</button></div>
+  <input class="f" id="dt" type="date">
+  <input class="f" id="note" placeholder="รายละเอียด (เช่น ข้าวมันไก่ 250g)">
+  <div class="pills"><button id="rp">Repeat monthly</button></div>
+  <button class="btn" id="sv" style="width:100%;padding:13px">บันทึกรายการ</button>
+</div></div>
+
+<!-- Health Goal & TDEE Profile Modal -->
+<div class="ov" id="prof-ov"><div class="sh">
+  <div class="grab"></div>
+  <div class="dh">
+    <div>
+      <b style="font-size:17px">🎯 ตั้งค่าเป้าหมายสุขภาพ &amp; คำนวณ TDEE</b>
+      <div class="mu">โค้ชจะคำนวณแคลอรี่และโปรตีนที่เหมาะสมต่อวันให้อัตโนมัติ</div>
+    </div>
+    <button class="cls" onclick="$('prof-ov').classList.remove('on')">ปิด</button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div>
+      <label class="mu">เพศ</label>
+      <select class="f" id="pf-gender" onchange="recalcProfilePreview()">
+        <option value="m">ชาย</option>
+        <option value="f">หญิง</option>
+      </select>
+    </div>
+    <div>
+      <label class="mu">อายุ (ปี)</label>
+      <input class="f" id="pf-age" type="number" value="28" oninput="recalcProfilePreview()">
+    </div>
+    <div>
+      <label class="mu">น้ำหนักปัจจุบัน (กก.)</label>
+      <input class="f" id="pf-weight" type="number" step="0.1" value="68" oninput="recalcProfilePreview()">
+    </div>
+    <div>
+      <label class="mu">ส่วนสูง (ซม.)</label>
+      <input class="f" id="pf-height" type="number" value="172" oninput="recalcProfilePreview()">
+    </div>
+    <div>
+      <label class="mu">น้ำหนักเป้าหมาย (กก.)</label>
+      <input class="f" id="pf-target-w" type="number" step="0.1" value="63" oninput="recalcProfilePreview()">
+    </div>
+    <div>
+      <label class="mu">ระดับกิจกรรมในแต่ละวัน</label>
+      <select class="f" id="pf-act" onchange="recalcProfilePreview()">
+        <option value="1.2">นั่งทำงานเป็นหลัก (ไม่ออกกำลัง)</option>
+        <option value="1.375" selected>ออกกำลังกายเบาๆ 1-3 วัน/สัปดาห์</option>
+        <option value="1.55">ออกกำลังกายปานกลาง 3-5 วัน/สัปดาห์</option>
+        <option value="1.725">ออกกำลังกายหนัก 6-7 วัน/สัปดาห์</option>
+      </select>
+    </div>
+  </div>
+  <label class="mu">เป้าหมายหลักของคุณ</label>
+  <select class="f" id="pf-goal" onchange="recalcProfilePreview()">
+    <option value="cut">🔥 ลดไขมัน / ลดน้ำหนัก (Calorie Deficit -450 kcal)</option>
+    <option value="lean" selected>✨ ลีนหุ่นชัด รักษากล้ามเนื้อ (Slight Deficit -200 kcal + โปรตีนสูง)</option>
+    <option value="maint">⚖️ รักษาสุขภาพและน้ำหนักตัว (Maintenance TDEE)</option>
+    <option value="bulk">💪 เพิ่มกล้ามเนื้อ (Lean Bulk +300 kcal + โปรตีนสูง)</option>
+  </select>
+  <div id="pf-calc-box" style="background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:12px;margin:8px 0 12px;font-size:13px"></div>
+  <button class="btn" style="width:100%;padding:13px" onclick="saveHealthProfile()">✅ บันทึกเป้าหมายสุขภาพ</button>
+</div></div>
+
+<!-- AI & Telegram Settings Modal -->
+<div class="ov" id="ai-ov"><div class="sh">
+  <div class="grab"></div>
+  <div class="dh">
+    <div>
+      <b style="font-size:17px">⚙️ ตั้งค่า AI โค้ชสุขภาพ &amp; Telegram</b>
+      <div class="mu">ใช้ฐานข้อมูลเดียวกับทุกแอปในชุด Cowork Suite</div>
+    </div>
+    <button class="cls" onclick="$('ai-ov').classList.remove('on')">ปิด</button>
+  </div>
+  <label class="mu">ชื่อของคุณ (ให้โค้ชเรียก)</label>
+  <input class="f" id="cfg-username" placeholder="เช่น บอส, คุณภูมิ">
+  <label class="mu">Gemini API Key (สำหรับให้ AI วิเคราะห์เชิงลึก)</label>
+  <input class="f" id="cfg-apikey" type="password" placeholder="AIzaSy...">
+  <label class="mu">Telegram Bot Token</label>
+  <input class="f" id="cfg-tg-token" type="password" placeholder="123456:ABC-DEF...">
+  <label class="mu">Telegram Chat ID</label>
+  <input class="f" id="cfg-tg-chatid" placeholder="เช่น 987654321">
+  <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin:8px 0 14px;cursor:pointer">
+    <input type="checkbox" id="cfg-voice-reply" style="width:16px;height:16px;accent-color:var(--ac)">
+    <span>ให้โค้ชพูดตอบกลับด้วยเสียงอัตโนมัติ</span>
+  </label>
+  <button class="btn" style="width:100%;padding:13px" onclick="saveAIConfig()">✅ บันทึกการตั้งค่า</button>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString("en-US",{maximumFractionDigits:2});
+const MN=["January","February","March","April","May","June","July","August","September","October","November","December"],MS=MN.map(m=>m.slice(0,3));
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const today=iso(new Date());
+const g=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}};
+const ls=(k,v)=>{try{localStorage.setItem(k,typeof v=="string"?v:JSON.stringify(v))}catch(e){}};
+
+/* ==================== 1. THAI FOOD & NUTRITION DATABASE (PER BASE PORTION IN GRAMS) ==================== */
+const THAI_FOOD_DB = [
+  {id:"f1", name:"อกไก่ต้ม/ย่างล้วน", aliases:["อกไก่","ไก่อบ","ไก่ย่าง"], baseG:150, kcal:248, pro:46, carb:0, fat:5, price:45, cat:"Lunch", tags:["high-protein","low-calorie","budget"]},
+  {id:"f2", name:"ข้าวมันไก่ต้ม", aliases:["ข้าวมันไก่"], baseG:250, kcal:580, pro:26, carb:65, fat:23, price:60, cat:"Lunch", tags:["normal"]},
+  {id:"f3", name:"ข้าวมันไก่อกไม่หนัง (ลีน)", aliases:["ข้าวมันไก่ไม่หนัง","ข้าวอกไก่"], baseG:250, kcal:440, pro:32, carb:58, fat:8, price:60, cat:"Lunch", tags:["high-protein","lean","budget"]},
+  {id:"f4", name:"ข้าวกะเพราอกไก่ + ไข่ดาว", aliases:["กะเพราไก่ไข่ดาว","กะเพราอกไก่","กระเพรา"], baseG:280, kcal:610, pro:34, carb:62, fat:24, price:65, cat:"Lunch", tags:["high-protein"]},
+  {id:"f5", name:"ข้าวกะเพราหมูสับ", aliases:["กะเพราหมู","กระเพราหมู"], baseG:260, kcal:650, pro:22, carb:64, fat:32, price:60, cat:"Lunch", tags:["normal"]},
+  {id:"f6", name:"ข้าวขาหมู", aliases:["ขาหมู"], baseG:280, kcal:690, pro:28, carb:62, fat:35, price:65, cat:"Lunch", tags:["high-cal"]},
+  {id:"f7", name:"ข้าวไข่เจียวหมูสับ", aliases:["ข้าวไข่เจียว","ไข่เจียว"], baseG:240, kcal:590, pro:18, carb:58, fat:31, price:45, cat:"Breakfast", tags:["budget"]},
+  {id:"f8", name:"ไข่ต้ม 2 ฟอง", aliases:["ไข่ต้ม","ไข่ลวก"], baseG:100, kcal:155, pro:13, carb:1, fat:11, price:20, cat:"Breakfast", tags:["high-protein","low-calorie","budget"]},
+  {id:"f9", name:"โจ๊กหมูใส่ไข่", aliases:["โจ๊กหมู","โจ๊ก"], baseG:300, kcal:360, pro:18, carb:46, fat:11, price:45, cat:"Breakfast", tags:["low-calorie","budget"]},
+  {id:"f10", name:"เกาเหลาหมูตุ๋น/ลูกชิ้นไม่ใส่กระเทียมเจียว", aliases:["เกาเหลา","ก๋วยเตี๋ยวน้ำใส"], baseG:320, kcal:290, pro:26, carb:14, fat:13, price:60, cat:"Dinner", tags:["high-protein","low-calorie","budget"]},
+  {id:"f11", name:"สุกี้น้ำอกไก่/ทะเล", aliases:["สุกี้น้ำ","สุกี้แห้ง","สุกี้"], baseG:350, kcal:340, pro:28, carb:38, fat:8, price:60, cat:"Dinner", tags:["high-protein","low-calorie","budget"]},
+  {id:"f12", name:"ส้มตำไทย + ไก่ย่าง 1 ชิ้น", aliases:["ส้มตำ","ส้มตำไก่ย่าง","ลาบไก่"], baseG:280, kcal:390, pro:32, carb:36, fat:12, price:80, cat:"Dinner", tags:["high-protein","low-calorie"]},
+  {id:"f13", name:"สลัดอกไก่ไข่ออนเซ็น", aliases:["สลัดอกไก่","สลัดผัก","สลัด"], baseG:260, kcal:310, pro:30, carb:18, fat:12, price:75, cat:"Dinner", tags:["high-protein","low-calorie"]},
+  {id:"f14", name:"ข้าวผัดหมู/ไก่", aliases:["ข้าวผัด"], baseG:260, kcal:570, pro:21, carb:68, fat:22, price:60, cat:"Lunch", tags:["normal"]},
+  {id:"f15", name:"ผัดไทยกุ้งสด", aliases:["ผัดไทย"], baseG:280, kcal:620, pro:22, carb:74, fat:25, price:70, cat:"Lunch", tags:["normal"]},
+  {id:"f16", name:"ข้าวคลุกกะปิ / ข้าวคลุกน้ำพริกปลาทู", aliases:["น้ำพริกปลาทู","ปลาทู","ข้าวคลุกกะปิ"], baseG:260, kcal:460, pro:25, carb:56, fat:14, price:55, cat:"Dinner", tags:["high-protein","budget"]},
+  {id:"f17", name:"เวย์โปรตีน / โปรตีนเชค 1 ขวด", aliases:["เวย์","เวย์โปรตีน","โปรตีน","นมโปรตีน","meiji high protein"], baseG:300, kcal:180, pro:28, carb:10, fat:3, price:49, cat:"Snacks & drinks", tags:["high-protein","low-calorie","budget"]},
+  {id:"f18", name:"อเมริกาโน่เย็น (ไม่หวาน)", aliases:["อเมริกาโน่","กาแฟดำ","เอสเพรสโซ่ไม่หวาน"], baseG:250, kcal:15, pro:0, carb:3, fat:0, price:55, cat:"Snacks & drinks", tags:["low-calorie"]},
+  {id:"f19", name:"กาแฟเย็น / ลาเต้ / ชานมไข่มุก", aliases:["กาแฟ","ลาเต้","คาปูชิโน่","ชานม","ชาเขียว","มัทฉะ"], baseG:300, kcal:260, pro:4, carb:42, fat:8, price:65, cat:"Snacks & drinks", tags:["high-cal"]},
+  {id:"f20", name:"กล้วยหอม / ผลไม้สด 1 จาน", aliases:["กล้วยหอม","กล้วย","ผลไม้","ฝรั่ง","แอปเปิ้ล"], baseG:150, kcal:130, pro:2, carb:31, fat:0.5, price:25, cat:"Snacks & drinks", tags:["low-calorie","budget"]},
+  {id:"f21", name:"สเต็กปลาแซลมอน / สเต็กไก่", aliases:["แซลมอน","สเต็กไก่","สเต็กหมู","สเต็ก"], baseG:250, kcal:480, pro:42, carb:15, fat:26, price:159, cat:"Dinner", tags:["high-protein"]},
+  {id:"f22", name:"ชาบู / หมูกระทะ / บุฟเฟต์", aliases:["ชาบู","หมูกระทะ","บุฟเฟต์","ปิ้งย่าง"], baseG:550, kcal:1150, pro:68, carb:75, fat:62, price:399, cat:"Dinner", tags:["high-protein","high-cal"]},
+  {id:"f23", name:"ข้าวสวย 1 จาน", aliases:["ข้าวสวย","ข้าวกล้อง"], baseG:150, kcal:195, pro:4, carb:43, fat:0.5, price:15, cat:"Lunch", tags:["budget"]}
+];
+
+/* ==================== 2. HEALTH PROFILE & DAILY LOG STATE ==================== */
+let healthProfile = {gender:"m", age:28, weight:68, height:172, targetW:63, act:1.375, goal:"lean", tdee:2150, targetCal:1950, targetPro:136};
+try{
+  const savedP = JSON.parse(localStorage.getItem("hw_profile")||"null");
+  if(savedP && savedP.targetCal) healthProfile = savedP;
+}catch(e){}
+
+let mealLogs = [];
+try{ mealLogs = JSON.parse(localStorage.getItem("hw_meals")||"[]"); }catch(e){}
+
+let habitLogs = {};
+try{ habitLogs = JSON.parse(localStorage.getItem("hw_habits")||"{}"); }catch(e){}
+
+function getTodayHabit(){
+  if(!habitLogs[today]) habitLogs[today] = {water:0, burn:0, sleep:0, weight:healthProfile.weight};
+  return habitLogs[today];
+}
+function saveHabits(){ ls("hw_habits", habitLogs); }
+function saveMeals(){ ls("hw_meals", mealLogs); }
+
+function calcProfileMetrics(p){
+  const s = p.gender === "m" ? 5 : -161;
+  const bmr = Math.round(10 * p.weight + 6.25 * p.height - 5 * p.age + s);
+  const tdee = Math.round(bmr * p.act);
+  let targetCal = tdee;
+  let proMult = 1.8;
+  if(p.goal === "cut"){ targetCal = Math.max(1200, tdee - 450); proMult = 2.0; }
+  else if(p.goal === "lean"){ targetCal = Math.max(1300, tdee - 220); proMult = 2.0; }
+  else if(p.goal === "bulk"){ targetCal = tdee + 300; proMult = 2.0; }
+  else { targetCal = tdee; proMult = 1.6; }
+  const targetPro = Math.round(p.weight * proMult);
+  return {bmr, tdee, targetCal, targetPro};
+}
+
+function estimateFoodFromTextAndGrams(foodName, gramsInput){
+  const clean = (foodName||"").toLowerCase().trim();
+  let matched = THAI_FOOD_DB.find(f => clean.includes(f.name.toLowerCase()) || f.aliases.some(a => clean.includes(a.toLowerCase())));
+  if(!matched){
+    if(/ไก่|ปลา|กุ้ง|หมู|เนื้อ|ไข่|เต้าหู้/.test(clean)){
+      matched = {name:foodName, baseG:250, kcal:480, pro:28, carb:48, fat:18, price:60, cat:"Lunch"};
+    } else if(/ชา|กาแฟ|น้ำ|นม|โซดา|สมูทตี้/.test(clean)){
+      matched = {name:foodName, baseG:250, kcal:180, pro:3, carb:32, fat:4, price:50, cat:"Snacks & drinks"};
+    } else {
+      matched = {name:foodName||"อาหารทั่วไป", baseG:250, kcal:450, pro:18, carb:55, fat:16, price:60, cat:"Lunch"};
+    }
+  }
+  const grams = gramsInput > 0 ? gramsInput : matched.baseG;
+  const ratio = grams / matched.baseG;
+  return {
+    matchedName: matched.name,
+    grams: Math.round(grams),
+    kcal: Math.round(matched.kcal * ratio),
+    pro: Math.round(matched.pro * ratio),
+    carb: Math.round(matched.carb * ratio),
+    fat: Math.round(matched.fat * ratio),
+    defaultPrice: matched.price,
+    cat: matched.cat || "Lunch"
+  };
+}
+
+/* ==================== 3. WALLET CORE STATE (SHARED STORAGE `tx`) ==================== */
+let CATS={e:["Breakfast","Lunch","Dinner","Snacks & drinks","Transport","Shopping","Bills","Entertainment","Other"],i:["Salary","Freelance","Gift","Other"]};
+let type="e",cat="Breakfast",cur=today.slice(0,7),items=[],goal=0,INC=0,HC=false,OP=null,TS=null,DT=null,em=false,view={gc:1,sc:1,ic:1,cc:0,tc:0,lc:1},col={};
+try{items=JSON.parse(localStorage.getItem("tx")||"[]")}catch(e){}
+try{const c=JSON.parse(localStorage.getItem("cats2"));if(c&&c.e&&c.i&&c.e.length&&c.i.length)CATS=c}catch(e){}
+try{goal=+localStorage.getItem("goal")||0;Object.assign(view,JSON.parse(localStorage.getItem("view")||"{}"));col=JSON.parse(localStorage.getItem("col")||"{}")}catch(e){}
+items.forEach((x,k)=>{if(!x.date)x.date=today;if(!x.id)x.id="old"+k});
+const PAL=["#059669","#0284c7","#f59e0b","#e11d48","#8b5cf6","#14b8a6","#64748b"];
+let CUS=false,HELP=false,Q="",EID=null,RP=false,LD=null,REC=[];
+try{REC=JSON.parse(localStorage.getItem("rec")||"[]")}catch(e){}
+const VM=[["sc","Summary"],["ic","Insights"],["cc","Categories"],["tc","Trend"],["lc","Activity"]];
+let TAGS={Bills:"n",Transport:"n",Shopping:"w",Entertainment:"w",Other:"w"},RATIO={n:50,w:30,s:20},CT="w";
+try{Object.assign(TAGS,JSON.parse(localStorage.getItem("tags")||"{}"));Object.assign(RATIO,JSON.parse(localStorage.getItem("ratio")||"{}"))}catch(e){}
+const MEAL=["Breakfast","Lunch","Dinner","Snacks & drinks","Food"];
+
+function getMonthFinanceStats(){
+  const mo = today.slice(0,7);
+  const L = items.filter(x=>x.date.slice(0,7)===mo);
+  let inc=0, exp=0, todayExp=0, todayFoodExp=0;
+  L.forEach(x=>{
+    if(x.t==="i") inc+=x.a;
+    else {
+      exp+=x.a;
+      if(x.date===today){
+        todayExp+=x.a;
+        if(MEAL.includes(x.c)) todayFoodExp+=x.a;
+      }
+    }
+  });
+  const [yy,mm] = mo.split("-").map(Number);
+  const daysInMonth = new Date(yy,mm,0).getDate();
+  const daysLeft = Math.max(1, daysInMonth - new Date().getDate() + 1);
+  const spendBudget = inc > 0 ? inc * (RATIO.n + RATIO.w) / 100 : 15000;
+  const remSpend = Math.max(0, spendBudget - (exp - todayExp));
+  const dailyAllowance = Math.max(100, Math.round(remSpend / daysLeft));
+  return {inc, exp, bal: inc - exp, todayExp, todayFoodExp, daysLeft, dailyAllowance};
+}
+
+function getTodayNutritionStats(){
+  const list = mealLogs.filter(m => m.date === today);
+  const hb = getTodayHabit();
+  let kcal=0, pro=0, carb=0, fat=0, cost=0;
+  list.forEach(m=>{
+    kcal += Number(m.kcal||0);
+    pro += Number(m.pro||0);
+    carb += Number(m.carb||0);
+    fat += Number(m.fat||0);
+    cost += Number(m.price||0);
+  });
+  const netCal = Math.max(0, kcal - Number(hb.burn||0));
+  const remCal = healthProfile.targetCal + Number(hb.burn||0) - kcal;
+  const remPro = Math.max(0, healthProfile.targetPro - pro);
+  return {list, kcal, netCal, remCal, pro, remPro, carb, fat, cost, burn: Number(hb.burn||0)};
+}
+
+/* ==================== 4. DASHBOARD & COWORK RENDERING ==================== */
+function renderCoworkDashboard(){
+  const fin = getMonthFinanceStats();
+  const nut = getTodayNutritionStats();
+  const hb = getTodayHabit();
+  const uname = g("ag_username") ? "คุณ" + g("ag_username") : "บอส";
+
+  const goalNames = {cut:"🔥 ลดไขมัน", lean:"✨ ลีนหุ่นชัด", maint:"⚖️ รักษาสุขภาพ", bulk:"💪 เพิ่มกล้ามเนื้อ"};
+  $("coach-goal-badge").textContent = `${goalNames[healthProfile.goal]||"✨ ลีน"} · เป้า ${healthProfile.targetW} กก. (TDEE ${fmt(healthProfile.tdee)} kcal)`;
+  $("coach-greeting").textContent = `สวัสดีครับ${uname}! โค้ชสุขภาพ & CFO สรุปแผนวันนี้ให้แล้ว`;
+
+  const remDayBudget = Math.max(0, fin.dailyAllowance - fin.todayExp);
+  let coachMsg = `🔥 <b>โภชนาการวันนี้:</b> กินไป <b>${fmt(nut.kcal)} kcal</b> ${nut.burn>0?`(เผาผลาญออกกำลัง -${fmt(nut.burn)} kcal) `:""}· เหลือโควตา <b>${fmt(Math.max(0,nut.remCal))} kcal</b> · โปรตีนได้ <b>${nut.pro}/${healthProfile.targetPro}g</b> ${nut.remPro>0?`(ขาดอีก <b>${nut.remPro}g</b>)`:`(<span class="inc">ครบเป้าแล้ว! 🎉</span>)`}<br>`;
+  coachMsg += `💰 <b>งบกระเป๋าตังค์วันนี้:</b> ใช้ไป <b>฿${fmt(fin.todayExp)}</b> (ค่าอาหาร ฿${fmt(fin.todayFoodExp)}) · เหลืองบใช้ได้วันนี้อีก <b class="${remDayBudget>0?'inc':'exp'}">฿${fmt(remDayBudget)}</b> (จากงบ ฿${fmt(fin.dailyAllowance)}/วัน)`;
+  $("coach-proactive-msg").innerHTML = coachMsg;
+
+  // KPI 1: Calories
+  const calPct = Math.min(100, Math.round(nut.kcal / Math.max(1, healthProfile.targetCal + nut.burn) * 100));
+  $("kpi-cal-pct").textContent = calPct + "%";
+  $("kpi-cal-val").textContent = `${fmt(nut.kcal)} / ${fmt(healthProfile.targetCal + nut.burn)}`;
+  $("kpi-cal-bar").style.width = calPct + "%";
+  $("kpi-cal-rem").textContent = nut.remCal >= 0 ? `กินเพิ่มได้อีก ${fmt(nut.remCal)} kcal` : `เกินเป้าวันนี้ ${fmt(Math.abs(nut.remCal))} kcal`;
+
+  // KPI 2: Protein
+  const proPct = Math.min(100, Math.round(nut.pro / Math.max(1, healthProfile.targetPro) * 100));
+  $("kpi-pro-pct").textContent = proPct + "%";
+  $("kpi-pro-val").textContent = `${nut.pro} / ${healthProfile.targetPro}g`;
+  $("kpi-pro-bar").style.width = proPct + "%";
+  $("kpi-macro-sub").textContent = `คาร์บ ${nut.carb}g · ไขมัน ${nut.fat}g`;
+
+  // KPI 3: Daily Budget
+  const bPct = Math.min(100, Math.round(fin.todayExp / Math.max(1, fin.dailyAllowance) * 100));
+  $("kpi-daybudget-val").textContent = `฿${fmt(fin.todayExp)} / ฿${fmt(fin.dailyAllowance)}`;
+  $("kpi-daybudget-bar").style.width = bPct + "%";
+  $("kpi-daybudget-bar").style.background = bPct > 100 ? "var(--exp)" : "var(--ac)";
+  $("kpi-daybudget-sub").textContent = `เหลือใช้ได้วันนี้ ฿${fmt(remDayBudget)} (ค่าอาหาร ฿${fmt(fin.todayFoodExp)})`;
+
+  // KPI 4: Month Balance
+  $("kpi-bal-val").textContent = `฿${fmt(fin.bal)}`;
+  $("kpi-bal-sub").textContent = `รับ ฿${fmt(fin.inc)} · จ่าย ฿${fmt(fin.exp)}`;
+
+  // Render Today's Meal List
+  $("today-meal-count").textContent = `${nut.list.length} มื้อ (${fmt(nut.kcal)} kcal · ฿${fmt(nut.cost)})`;
+  if(!nut.list.length){
+    $("today-meal-list").innerHTML = `<div class="mu" style="padding:14px 0;text-align:center">วันนี้ยังไม่มีบันทึกมื้ออาหาร ลองพิมพ์ด้านบน เช่น <b>"ข้าวมันไก่ 250 กรัม 60 บาท"</b> หรือกรอกฟอร์มได้เลยครับ</div>`;
+  } else {
+    $("today-meal-list").innerHTML = nut.list.slice().reverse().map(m => `
+      <div class="meal-row">
+        <div>
+          <b>${m.name.replace(/</g,"&lt;")}</b> <span class="mu">(${m.grams} กรัม)</span>
+          <div class="macro-badges">
+            <span class="mbadge">🔥 ${m.kcal} kcal</span>
+            <span class="mbadge">💪 โปรตีน ${m.pro}g</span>
+            <span class="mbadge">🍚 คาร์บ ${m.carb}g</span>
+            <span class="mbadge">🥑 ไขมัน ${m.fat}g</span>
+          </div>
+        </div>
+        <div style="text-align:right;flex:none">
+          <b class="exp">${m.price>0 ? `-฿${fmt(m.price)}` : "ฟรี/ทำเอง"}</b>
+          <div><button class="lk" style="color:var(--exp);font-size:11.5px" onclick="deleteMealLog('${m.id}')">ลบ</button></div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // Render Habits
+  $("hb-water-txt").textContent = `${hb.water} / 8 แก้ว (${hb.water*250}ml)`;
+  $("hb-water-bar").style.width = Math.min(100, hb.water/8*100) + "%";
+  $("hb-burn-txt").textContent = `${hb.burn} / 300 kcal`;
+  $("hb-burn-bar").style.width = Math.min(100, hb.burn/300*100) + "%";
+  $("hb-sleep-txt").textContent = `${hb.sleep || 0} ชม.`;
+  $("hb-sleep-inp").value = hb.sleep || "";
+  $("hb-weight-txt").textContent = `${hb.weight || healthProfile.weight} กก.`;
+  $("hb-weight-inp").value = hb.weight || healthProfile.weight;
+
+  let hScore = (hb.water>=8?1:0) + (hb.burn>=200?1:0) + (hb.sleep>=7?1:0) + (nut.pro>=healthProfile.targetPro*0.8?1:0);
+  $("habit-score-lbl").textContent = `วินัยวันนี้ ${hScore}/4 ข้อ`;
+
+  renderSmartMealRecommendations();
+  previewMealEstimate();
+}
+
+function previewMealEstimate(){
+  const name = $("qm-name").value.trim() || "ข้าวมันไก่ต้ม";
+  const grams = parseFloat($("qm-grams").value) || 250;
+  const est = estimateFoodFromTextAndGrams(name, grams);
+  $("qm-preview").innerHTML = `⚖️ ประเมินสำหรับ <b>"${name.replace(/</g,"&lt;")}" (${est.grams} กรัม)</b>: พลังงาน <b>${est.kcal} kcal</b> · โปรตีน <b class="inc">${est.pro}g</b> · คาร์บ <b>${est.carb}g</b> · ไขมัน <b>${est.fat}g</b>`;
+}
+
+function selectPortionPreset(grams, el){
+  $("qm-grams").value = grams;
+  document.querySelectorAll("#portion-selector .p-card").forEach(c => c.classList.remove("on"));
+  if(el) el.classList.add("on");
+  previewMealEstimate();
+}
+
+function recordMealAndExpense(foodName, grams, price, customCat){
+  const est = estimateFoodFromTextAndGrams(foodName, grams);
+  const finalPrice = price !== undefined && price !== null && !isNaN(price) ? Number(price) : est.defaultPrice;
+  const hr = new Date().getHours();
+  const mealCat = customCat || (hr < 11 ? "Breakfast" : hr < 15 ? "Lunch" : hr < 21 ? "Dinner" : "Snacks & drinks");
+
+  let txId = null;
+  if(finalPrice > 0){
+    txId = "tx" + Date.now() + Math.random().toString(36).slice(2,6);
+    items.push({
+      id: txId,
+      t: "e",
+      a: finalPrice,
+      c: CATS.e.includes(mealCat) ? mealCat : CATS.e[0],
+      n: `${foodName} (${est.grams}g · ${est.kcal}kcal · P:${est.pro}g)`,
+      date: today
+    });
+    ls("tx", items);
+  }
+
+  const mealEntry = {
+    id: "ml" + Date.now() + Math.random().toString(36).slice(2,6),
+    txId,
+    date: today,
+    name: foodName,
+    grams: est.grams,
+    kcal: est.kcal,
+    pro: est.pro,
+    carb: est.carb,
+    fat: est.fat,
+    price: finalPrice,
+    cat: mealCat
+  };
+  mealLogs.push(mealEntry);
+  saveMeals();
+  render();
+  renderCoworkDashboard();
+  return mealEntry;
+}
+
+function submitQuickMealForm(e){
+  e.preventDefault();
+  const name = $("qm-name").value.trim();
+  if(!name) return;
+  const grams = parseFloat($("qm-grams").value) || 250;
+  const priceRaw = $("qm-price").value.trim();
+  const price = priceRaw === "" ? estimateFoodFromTextAndGrams(name, grams).defaultPrice : parseFloat(priceRaw);
+  const entry = recordMealAndExpense(name, grams, price);
+  $("qm-name").value = "";
+  $("qm-price").value = "";
+  toast(`✅ บันทึก "${entry.name}" (${entry.grams}g · ${entry.kcal} kcal · ฿${fmt(entry.price)}) แล้ว!`);
+}
+
+function deleteMealLog(mealId){
+  const idx = mealLogs.findIndex(m => m.id === mealId);
+  if(idx === -1) return;
+  const removed = mealLogs.splice(idx, 1)[0];
+  saveMeals();
+  if(removed.txId){
+    items = items.filter(x => x.id !== removed.txId);
+    ls("tx", items);
+  }
+  render();
+  renderCoworkDashboard();
+  toast("ลบรายการอาหารและคืนยอดเงินเรียบร้อย");
+}
+
+function adjustHabit(key, delta){
+  const hb = getTodayHabit();
+  hb[key] = Math.max(0, Number(hb[key]||0) + delta);
+  saveHabits();
+  renderCoworkDashboard();
+}
+
+function setHabitDirect(key, val){
+  const num = parseFloat(val);
+  if(isNaN(num) || num < 0) return;
+  const hb = getTodayHabit();
+  hb[key] = num;
+  if(key === "weight" && num > 25){
+    healthProfile.weight = num;
+    Object.assign(healthProfile, calcProfileMetrics(healthProfile));
+    ls("hw_profile", healthProfile);
+  }
+  saveHabits();
+  renderCoworkDashboard();
+}
+
+function renderSmartMealRecommendations(){
+  const fin = getMonthFinanceStats();
+  const nut = getTodayNutritionStats();
+  const remBudget = Math.max(45, fin.dailyAllowance - fin.todayExp);
+  const remCal = Math.max(250, nut.remCal);
+
+  $("smart-rec-context").innerHTML = `โควตาที่เหลือวันนี้: พลังงาน <b>${fmt(Math.max(0,nut.remCal))} kcal</b> · โปรตีนที่ต้องเติม <b>${nut.remPro}g</b> · งบใช้ได้อีก <b>฿${fmt( Math.max(0, fin.dailyAllowance - fin.todayExp) )}</b>`;
+
+  // Score foods based on high protein, fitting remaining calories and fitting remaining budget
+  const candidates = THAI_FOOD_DB.filter(f => f.kcal <= remCal + 120 && f.price <= remBudget + 25)
+    .sort((a,b) => (b.pro / Math.max(1,b.price)) - (a.pro / Math.max(1,a.price)) + (Math.random()*0.3 - 0.15))
+    .slice(0, 4);
+
+  const list = candidates.length ? candidates : THAI_FOOD_DB.slice(0,4);
+  $("smart-rec-list").innerHTML = list.map(f => `
+    <div class="meal-row">
+      <div>
+        <b>${f.name}</b> <span class="mu">(${f.baseG} กรัม)</span>
+        <div class="macro-badges">
+          <span class="mbadge">🔥 ${f.kcal} kcal</span>
+          <span class="mbadge" style="color:var(--inc)">💪 โปรตีน ${f.pro}g</span>
+          <span class="mbadge">💸 ~฿${f.price}</span>
+        </div>
+      </div>
+      <button class="btn sec" style="padding:6px 11px;font-size:12px;border-radius:999px;flex:none" onclick="quickLogFromCard('${f.id}')">+ กินเมนูนี้</button>
+    </div>
+  `).join("");
+}
+
+function quickLogFromCard(foodId){
+  const f = THAI_FOOD_DB.find(x => x.id === foodId);
+  if(!f) return;
+  const entry = recordMealAndExpense(f.name, f.baseG, f.price, f.cat);
+  appendChat("ai", `🥗💰 <b>โค้ชบันทึก "${entry.name}" (${entry.grams} กรัม) ให้เรียบร้อยครับ!</b><br>• โภชนาการ: <b>${entry.kcal} kcal</b> (โปรตีน <b>${entry.pro}g</b> · คาร์บ ${entry.carb}g · ไขมัน ${entry.fat}g)<br>• กระเป๋าตังค์: ตัดรายจ่าย <b>-฿${fmt(entry.price)}</b>`);
+  toast(`บันทึก ${f.name} เรียบร้อย!`);
+}
+
+function renderFoodDatabase(){
+  const q = ($("food-db-search") ? $("food-db-search").value : "").toLowerCase().trim();
+  const list = THAI_FOOD_DB.filter(f => !q || f.name.toLowerCase().includes(q) || f.aliases.some(a=>a.toLowerCase().includes(q)));
+  $("food-db-grid").innerHTML = list.map(f => `
+    <div style="background:var(--bg);border:1px solid var(--ln);border-radius:16px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;gap:8px">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px">
+          <b>${f.name}</b>
+          <span class="tag-pill">฿${f.price}</span>
+        </div>
+        <div class="mu">ปริมาณมาตรฐาน: <b>${f.baseG} กรัม</b></div>
+        <div class="macro-badges" style="margin-top:6px">
+          <span class="mbadge">🔥 ${f.kcal} kcal</span>
+          <span class="mbadge">💪 P: ${f.pro}g</span>
+          <span class="mbadge">🍚 C: ${f.carb}g</span>
+          <span class="mbadge">🥑 F: ${f.fat}g</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;margin-top:4px">
+        <input class="f" id="db-g-${f.id}" type="number" value="${f.baseG}" min="20" max="1500" style="margin:0;padding:6px 8px;width:85px;font-size:12.5px" title="น้ำหนักกรัม">
+        <span class="mu">กรัม</span>
+        <input class="f" id="db-p-${f.id}" type="number" value="${f.price}" min="0" style="margin:0;padding:6px 8px;width:75px;font-size:12.5px" title="ราคาบาท">
+        <span class="mu">฿</span>
+        <button class="btn" style="padding:6px 10px;font-size:12px;margin-left:auto" onclick="logFromDbCustom('${f.id}')">+ บันทึก</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function logFromDbCustom(foodId){
+  const f = THAI_FOOD_DB.find(x => x.id === foodId);
+  if(!f) return;
+  const gVal = parseFloat($("db-g-"+foodId).value) || f.baseG;
+  const pVal = parseFloat($("db-p-"+foodId).value);
+  const entry = recordMealAndExpense(f.name, gVal, isNaN(pVal)?f.price:pVal, f.cat);
+  toast(`✅ บันทึก ${entry.name} (${entry.grams}g · ${entry.kcal} kcal · ฿${fmt(entry.price)})`);
+}
+
+/* ==================== 5. AI COWORK NATURAL LANGUAGE PARSER & GEMINI COACH ==================== */
+let chatHistory = [];
+
+function appendChat(role, html){
+  $("chat-wrap").style.display = "block";
+  const feed = $("chat-feed");
+  const d = document.createElement("div");
+  d.className = "msg " + role;
+  d.innerHTML = html;
+  feed.appendChild(d);
+  feed.scrollTop = feed.scrollHeight;
+  if(!html.includes("⏳")){
+    chatHistory.push({role, text: d.textContent.trim().slice(0,350)});
+    if(role === "ai" && g("ag_voice_reply") === "1") speakText(d.textContent);
+  }
+}
+function clearChat(){ $("chat-feed").innerHTML=""; $("chat-wrap").style.display="none"; chatHistory=[]; }
+function prefillCmd(t){ const i=$("cmd-input"); i.value=t; i.focus(); }
+function quickPrompt(t){ $("cmd-input").value=t; handleCoworkCommand(new Event("submit")); }
+
+function tryParseMealOrTxCommand(text){
+  const clean = text.trim();
+  // Check if user wants to record water
+  const waterMatch = clean.match(/ดื่มน้ำ\s*(\d+)\s*แก้ว/i);
+  if(waterMatch) return {type:"water", glasses: parseInt(waterMatch[1],10)};
+
+  // Check if user wants to record workout
+  const burnMatch = clean.match(/(?:วิ่ง|เดิน|ออกกำลัง|เวท|คาร์ดิโอ).*?(\d+)\s*(?:kcal|แคล|นาที)/i);
+  if(burnMatch){
+    const num = parseInt(burnMatch[1],10);
+    const kcal = /นาที/.test(clean) ? num * 7 : num;
+    return {type:"burn", kcal};
+  }
+
+  // Extract weight in grams if present (e.g., "250 กรัม", "200g", "1.5 จาน")
+  let grams = null;
+  let working = clean;
+  const gMatch = working.match(/(\d+(?:\.\d+)?)\s*(?:กรัม|g|gram|ml|มล\.?)\b/i);
+  if(gMatch){
+    grams = parseFloat(gMatch[1]);
+    working = working.replace(gMatch[0], " ");
+  } else if(/พิเศษ|จานใหญ่|ชามใหญ่/.test(working)){
+    grams = 360;
+  } else if(/เล็ก|ครึ่งจาน/.test(working)){
+    grams = 150;
+  }
+
+  // Extract price in baht
+  let price = null;
+  const pMatch = working.match(/(\d+(?:,\d{3})*(?:\.\d{1,2})?)\s*(?:บาท|บ\.|฿)?\s*$/i);
+  if(pMatch && !/แนะนำ|ไม่เกิน|ไหวไหม|ดีไหม|กี่แคล/.test(working)){
+    price = parseFloat(pMatch[1].replace(/,/g,""));
+    working = working.replace(pMatch[0], " ").trim();
+  }
+
+  const foodName = working.replace(/^(กิน|ทาน|ดื่ม|ซื้อ|จด|มื้อเช้า|มื้อเที่ยง|มื้อเย็น|มื้อดึก)\s*/i, "").trim();
+  if(!foodName || /แนะนำ|วางแผน|สรุป|วิเคราะห์|กี่แคล|เท่าไหร่/.test(clean)) return null;
+
+  // Check if it's non-food income/expense
+  if(/เงินเดือน|โบนัส|รายรับ|ได้เงิน/.test(foodName) && price > 0){
+    return {type:"income", name:foodName, amount:price};
+  }
+  if(/ค่ารถ|แท็กซี่|บีทีเอส|น้ำมัน|ค่าไฟ|ค่าเน็ต|ช้อปปิ้ง/.test(foodName) && price > 0){
+    return {type:"expense_other", name:foodName, amount:price};
+  }
+
+  if(price !== null || grams !== null){
+    return {type:"meal", name:foodName, grams: grams || 250, price: price !== null ? price : undefined};
+  }
+  return null;
+}
+
+async function handleCoworkCommand(e){
+  if(e) e.preventDefault();
+  const inp = $("cmd-input");
+  const text = inp.value.trim();
+  if(!text) return;
+  inp.value = "";
+  appendChat("user", text.replace(/</g,"&lt;"));
+
+  const parsed = tryParseMealOrTxCommand(text);
+  if(parsed){
+    if(parsed.type === "water"){
+      adjustHabit("water", parsed.glasses);
+      appendChat("ai", `💧 บันทึกดื่มน้ำเพิ่ม <b>+${parsed.glasses} แก้ว</b> เรียบร้อยครับ! (รวมวันนี้ ${getTodayHabit().water}/8 แก้ว)`);
+      return;
+    }
+    if(parsed.type === "burn"){
+      adjustHabit("burn", parsed.kcal);
+      appendChat("ai", `🏃 เยี่ยมมากครับ! บันทึกการเผาผลาญพลังงาน <b>+${parsed.kcal} kcal</b> ทำให้วันนี้คุณมีโควตากินเพิ่มได้อีกครับ`);
+      return;
+    }
+    if(parsed.type === "income"){
+      items.push({id:"tx"+Date.now(), t:"i", a:parsed.amount, c:"Salary", n:parsed.name, date:today});
+      ls("tx", items); render(); renderCoworkDashboard();
+      const fin = getMonthFinanceStats();
+      appendChat("ai", `💰 บันทึกรายรับ <b>"${parsed.name}" (+฿${fmt(parsed.amount)})</b> เรียบร้อยครับ! งบใช้จ่ายรายวันของคุณคือ <b>฿${fmt(fin.dailyAllowance)}/วัน</b>`);
+      return;
+    }
+    if(parsed.type === "expense_other"){
+      items.push({id:"tx"+Date.now(), t:"e", a:parsed.amount, c:"Transport", n:parsed.name, date:today});
+      ls("tx", items); render(); renderCoworkDashboard();
+      appendChat("ai", `💸 บันทึกรายจ่าย <b>"${parsed.name}" (-฿${fmt(parsed.amount)})</b> ลงกระเป๋าตังค์เรียบร้อยครับ`);
+      return;
+    }
+    if(parsed.type === "meal"){
+      const entry = recordMealAndExpense(parsed.name, parsed.grams, parsed.price);
+      const nut = getTodayNutritionStats();
+      const fin = getMonthFinanceStats();
+      const remBudget = Math.max(0, fin.dailyAllowance - fin.todayExp);
+      appendChat("ai", `🥗💰 <b>1-Click Cowork บันทึกสำเร็จทั้งสุขภาพและกระเป๋าตังค์!</b><br>
+        <span class="tag-pill">🍽️ ${entry.name} (${entry.grams}g)</span>
+        <span class="tag-pill">🔥 ${entry.kcal} kcal</span>
+        <span class="tag-pill">💪 โปรตีน ${entry.pro}g</span>
+        <span class="tag-pill">💸 -฿${fmt(entry.price)}</span><br>
+        • <b>โควตาโภชนาการวันนี้:</b> เหลือแคลอรี่ <b>${fmt(Math.max(0,nut.remCal))} kcal</b> · โปรตีนสะสม <b>${nut.pro}/${healthProfile.targetPro}g</b><br>
+        • <b>งบรายวันคงเหลือ:</b> <b>฿${fmt(remBudget)}</b> (วันนี้จ่ายรวม ฿${fmt(fin.todayExp)})`);
+      return;
+    }
+  }
+
+  // If Gemini API Key is available, call Gemini with full Health + Wallet context
+  const apiKey = g("ag_apikey");
+  const fin = getMonthFinanceStats();
+  const nut = getTodayNutritionStats();
+  const hb = getTodayHabit();
+
+  if(apiKey){
+    appendChat("ai", "⏳ โค้ชสุขภาพ & CFO กำลังวิเคราะห์ข้อมูลของคุณ...");
+    const loadingEl = $("chat-feed").lastElementChild;
+    try{
+      const prompt = `คุณคือ "AI Health & CFO Cowork Coach" ที่ดูแลทั้งโภชนาการ สุขภาพ และการเงินในกระเป๋าตังค์ของผู้ใช้ควบคู่กัน
+ข้อมูลผู้ใช้:
+- เป้าหมาย: ${healthProfile.goal}, น้ำหนัก ${healthProfile.weight} กก. (เป้า ${healthProfile.targetW} กก.), เป้าพลังงาน ${healthProfile.targetCal} kcal/วัน, เป้าโปรตีน ${healthProfile.targetPro}g/วัน
+- วันนี้กินไปแล้ว: ${nut.kcal} kcal (เหลือ ${nut.remCal} kcal), โปรตีน ${nut.pro}g (ขาดอีก ${nut.remPro}g), คาร์บ ${nut.carb}g, ไขมัน ${nut.fat}g
+- รายการอาหารวันนี้: ${nut.list.map(m=>`${m.name}(${m.grams}g, ${m.kcal}kcal, P:${m.pro}g, ฿${m.price})`).join(", ") || "ยังไม่มี"}
+- นิสัยวันนี้: ดื่มน้ำ ${hb.water}/8 แก้ว, ออกกำลังเผาผลาญ ${hb.burn} kcal, นอน ${hb.sleep} ชม.
+- กระเป๋าตังค์วันนี้: ใช้ไป ฿${fin.todayExp} จากงบรายวัน ฿${fin.dailyAllowance}/วัน (เหลืองบวันนี้ ฿${Math.max(0,fin.dailyAllowance-fin.todayExp)}), เงินคงเหลือทั้งเดือน ฿${fin.bal}
+
+คำถามหรือคำสั่งของผู้ใช้: "${text}"
+ตอบให้กระชับ ชัดเจน แนะนำเมนูระบุน้ำหนักกรัม แคลอรี่ โปรตีน และราคาที่อยู่ในงบจริงของผู้ใช้!`;
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+      });
+      const data = await res.json();
+      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if(reply){
+        loadingEl.innerHTML = reply.replace(/</g,"&lt;").replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
+        return;
+      }
+    }catch(err){}
+    loadingEl.remove();
+  }
+
+  // Smart Built-in Health x CFO Advisor Fallback
+  const remBudget = Math.max(45, fin.dailyAllowance - fin.todayExp);
+  const bestFoods = THAI_FOOD_DB.filter(f => f.price <= remBudget + 20 && f.kcal <= Math.max(350, nut.remCal + 100))
+    .sort((a,b) => b.pro - a.pro).slice(0,3);
+
+  appendChat("ai", `🥗💰 <b>โค้ชสุขภาพ &amp; CFO วิเคราะห์แผนให้คุณจากข้อมูลจริงตอนนี้ครับ:</b><br>
+    • <b>โควตาร่างกายที่เหลือวันนี้:</b> พลังงาน <b>${fmt(Math.max(0,nut.remCal))} kcal</b> · โปรตีนต้องเติมอีก <b>${nut.remPro} กรัม</b><br>
+    • <b>งบกระเป๋าตังค์ที่เหลือวันนี้:</b> <b>฿${fmt(Math.max(0, fin.dailyAllowance - fin.todayExp))}</b> (จากงบ ฿${fmt(fin.dailyAllowance)}/วัน)<br>
+    <div style="margin-top:6px"><b>🍱 3 เมนูคุ้มค่าที่โปรตีนสูงและอยู่ในงบของคุณตอนนี้:</b></div>
+    ${bestFoods.map((f,i)=>`${i+1}) <b>${f.name} (${f.baseG} กรัม)</b> — พลังงาน ${f.kcal} kcal · โปรตีน <b class="inc">${f.pro}g</b> · ราคาเพียง <b>~฿${f.price}</b> <button class="lk" onclick="quickLogFromCard('${f.id}')">[+ กดบันทึกเมนูนี้]</button>`).join("<br>")}`);
+}
+
+/* ==================== 6. PROFILE MODAL, VOICE & TELEGRAM ==================== */
+function openProfileModal(){
+  $("pf-gender").value = healthProfile.gender || "m";
+  $("pf-age").value = healthProfile.age || 28;
+  $("pf-weight").value = healthProfile.weight || 68;
+  $("pf-height").value = healthProfile.height || 172;
+  $("pf-target-w").value = healthProfile.targetW || 63;
+  $("pf-act").value = String(healthProfile.act || 1.375);
+  $("pf-goal").value = healthProfile.goal || "lean";
+  recalcProfilePreview();
+  $("prof-ov").classList.add("on");
+}
+
+function recalcProfilePreview(){
+  const p = {
+    gender: $("pf-gender").value,
+    age: parseFloat($("pf-age").value)||28,
+    weight: parseFloat($("pf-weight").value)||68,
+    height: parseFloat($("pf-height").value)||172,
+    targetW: parseFloat($("pf-target-w").value)||63,
+    act: parseFloat($("pf-act").value)||1.375,
+    goal: $("pf-goal").value
+  };
+  const m = calcProfileMetrics(p);
+  $("pf-calc-box").innerHTML = `🔥 <b>ผลลัพธ์การคำนวณ:</b><br>• พลังงานพื้นฐาน (BMR): <b>${fmt(m.bmr)} kcal/วัน</b> · พลังงานที่ใช้จริง (TDEE): <b>${fmt(m.tdee)} kcal/วัน</b><br>• เป้าหมายการกินต่อวันของคุณ: <b class="inc">${fmt(m.targetCal)} kcal/วัน</b> · โปรตีนที่ควรได้รับ: <b class="inc">${m.targetPro} กรัม/วัน</b>`;
+}
+
+function saveHealthProfile(){
+  const p = {
+    gender: $("pf-gender").value,
+    age: parseFloat($("pf-age").value)||28,
+    weight: parseFloat($("pf-weight").value)||68,
+    height: parseFloat($("pf-height").value)||172,
+    targetW: parseFloat($("pf-target-w").value)||63,
+    act: parseFloat($("pf-act").value)||1.375,
+    goal: $("pf-goal").value
+  };
+  Object.assign(p, calcProfileMetrics(p));
+  healthProfile = p;
+  ls("hw_profile", healthProfile);
+  $("prof-ov").classList.remove("on");
+  renderCoworkDashboard();
+  toast("✅ บันทึกเป้าหมาย TDEE และโปรตีนเรียบร้อย!");
+}
+
+function speakText(txt){
+  if(!("speechSynthesis" in window)) return;
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(txt.replace(/<[^>]+>/g," ").slice(0,260));
+    u.lang = "th-TH"; u.rate = 1.05;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function speakCoachBrief(){
+  const nut = getTodayNutritionStats();
+  const fin = getMonthFinanceStats();
+  speakText(`สรุปวันนี้ คุณรับพลังงานไป ${nut.kcal} แคลอรี่ เหลือโควตา ${Math.max(0,nut.remCal)} แคลอรี่ โปรตีนได้ ${nut.pro} กรัม และใช้เงินวันนี้ไป ${fin.todayExp} บาท จากงบรายวัน ${fin.dailyAllowance} บาทค่ะ`);
+}
+
+let rec = null, isRec = false;
+function toggleVoice(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ toast("เบราว์เซอร์ไม่รองรับสั่งงานด้วยเสียง"); return; }
+  if(isRec && rec){ rec.stop(); return; }
+  rec = new SR(); rec.lang = "th-TH";
+  rec.onstart = ()=>{ isRec=true; $("btn-mic").classList.add("rec"); };
+  rec.onresult = e=>{ $("cmd-input").value = e.results[0][0].transcript; };
+  rec.onend = ()=>{ isRec=false; $("btn-mic").classList.remove("rec"); if($("cmd-input").value.trim()) handleCoworkCommand(new Event("submit")); };
+  rec.start();
+}
+
+async function pushHealthWalletTelegram(){
+  const token = g("ag_tg_token"), chatId = g("ag_tg_chatid");
+  if(!token || !chatId){ $("ai-ov").classList.add("on"); toast("กรุณาใส่ Telegram Token & Chat ID ก่อนครับ"); return; }
+  const nut = getTodayNutritionStats();
+  const fin = getMonthFinanceStats();
+  const hb = getTodayHabit();
+  const msg = `🥗💰 สรุป AI Health & Wallet Cowork (${today})\n\n🔥 พลังงาน: ${nut.kcal} / ${healthProfile.targetCal} kcal (เหลือ ${Math.max(0,nut.remCal)} kcal)\n💪 โปรตีน: ${nut.pro} / ${healthProfile.targetPro}g (C:${nut.carb}g F:${nut.fat}g)\n💧 ดื่มน้ำ: ${hb.water}/8 แก้ว · เผาผลาญ: ${hb.burn} kcal\n💸 รายจ่ายวันนี้: ฿${fmt(fin.todayExp)} / งบ ฿${fmt(fin.dailyAllowance)}\n🏦 คงเหลือเดือนนี้: ฿${fmt(fin.bal)}`;
+  try{
+    const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({chat_id:chatId, text:msg})
+    });
+    const j = await r.json();
+    if(j.ok) toast("📲 ส่งสรุปเข้า Telegram เรียบร้อย!");
+    else toast("ส่งไม่สำเร็จ ตรวจสอบ Token/Chat ID");
+  }catch(e){ toast("เกิดข้อผิดพลาดในการเชื่อมต่อ Telegram"); }
+}
+
+function saveAIConfig(){
+  ls("ag_username", $("cfg-username").value.trim());
+  ls("ag_apikey", $("cfg-apikey").value.trim());
+  ls("ag_tg_token", $("cfg-tg-token").value.trim());
+  ls("ag_tg_chatid", $("cfg-tg-chatid").value.trim());
+  ls("ag_voice_reply", $("cfg-voice-reply").checked ? "1" : "0");
+  $("ai-ov").classList.remove("on");
+  renderCoworkDashboard();
+  toast("✅ บันทึกการตั้งค่าเรียบร้อย!");
+}
+
+/* ==================== 7. ORIGINAL WALLET RENDERING LOGIC ==================== */
+function switchTab(t){
+  ["cowork","mealdb","wallet"].forEach(k=>{
+    $("sec-"+k).style.display = k===t ? "block" : "none";
+    $("tab-"+k).classList.toggle("on", k===t);
+  });
+  if(t==="mealdb") renderFoodDatabase();
+  if(t==="wallet") render();
+}
+
+function setType(t){type=t;em=false;$("ct").style.display=t=="e"?"":"none";$("ed").classList.remove("on");cat=CATS[t][0];$("be").className=t=="e"?"on":"";$("bi").className=t=="i"?"on":"";chips()}
+function chips(){$("chips").innerHTML=CATS[type].map(n=>em?`<button data-d="${n}">${n} &times;</button>`:`<button class="${n==cat?"on":""}" data-c="${n}">${n}</button>`).join("")+(em?'<button class="on" data-act="done">Done</button>':'<button data-act="add">+ New</button><button data-act="edit">Remove</button>')}
+function applyView(){
+  VM.forEach(([k])=>{const el=$(k);el.style.display=(view[k]&&(k!="cc"||HC))?"":"none";el.classList.toggle("cl",!!col[k])});
+  $("vm").innerHTML=VM.map(([k,n])=>`<button class="${view[k]?"on":""}" data-v="${k}">${n}</button>`).join("");
+}
+const row=x=>`<div class="itw ${OP==x.id?"open":""}"><div class="it" data-o="${x.id}"><div class="m"><div><b>${x.c}</b>${x.n?` <span class="mu">· ${x.n.replace(/</g,"&lt;")}</span>`:""}</div><div class="mu">${+x.date.slice(8)} ${MS[+x.date.slice(5,7)-1]}</div></div><b class="${x.t=="i"?"inc":"exp"}">${x.t=="i"?"+":"-"}${fmt(x.a)}</b><i class="chev"></i></div><div class="dt"><div class="dr"><span>Date</span><span>${x.date}</span></div><div class="dr"><span>Category</span><span>${x.c}</span></div><div class="dr"><span>Amount</span><span>฿${fmt(x.a)}</span></div><div class="dr"><span>Note</span><span>${x.n?x.n.replace(/</g,"&lt;"):"-"}</span></div><button class="dbtn" style="color:var(--tx);margin-right:8px" data-ed="${x.id}">Edit</button><button class="dbtn" data-id="${x.id}">Delete</button></div></div>`;
+
+function renderDetail(L){
+  if(!DT)return;const D=L.filter(x=>x.t==DT),[y,m]=cur.split("-");
+  $("dk").textContent=(DT=="i"?"Income":"Expense")+" · "+MN[+m-1]+" "+y;
+  $("dtot").textContent=fmt(D.reduce((a,x)=>a+x.a,0));
+  $("dl").innerHTML=D.length?D.map(row).join(""):'<div class="mu">ยังไม่มีรายการ</div>';
+}
+
+function render(){
+  const [y,m]=cur.split("-"),now=cur==today.slice(0,7);
+  $("mt").textContent=MN[+m-1]+" "+y;$("nx").disabled=now;$("back").style.display=now?"none":"inline-block";
+  const L=items.filter(x=>x.date.slice(0,7)==cur).sort((a,b)=>b.date.localeCompare(a.date));
+  let i=0,e=0,by={};
+  L.forEach(x=>{if(x.t=="i")i+=x.a;else{e+=x.a;by[x.c]=(by[x.c]||0)+x.a}});
+  INC=i;$("inc").textContent=fmt(i);$("exp").textContent=fmt(e);$("bal").textContent=fmt(i-e);
+  const ks=Object.keys(by).sort((a,b)=>by[b]-by[a]),C=2*Math.PI*40;let off=0;
+  $("cats").innerHTML=ks.length?`<div style="display:flex;align-items:center;gap:16px"><svg viewBox="0 0 120 120" width="124" height="124" style="flex:none">`+ks.map((k,j)=>{const l=by[k]/e*C,r=`<circle cx="60" cy="60" r="40" fill="none" stroke="${PAL[j%7]}" stroke-width="14" stroke-dasharray="${Math.max(l-1.5,0)} ${C-Math.max(l-1.5,0)}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`;off+=l;return r}).join("")+`<text x="60" y="59" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--tx)">${fmt(e)}</text><text x="60" y="73" text-anchor="middle" font-size="8" style="fill:var(--mu)">SPENT</text></svg><div style="flex:1;min-width:0">`+ks.map((k,j)=>`<div class="lg"><span><i style="background:${PAL[j%7]}"></i>${k}</span><b><em>${Math.round(by[k]/e*100)}%</em> ${fmt(by[k])}</b></div>`).join("")+`</div></div>`:"";
+  HC=ks.length>0;applyView();
+  const LQ=Q?L.filter(x=>(x.c+" "+(x.n||"")).toLowerCase().includes(Q)):L;
+  $("list").innerHTML=LQ.length?LQ.map(row).join(""):'<div class="mu" style="padding:12px 0">ยังไม่มีรายการในเดือนนี้ กดปุ่ม + เพื่อเพิ่มรายการ</div>';
+  renderDetail(L);
+  renderIns(L,i,e,now);renderTrend();renderQuick();renderBk();renderSum();
+}
+
+const base=x=>{const a=items.filter(y=>y.t=="e"&&y.c==x.c&&y.id!=x.id).map(y=>y.a).sort((p,q)=>p-q);return a.length>=5?a[a.length>>1]:0};
+const isFlag=x=>{if(x.t!="e"||x.rv||!MEAL.includes(x.c))return false;const b=base(x);return b>0&&x.a>2*b};
+const kind=x=>x.t!="e"?null:x.rv?x.rv:MEAL.includes(x.c)?(isFlag(x)?"u":"n"):(TAGS[x.c]||"w");
+
+function renderIns(L,i,e,now){
+  let n=0,w=0,u=0,top={n:{},w:{}};
+  L.forEach(x=>{const k=kind(x);if(!k)return;if(k=="u")u+=x.a;else{if(k=="n")n+=x.a;else w+=x.a;top[k][x.c]=(top[k][x.c]||0)+x.a}});
+  const sv=Math.max(i-e,0),R=RATIO,cl=p=>p<.85?"var(--inc)":p<1?"#f59e0b":"var(--exp)";
+  if(i<=0){$("ib").innerHTML='<div class="mu">เพิ่มรายรับของเดือนนี้เพื่อดูสัดส่วน Needs / Wants / Savings (50/30/20)</div>';return;}
+  const ln=i*R.n/100,lw=i*R.w/100,ts=i*R.s/100,pn=ln?n/ln:0,pw=lw?w/lw:0,ps=ts?sv/ts:0;
+  const rBar=(t,v,l,p,c)=>`<div class="rowb"><div class="t"><span>${t}</span><span class="mu">${fmt(v)} / ${fmt(l)} (${Math.round(p*100)}%)</span></div><div class="bar"><i style="width:${Math.min(p,1)*100}%;background:${c}"></i></div></div>`;
+  $("ib").innerHTML = rBar("Needs (จำเป็น) "+R.n+"%",n,ln,pn,cl(pn))+rBar("Wants (ความสุข) "+R.w+"%",w,lw,pw,cl(pw))+rBar("Savings (เงินออม) "+R.s+"%",sv,ts,ps,ps>=1?"var(--inc)":"#f59e0b");
+}
+
+function renderTrend(){
+  let [y,m]=cur.split("-").map(Number);const d=[];
+  for(let k=5;k>=0;k--){let mm=m-k,yy=y;while(mm<1){mm+=12;yy--}const key=yy+"-"+String(mm).padStart(2,"0");let i=0,e=0;items.forEach(x=>{if(x.date.slice(0,7)==key)x.t=="i"?i+=x.a:e+=x.a});d.push([MS[mm-1],i,e,key,yy,mm])}
+  const sel=d.find(x=>x[3]==TS)||d[5],mx=Math.max(1,...d.flatMap(x=>[x[1],x[2]]));
+  $("tr").innerHTML='<svg viewBox="0 0 300 125" width="100%">'+d.map((x,g)=>{const h1=x[1]/mx*85,h2=x[2]/mx*85,bx=g*50+8;return `<rect x="${g*50+1}" y="0" width="48" height="125" rx="10" style="fill:${x==sel?"var(--bg)":"none"}"/><rect x="${bx}" y="${95-h1}" width="16" height="${h1}" rx="4" style="fill:var(--inc)"/><rect x="${bx+18}" y="${95-h2}" width="16" height="${h2}" rx="4" style="fill:var(--ac)"/><text x="${bx+17}" y="113" text-anchor="middle" font-size="10" style="fill:var(--mu)">${x[0]}</text><rect data-k="${x[3]}" x="${g*50}" y="0" width="50" height="125" style="fill:transparent"/>`}).join("")+`</svg>`;
+}
+
+let SM="day",SD=today;
+const ad=(s,n)=>{const d=new Date(s+"T00:00:00");d.setDate(d.getDate()+n);return iso(d)};
+function renderSum(){
+  if(SD>today)SD=today;
+  let L=[],lb="";
+  if(SM=="day"){L=items.filter(x=>x.date==SD);lb=SD==today?"Today":SD}
+  else if(SM=="week"){const e=SD,s=ad(SD,-6);L=items.filter(x=>x.date>=s&&x.date<=e);lb=`${s} - ${e}`}
+  else{const m=SD.slice(0,7);L=items.filter(x=>x.date.slice(0,7)==m);lb=m}
+  let i=0,e=0;L.forEach(x=>x.t=="i"?i+=x.a:e+=x.a);
+  $("sl").textContent=lb;$("si").textContent="+"+fmt(i);$("se").textContent="-"+fmt(e);
+  $("sg").querySelectorAll("button").forEach(b=>b.className=b.dataset.m==SM?"on":"");
+}
+
+function renderQuick(){
+  const seen={},picks=[];
+  [...items].reverse().forEach(x=>{const k=x.t+"|"+x.c+"|"+x.a;if(!seen[k]&&picks.length<6){seen[k]=1;picks.push(x)}});
+  $("qk").style.display=picks.length?"block":"none";
+  $("qr").innerHTML=picks.map((x,j)=>`<button data-q="${j}">${x.c} ${x.t=="i"?"+":"-"}${fmt(x.a)}</button>`).join("");
+  $("qr").onclick=e=>{const j=e.target.dataset.q;if(j==null)return;const p=picks[+j];items.push({id:Date.now()+""+Math.random(),t:p.t,a:p.a,c:p.c,n:p.n,date:today});ls("tx",items);render();renderCoworkDashboard();toast(`Added ${p.c} ${fmt(p.a)}`)};
+}
+
+function renderBk(){
+  $("rl").innerHTML=REC.length?REC.map(r=>`<div class="dr"><span>${r.c} (${fmt(r.a)})</span><button class="dbtn" data-rd="${r.id}">Stop</button></div>`).join(""):'<div class="mu">ยังไม่มีรายการประจำเดือน</div>';
+}
+
+let UF=null;function toast(m,f){UF=f;$("ts").firstElementChild.textContent=m;const t=$("ts");t.style.display="flex";clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display="none",4500)}
+function delItem(id){const x=items.find(y=>y.id==id);if(!x)return;items=items.filter(y=>y.id!=id);OP=null;ls("tx",items);render();renderCoworkDashboard();toast("Deleted")}
+function openEdit(id){const x=items.find(y=>y.id==id);if(!x)return;EID=id;setType(x.t);cat=x.c;chips();$("amt").value=x.a;$("dt").value=x.date;$("note").value=x.n||"";$("ov").classList.add("on")}
+
+/* Event Listeners for Wallet */
+$("pv").onclick=()=>{let [y,m]=cur.split("-").map(Number);m--;if(m<1){m=12;y--}cur=y+"-"+String(m).padStart(2,"0");render()};
+$("nx").onclick=()=>{let [y,m]=cur.split("-").map(Number);m++;if(m>12){m=1;y++}const n=y+"-"+String(m).padStart(2,"0");if(n<=today.slice(0,7)){cur=n;render()}};
+$("back").onclick=()=>{cur=today.slice(0,7);render()};
+$("vm").onclick=e=>{const k=e.target.dataset.v;if(k){view[k]=view[k]?0:1;ls("view",view);applyView()}};
+$("dl").onclick=$("list").onclick=e=>{const ed=e.target.dataset.ed;if(ed){openEdit(ed);return}const id=e.target.dataset.id;if(id){delItem(id);return}const o=e.target.closest("[data-o]");if(o){OP=OP==o.dataset.o?null:o.dataset.o;render()}};
+document.querySelector(".two").onclick=e=>{const d=e.target.closest("[data-d]");if(d){DT=d.dataset.d;render();$("dv").classList.add("on")}};
+$("dv").onclick=e=>{if(e.target.id=="dv"||e.target.id=="dx"){DT=null;$("dv").classList.remove("on")}};
+$("fab").onclick=()=>{EID=null;setType("e");$("amt").value="";$("note").value="";$("dt").value=today;$("ov").classList.add("on");$("amt").focus()};
+$("ov").onclick=e=>{if(e.target.id=="ov")$("ov").classList.remove("on")};
+$("be").onclick=()=>setType("e");$("bi").onclick=()=>setType("i");
+$("chips").onclick=e=>{const d=e.target.dataset;if(d.c){cat=d.c;chips()}else if(d.act=="add"){$("ed").classList.toggle("on")}};
+$("cs").onclick=()=>{const n=$("cn").value.trim();if(!n||CATS[type].includes(n))return;CATS[type].push(n);cat=n;ls("cats2",CATS);$("cn").value="";$("ed").classList.remove("on");chips()};
+$("sv").onclick=()=>{
+  const a=parseFloat($("amt").value);if(!(a>0))return;const d=$("dt").value||today,n=$("note").value.trim();
+  if(EID){const x=items.find(y=>y.id==EID);if(x){x.t=type;x.a=a;x.c=cat;x.n=n;x.date=d}}
+  else items.push({id:Date.now()+""+Math.random(),t:type,a,c:cat,n,date:d});
+  EID=null;ls("tx",items);render();renderCoworkDashboard();$("ov").classList.remove("on");
+};
+$("mo").onclick=()=>{renderBk();$("mv").classList.add("on")};
+$("mv").onclick=e=>{if(e.target.id=="mv"||e.target.id=="mx")$("mv").classList.remove("on")};
+$("bx").onclick=()=>{navigator.clipboard.writeText(JSON.stringify({tx:items,meals:mealLogs,habits:habitLogs,profile:healthProfile}));$("bs").textContent="คัดลอก Backup ลงในคลิปบอร์ดแล้ว!"};
+$("bm").onclick=()=>{try{const d=JSON.parse($("bk").value);if(d.tx){items=d.tx;ls("tx",items)}if(d.meals){mealLogs=d.meals;saveMeals()}render();renderCoworkDashboard();$("bs").textContent="Import สำเร็จ!"}catch(e){$("bs").textContent="รูปแบบ JSON ไม่ถูกต้อง"}};
+$("q").oninput=e=>{Q=e.target.value.toLowerCase();render()};
+$("sg").onclick=e=>{const m=e.target.dataset.m;if(m){SM=m;renderSum()}};
+
+/* Theme & Settings Init */
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme", t);
+  $("btn-theme").textContent = t==="dark" ? "☀️" : "🌙";
+  ls("ag_theme", t);
+}
+$("btn-theme").onclick=()=>{
+  const curT = document.documentElement.getAttribute("data-theme") || "light";
+  applyTheme(curT==="dark" ? "light" : "dark");
+};
+$("btn-ai-cfg").onclick=()=>{
+  $("cfg-username").value = g("ag_username");
+  $("cfg-apikey").value = g("ag_apikey");
+  $("cfg-tg-token").value = g("ag_tg_token");
+  $("cfg-tg-chatid").value = g("ag_tg_chatid");
+  $("cfg-voice-reply").checked = g("ag_voice_reply")==="1";
+  $("ai-ov").classList.add("on");
+};
+
+window.addEventListener("storage", ()=>{
+  try{ items = JSON.parse(localStorage.getItem("tx")||"[]"); }catch(e){}
+  render();
+  renderCoworkDashboard();
+});
+
+// Initialize
+if(g("ag_theme")) applyTheme(g("ag_theme"));
+setType("e");
+render();
+renderCoworkDashboard();
+renderFoodDatabase();
+</script>
+</body>
+</html>
