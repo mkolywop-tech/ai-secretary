@@ -397,10 +397,10 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
 .fab:active{transform:scale(.94)}
 
 /* Sheets */
-.ov{backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);background:rgba(10,12,28,.5)}
-.sh{border-radius:28px 28px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.25);animation:sheetUp .28s cubic-bezier(.2,.8,.2,1) both}
+.ov{backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);background:rgba(10,12,28,.5);z-index:100}
+.sh{border-radius:28px 28px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.25);animation:sheetUp .28s cubic-bezier(.2,.8,.2,1) both;max-height:90vh;display:flex;flex-direction:column}
 @keyframes sheetUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
-.toast{z-index:60;box-shadow:var(--sh-lg)}
+.toast{z-index:120;box-shadow:var(--sh-lg)}
 
 /* Mobile = app-style bottom tab bar */
 @media(max-width:720px){
@@ -797,16 +797,25 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
 <!-- AI Agent Settings Modal -->
 <div class="ov" id="ai-ov"><div class="sh">
   <div class="grab"></div>
-  <div class="dh">
+  <div class="dh" style="align-items:center">
     <div>
-      <b style="font-size:17px">👩‍💼 ตั้งค่าเลขา AI ส่วนตัว & เชื่อม Telegram</b>
-      <div class="mu">ตั้งค่าการเรียกชื่อ เสียงพูด แจ้งเตือนอัตโนมัติ และเชื่อมบอทแชท</div>
+      <b style="font-size:16.5px">👩‍💼 ตั้งค่าเลขา AI & API</b>
+      <div class="mu">ตั้งชื่อ · Gemini API Key · เสียงพูด · Telegram</div>
     </div>
-    <button class="cls" onclick="$('ai-ov').classList.remove('on')">ปิด</button>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button type="button" class="btn" style="padding:8px 14px;font-size:13px;border-radius:999px" onclick="saveAIConfig()">✅ บันทึก</button>
+      <button type="button" class="cls" onclick="$('ai-ov').classList.remove('on')">ปิด</button>
+    </div>
   </div>
-  <div class="dscroll" style="margin-top:6px">
-    <label class="mu" style="display:block;margin-bottom:4px;font-weight:600">ชื่อของคุณ (ให้เลขาเรียก)</label>
+  <div class="dscroll" style="margin-top:6px;padding-bottom:8px">
+    <label class="mu" style="display:block;margin-bottom:4px;font-weight:600">1) ชื่อของคุณ (ให้เลขาเรียก)</label>
     <input class="f" id="cfg-username" placeholder="เช่น บอส, คุณภูมิ, เพื่อน">
+
+    <label class="mu" style="display:block;margin-bottom:4px;font-weight:600">2) Gemini API Key (เก็บในมือถือเครื่องนี้เท่านั้น)</label>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <input class="f" id="cfg-apikey" type="password" placeholder="วางคีย์ AIzaSy... ที่นี่" style="margin:0;flex:1">
+      <button type="button" class="btn" style="padding:10px 16px;font-size:13px;white-space:nowrap" onclick="saveAIConfig()">✅ ยืนยัน</button>
+    </div>
 
     <div style="background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin-bottom:12px">
       <b style="font-size:13.5px;display:block;margin-bottom:8px">🎙️ โหมดการทำงานของเลขา</b>
@@ -822,32 +831,32 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
 
     <div style="background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px">
-        <b style="font-size:13.5px">📲 เชื่อมต่อ Telegram Bot (สั่งงาน 2 ทาง ฟรี 100%)</b>
-        <span class="mu" style="font-size:11.5px">สร้างบอทที่ @BotFather ใน Telegram</span>
+        <b style="font-size:13.5px">📲 เชื่อมต่อ Telegram Bot (สั่งงาน 2 ทาง)</b>
+        <span class="mu" style="font-size:11.5px">สร้างบอทที่ @BotFather</span>
       </div>
-      <label class="mu" style="display:block;margin-bottom:4px;font-size:12px;font-weight:600">1) Telegram Bot Token</label>
+      <label class="mu" style="display:block;margin-bottom:4px;font-size:12px;font-weight:600">Telegram Bot Token</label>
       <input class="f" id="cfg-tg-token" type="password" placeholder="เช่น 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" style="margin-bottom:8px">
-      <label class="mu" style="display:block;margin-bottom:4px;font-size:12px;font-weight:600">2) Telegram Chat ID (ทักแชทบอท 1 คำ แล้วกดปุ่มดึงอัตโนมัติ)</label>
+      <label class="mu" style="display:block;margin-bottom:4px;font-size:12px;font-weight:600">Telegram Chat ID (ทักบอท 1 คำ แล้วกดดึง Chat ID)</label>
       <div style="display:flex;gap:6px;margin-bottom:8px">
         <input class="f" id="cfg-tg-chatid" placeholder="เช่น 987654321" style="margin:0;flex:1">
-        <button type="button" class="btn sec" style="padding:8px 12px;font-size:12px;white-space:nowrap" onclick="autoDetectTelegramChatId()">🔍 ดึง Chat ID</button>
-        <button type="button" class="btn sec" style="padding:8px 12px;font-size:12px;white-space:nowrap" onclick="testTelegramPush()">📨 ทดสอบส่ง</button>
+        <button type="button" class="btn sec" style="padding:8px 12px;font-size:12px;white-space:nowrap" onclick="autoDetectTelegramChatId()">🔍 ดึง ID</button>
+        <button type="button" class="btn sec" style="padding:8px 12px;font-size:12px;white-space:nowrap" onclick="testTelegramPush()">📨 ทดสอบ</button>
       </div>
       <div class="mu" style="font-size:11.5px;line-height:1.5" id="tg-setup-status">
-        💡 เมื่อเชื่อมแล้ว คุณสามารถพิมพ์ในแชท Telegram บนมือถือ เช่น <b>"กาแฟ 65"</b>, <b>"เตือน ประชุมบ่ายสอง"</b>, <b>"today"</b>, <b>"week"</b>, <b>"month"</b> แล้วเลขาจะบันทึกและตอบกลับเข้ามือถือทันที!
+        💡 พิมพ์ใน Telegram เช่น <b>"กาแฟ 65"</b>, <b>"today"</b>, <b>"week"</b>, <b>"month"</b> เลขาจะบันทึกและตอบกลับทันที
       </div>
     </div>
 
-    <label class="mu" style="display:block;margin-bottom:4px;font-weight:600">Gemini API Key (ไม่บังคับ - เก็บในเครื่องคุณเท่านั้น)</label>
-    <input class="f" id="cfg-apikey" type="password" placeholder="AIzaSy...">
-    <div style="background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin-bottom:12px;font-size:12.5px">
+    <div style="background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin-bottom:6px;font-size:12.5px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <b>📊 สถิติการใช้ API วันนี้ (ประหยัดด้วย Smart Cache 30 นาที)</b>
+        <b>📊 สถิติการใช้ API วันนี้ (แคช 30 นาที)</b>
         <button class="lk" style="margin:0;font-size:11.5px" onclick="resetApiStats()">รีเซ็ตสถิติ</button>
       </div>
       <div id="api-usage-stats" class="mu" style="line-height:1.6"></div>
     </div>
-    <button class="btn" style="width:100%" onclick="saveAIConfig()">บันทึกการตั้งค่าเลขา</button>
+  </div>
+  <div style="padding-top:10px;border-top:1px solid var(--ln);margin-top:4px">
+    <button type="button" class="btn" style="width:100%;padding:13px" onclick="saveAIConfig()">✅ ยืนยัน & บันทึกการตั้งค่าเลขา</button>
   </div>
 </div></div>
 

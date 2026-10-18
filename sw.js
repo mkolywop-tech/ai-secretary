@@ -1,4 +1,4 @@
-const CACHE_NAME = "ai-secretary-v2";
+const CACHE_NAME = "ai-secretary-v3";
 const ASSETS = ["./", "./index.html", "./manifest.json"];
 
 self.addEventListener("install", e => {
