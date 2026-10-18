@@ -550,45 +550,49 @@ h2{font-size:14px;letter-spacing:0;text-transform:none;color:var(--tx);font-weig
 
 <!-- ==================== SECTION 1: AI AGENT HUB (CLEAN & MINIMAL) ==================== -->
 <main class="shell" id="sec-agent">
-  <!-- 1. Unified Secretary Greeting & Brief Status -->
+  <!-- 1. Unified Secretary Greeting, Proactive Diagnosis & 1-Click Action Bar -->
   <div class="sec-banner" id="sec-proactive-banner">
-    <div style="display:flex;gap:12px;align-items:center;flex:1;min-width:220px">
+    <div style="display:flex;gap:12px;align-items:flex-start;flex:1;min-width:220px;width:100%">
       <div class="sec-avatar">👩‍💼</div>
       <div style="min-width:0;flex:1">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <b id="agent-greeting" style="font-size:16px">สวัสดีครับ!</b>
-          <span class="mu" id="agent-date-sub" style="font-size:12px"></span>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <b id="agent-greeting" style="font-size:16px">สวัสดีค่ะ!</b>
+            <span class="mu" id="agent-date-sub" style="font-size:12px"></span>
+          </div>
+          <div style="display:flex;gap:5px;align-items:center">
+            <button class="chipbtn" id="btn-speak-brief" style="padding:5px 10px;font-size:12px">🔊 ฟังสรุป</button>
+            <button class="chipbtn" onclick="pushBriefingToTelegram()" style="padding:5px 10px;font-size:12px">📲 Telegram</button>
+            <button class="ib" id="btn-refresh-brief" title="อัปเดตข้อมูลล่าสุด" style="width:32px;height:32px;font-size:12px">🔄</button>
+          </div>
         </div>
-        <div id="sec-routine-msg" style="font-size:13px;color:var(--mu);margin-top:2px;line-height:1.45">กำลังเตรียมสรุปประจำวันให้คุณ...</div>
+        <div id="sec-routine-msg" style="font-size:13.5px;color:var(--tx);margin-top:5px;line-height:1.5">กำลังเตรียมสรุปประจำวันให้คุณ...</div>
+        <div id="sec-action-pills" class="chip-group" style="padding-top:8px"></div>
       </div>
-    </div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-      <button class="chipbtn" id="btn-speak-brief" style="padding:6px 12px;font-size:12.5px">🔊 ฟังสรุป</button>
-      <button class="chipbtn" onclick="pushBriefingToTelegram()" style="padding:6px 12px;font-size:12.5px">📲 Telegram</button>
-      <button class="ib" id="btn-refresh-brief" title="อัปเดตข้อมูลล่าสุด" style="width:34px;height:34px;font-size:13px">🔄</button>
     </div>
   </div>
 
-  <!-- 2. Primary Command Bar (Type or Voice) + 1 Single Row of Essential Shortcuts -->
+  <!-- 2. Primary Command Bar (Type or Voice) + Smart Secretary Shortcuts -->
   <div class="cmd-box">
     <form class="cmd-row" id="cmd-form" onsubmit="handleAgentCommand(event)">
       <span class="cmd-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg></span>
-      <input class="cmd-input" id="cmd-input" placeholder="พิมพ์หรือกดไมค์สั่งเลขา… เช่น “กาแฟ 65”, “เตือน ประชุมบ่ายสอง”, “today”" autocomplete="off">
+      <input class="cmd-input" id="cmd-input" placeholder="คุยกับเลขาได้ทุกเรื่อง… เช่น “ซื้อหูฟัง 2500 ไหวไหม”, “กาแฟ 65”, “วันนี้ใช้อะไรไปบ้าง”" autocomplete="off">
       <button type="button" class="mic-btn" id="btn-mic" onclick="toggleVoiceInput()" title="กดเพื่อพูดสั่งงานเลขาด้วยเสียง (ภาษาไทย)">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
       </button>
       <button type="submit" class="btn" id="cmd-submit">ส่ง</button>
     </form>
     <div class="chip-group">
-      <button type="button" class="qchip add" onclick="prefillCmd('กาแฟ ')">☕ กาแฟ</button>
-      <button type="button" class="qchip add" onclick="prefillCmd('ข้าวเที่ยง ')">🍱 ข้าวเที่ยง</button>
-      <button type="button" class="qchip add" onclick="prefillCmd('เดินทาง ')">🚕 เดินทาง</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('ซื้อของ 1500 ไหวไหม')">🤔 ปรึกษาก่อนซื้อ</button>
+      <button type="button" class="qchip add" onclick="quickPrompt('วันนี้ใช้อะไรไปบ้าง')">🧾 เช็กรายจ่ายวันนี้</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('กาแฟ ')">☕ จดกาแฟ</button>
+      <button type="button" class="qchip add" onclick="prefillCmd('ข้าวเที่ยง ')">🍱 จดมื้อเที่ยง</button>
       <button type="button" class="qchip" onclick="quickPrompt('today มีอะไรบ้าง')">📅 สรุป Today</button>
       <button type="button" class="qchip" onclick="quickPrompt('week นี้มีอะไรบ้าง')">📆 สรุป Weekly</button>
-      <button type="button" class="qchip" onclick="quickPrompt('month นี้มีอะไรบ้าง')">🗓️ สรุป Monthly</button>
+      <button type="button" class="qchip" onclick="quickPrompt('วางแผนการเงินเดือนนี้ให้หน่อย')">💡 ให้เลขาจัดแผนงบ</button>
     </div>
     <div class="chat-wrap" id="chat-wrap" style="display:none">
-      <div class="chat-head"><span>💬 บทสนทนากับเลขา</span><button type="button" class="lk" onclick="clearChat()">ปิดแชท</button></div>
+      <div class="chat-head"><span id="chat-status-lbl">👩‍💼 เลขา AI ส่วนตัว</span><button type="button" class="lk" onclick="clearChat()">ล้างแชท</button></div>
       <div class="chat-feed" id="chat-feed"></div>
     </div>
   </div>
@@ -2064,43 +2068,131 @@ function marketMoodFromNews(){
   return {label:"🟡 ทรงตัว", b, d};
 }
 
-/* Natural Language Parser for Expense / Income / Todo / News Queries */
-function tryParseTransactionCommand(text){
-  const t = text.trim();
-  // Avoid matching questions about news or today/week/month summaries
-  if(/ข่าว|สรุป|ราคา|วิเคราะห์|หุ้น|แนวโน้ม|คืออะไร|ทำไม|today|week|weekly|month|monthly|วันนี้มีอะไร|สัปดาห์นี้|เดือนนี้/i.test(t) && !/^(จด|บันทึก|จ่าย|ซื้อ|กิน|เติม|รับ)/.test(t)) return null;
+/* ==================== 4B. SMART AI SECRETARY BRAIN v2 (INTENT ENGINE & ADVISOR) ==================== */
+let chatHistory = [];
 
-  // Match Todo command
-  const todoMatch = t.match(/^(?:เตือน|เพิ่มงาน|งานวันนี้|todo|ต้องทำ)\s*[:：-]?\s*(.+)$/i);
+function inferTxCategory(text){
+  const t = String(text||"");
+  let txType = "e", category = "Other";
+  if(/เงินเดือน|โบนัส|salary|payroll/i.test(t)){ txType="i"; category="Salary"; }
+  else if(/ฟรีแลนซ์|รับจ้าง|งานเสริม|คอมมิชชั่น|ค่าคอม|ขายของได้|freelance/i.test(t)){ txType="i"; category="Freelance"; }
+  else if(/ของขวัญ|ได้เงิน|แม่ให้|พ่อให้|ถูกหวย|คืนเงิน|ปันผล|ดอกเบี้ย|gift/i.test(t)){ txType="i"; category="Gift"; }
+  else if(/รายรับ|รับเงิน|เงินเข้า/i.test(t)){ txType="i"; category="Other"; }
+  else if(/กาแฟ|ชานม|ชาเขียว|มัทฉะ|โกโก้|ขนม|น้ำ|เครื่องดื่ม|คาเฟ่|สตาร์บัค|อเมซอน|เบเกอรี่|ไอศกรีม|coffee|drink|snack/i.test(t)){ txType="e"; category="Snacks & drinks"; }
+  else if(/ข้าวเช้า|มื้อเช้า|อาหารเช้า|โจ๊ก|ปาท่องโก๋|ต้มเลือดหมู|เหนียวหมูปิ้ง|breakfast/i.test(t)){ txType="e"; category="Breakfast"; }
+  else if(/ข้าวเที่ยง|มื้อเที่ยง|อาหารกลางวัน|ก๋วยเตี๋ยว|ตามสั่ง|ส้มตำ|ข้าวมันไก่|ข้าวขาหมู|lunch/i.test(t)){ txType="e"; category="Lunch"; }
+  else if(/ข้าวเย็น|มื้อเย็น|อาหารเย็น|หมูกระทะ|ชาบู|บุฟเฟต์|ปิ้งย่าง|ดินเนอร์|สุกี้|dinner|ข้าว/i.test(t)){ txType="e"; category="Dinner"; }
+  else if(/รถไฟฟ้า|bts|mrt|แกร็บ|grab|bolt|แท็กซี่|วิน|น้ำมัน|เติมน้ำมัน|ทางด่วน|ที่จอดรถ|เดินทาง|ค่ารถ|รถเมล์|transport/i.test(t)){ txType="e"; category="Transport"; }
+  else if(/ค่าไฟ|ค่าน้ำ|ค่าเน็ต|ค่าบ้าน|ค่าเช่า|ค่าหอ|บัตรเครดิต|บิล|ค่าโทรศัพท์|ผ่อน|ประกัน|bill/i.test(t)){ txType="e"; category="Bills"; }
+  else if(/ช้อปปิ้ง|เสื้อผ้า|รองเท้า|กระเป๋า|หูฟัง|มือถือ|ของใช้|shopee|lazada|tiktok|เซเว่น|7-11|ห้าง|เครื่องสำอาง|shopping/i.test(t)){ txType="e"; category="Shopping"; }
+  else if(/ดูหนัง|เกม|เติมเกม|netflix|spotify|youtube|คอนเสิร์ต|สังสรรค์|ปาร์ตี้|เที่ยว|ทริป|entertainment/i.test(t)){ txType="e"; category="Entertainment"; }
+  if(!CATS[txType].includes(category)) category = CATS[txType][0] || "Other";
+  return {txType, category};
+}
+
+function tryParseTransactionCommand(text){
+  const t = String(text||"").trim();
+  if(!t) return null;
+
+  // 1. Match explicit Todo command first
+  const todoMatch = t.match(/^(?:เตือน|เตือนความจำ|เพิ่มงาน|งานวันนี้|จดงาน|todo|ต้องทำ)\s*[:：-]?\s*(.+)$/i);
   if(todoMatch){
     return {action:"todo", todoText: todoMatch[1].trim()};
   }
 
-  // Match number in string (e.g., "กาแฟ 65", "กินข้าวเที่ยง 120 บาท", "เงินเดือนเข้า 35,000")
-  const numMatch = t.match(/(?:^|\s)([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{1,2})?)\s*(?:บาท|บ\.|฿|baht)?$/i) ||
-                   t.match(/([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{1,2})?)/);
+  // 2. NEVER misclassify questions, affordability checks, plans, undo/edit commands, or market queries as transactions!
+  const isQuestionOrConsult = /ไหม|มั้ย|ดีไหม|ดีมั้ย|ไหวไหม|ไหวมั้ย|พอไหม|พอมั้ย|ควรซื้อ|อยากซื้อ|ถ้าซื้อ|ถ้าจ่าย|เท่าไหร่|กี่บาท|อะไรบ้าง|คืออะไร|ยังไง|ทำไม|หรือยัง|หรือเปล่า|วางแผน|ช่วยคิด|ปรึกษา|วิเคราะห์|อยากเก็บ|อยากออม|เป้าหมาย|สรุป|ข่าว|แนวโน้ม|หุ้น|ทอง|บิตคอยน์|คริปโต|today|week|weekly|month|monthly|\?/i.test(t);
+  if(isQuestionOrConsult && !/^(จด|บันทึก)\s+/.test(t)) return null;
+
+  const isUndoOrEdit = /^(ลบ|ยกเลิก|แก้|แก้ไข|เปลี่ยน|ตั้งเป้า|ปรับแผน|เสร็จ|เคลียร์)/.test(t);
+  if(isUndoOrEdit) return null;
+
+  // Avoid matching standalone asset names with numbers like "7 นางฟ้า", "S&P 500", "SET50", "ปี 2026"
+  if(/7\s*นางฟ้า|s&p\s*500|set\s*50|set\s*100|50\/30\/20|ปี\s*20\d\d|7-11$/i.test(t) && !/\d+\s*(บาท|บ\.|฿)$/.test(t)) return null;
+
+  // 3. Extract amount at the end or after an item description (e.g., "กาแฟ 65", "จ่ายค่าไฟ 1,250 บาท", "เงินเดือน 35000")
+  const cleanForNum = t.replace(/7-11/g, "เซเว่น");
+  const numMatch = cleanForNum.match(/(?:^|\s)([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{1,2})?)\s*(?:บาท|บ\.|฿|baht)?$/i) ||
+                   cleanForNum.match(/^(?:จด|บันทึก|จ่ายค่า|จ่าย|ซื้อ|ค่า|กิน|เติม|รับเงิน|ได้เงิน|เงินเดือน|โบนัส|ฟรีแลนซ์)\s*[^\d]+?\s*([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{1,2})?)/i);
   if(!numMatch) return null;
+
   const amount = parseFloat(numMatch[1].replace(/,/g,""));
   if(!(amount > 0 && amount < 100000000)) return null;
 
-  const desc = t.replace(numMatch[0],"").replace(/^(จด|บันทึก|จ่ายค่า|จ่าย|ซื้อ|ค่า|กิน|รับเงิน|ได้เงิน)\s*/i,"").replace(/(บาท|บ\.|฿)$/i,"").trim() || "รายการทั่วไป";
+  const desc = cleanForNum.replace(numMatch[0],"").replace(/^(จด|บันทึก|จ่ายค่า|จ่าย|ซื้อ|ค่า|กิน|เติม|รับเงิน|ได้เงิน)\s*/i,"").replace(/(บาท|บ\.|฿)$/i,"").trim();
+  // Must have some item description or start with an explicit verb
+  if(!desc && !/^(จ่าย|ซื้อ|กิน|รับ|เงินเดือน|โบนัส)/.test(t)) return null;
 
-  // Classify Income vs Expense & Category
-  let txType = "e", category = "Other";
-  if(/เงินเดือน|โบนัส|salary|payroll/i.test(t)){ txType="i"; category="Salary"; }
-  else if(/ฟรีแลนซ์|รับจ้าง|งานเสริม|คอมมิชชั่น|freelance/i.test(t)){ txType="i"; category="Freelance"; }
-  else if(/ของขวัญ|ได้เงิน|แม่ให้|ถูกหวย|คืนเงิน|gift/i.test(t)){ txType="i"; category="Gift"; }
-  else if(/กาแฟ|ชานม|ชาเขียว|ขนม|น้ำ|เครื่องดื่ม|คาเฟ่|สตาร์บัค|อเมซอน|coffee|drink|snack/i.test(t)){ txType="e"; category="Snacks & drinks"; }
-  else if(/ข้าวเช้า|มื้อเช้า|โจ๊ก|ปาท่องโก๋|breakfast/i.test(t)){ txType="e"; category="Breakfast"; }
-  else if(/ข้าวเที่ยง|มื้อเที่ยง|อาหารกลางวัน|ก๋วยเตี๋ยว|ตามสั่ง|ส้มตำ|lunch/i.test(t)){ txType="e"; category="Lunch"; }
-  else if(/ข้าวเย็น|มื้อเย็น|อาหารเย็น|หมูกระทะ|ชาบู|บุฟเฟต์|ดินเนอร์|dinner|ข้าว/i.test(t)){ txType="e"; category="Dinner"; }
-  else if(/รถไฟฟ้า|bts|mrt|แกร็บ|grab|แท็กซี่|วิน|น้ำมัน|ทางด่วน|เดินทาง|ค่ารถ|transport/i.test(t)){ txType="e"; category="Transport"; }
-  else if(/ค่าไฟ|ค่าน้ำ|ค่าเน็ต|ค่าบ้าน|ค่าเช่า|บัตรเครดิต|บิล|โทรศัพท์|ผ่อน|bill/i.test(t)){ txType="e"; category="Bills"; }
-  else if(/ช้อปปิ้ง|เสื้อผ้า|รองเท้า|shopee|lazada|ของใช้|เซเว่น|7-11|shopping/i.test(t)){ txType="e"; category="Shopping"; }
-  else if(/ดูหนัง|เกม|netflix|spotify|คอนเสิร์ต|สังสรรค์|เที่ยว|entertainment/i.test(t)){ txType="e"; category="Entertainment"; }
+  const {txType, category} = inferTxCategory(t);
+  return {action:"tx", txType, category, amount, note: desc || category};
+}
 
-  if(!CATS[txType].includes(category)) category = CATS[txType][0] || "Other";
-  return {action:"tx", txType, category, amount, note: desc};
+function buildAffordabilityAdvice(itemName, price){
+  const st = getMonthFinanceStats();
+  const safeName = String(itemName||"รายการนี้").replace(/</g,"&lt;");
+  if(st.inc <= 0){
+    return `🤔 <b>เลขาช่วยประเมินก่อนซื้อ "${safeName}" (฿${fmt(price)}):</b><br>
+      • ตอนนี้คุณยังไม่ได้ตั้งรายรับของเดือนนี้ เลขาเลยยังไม่เห็นเพดานงบรายวันค่ะ (เดือนนี้ใช้จ่ายสะสมไปแล้ว <b>฿${fmt(st.exp)}</b>)<br>
+      • 💡 <b>คำแนะนำจากเลขา:</b> ลองพิมพ์ตั้งรายรับก่อน เช่น <b>"เงินเดือน 35000"</b> หรือถ้าตัดสินใจซื้อแล้ว กดปุ่มบันทึกด้านล่างได้เลยค่ะ
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="confirmPurchaseFromChat('${safeName.replace(/'/g,"")}', ${price})">✅ ตกลงซื้อเลย (บันทึกจ่าย ฿${fmt(price)})</button>
+        <button class="btn sec" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="prefillCmd('เงินเดือน 35000')">💰 ตั้งรายรับเดือนนี้</button>
+      </div>`;
+  }
+
+  const spendBudget = st.inc * (RATIO.n + RATIO.w) / 100;
+  const remSpendBudget = Math.max(0, spendBudget - st.exp);
+  const remToday = st.dailyAllowance - st.todayExp;
+  const newRemSpend = remSpendBudget - price;
+  const newDaily = Math.max(0, Math.floor(newRemSpend / st.daysLeft));
+  const dailyDiff = Math.max(0, st.dailyAllowance - newDaily);
+
+  let statusBadge = "", adviceText = "";
+  if(price <= Math.max(remToday, st.dailyAllowance * 0.8)){
+    statusBadge = `<span class="up" style="font-weight:700">🟢 ไฟเขียว: ซื้อได้สบาย ไม่กระทบแผนออมค่ะ!</span>`;
+    adviceText = `ราคานี้อยู่ในกรอบงบรายวันของคุณ (฿${fmt(st.dailyAllowance)}/วัน) หลังซื้อแล้วงบเฉลี่ยวันถัดไปยังเหลือสบายๆ ที่ <b>฿${fmt(newDaily)}/วัน</b> ค่ะ`;
+  } else if(newRemSpend >= 0){
+    statusBadge = `<span style="color:#f59e0b;font-weight:700">🟡 ไฟเหลือง: ซื้อได้ค่ะ แต่ต้องรัดเข็มขัดวันถัดไปนิดนึง</span>`;
+    adviceText = `ราคานี้เกินงบรายวันวันนี้ไปหน่อย แต่ยังอยู่ในงบใช้จ่ายรวมของเดือนนี้ค่ะ <b>ถ้าซื้อชิ้นนี้ ในอีก ${st.daysLeft} วันที่เหลือ ต้องคุมงบใช้จ่ายให้เหลือวันละ ฿${fmt(newDaily)}</b> (ลดลงจากเดิมวันละ ฿${fmt(dailyDiff)}) เพื่อรักษาเป้าเงินออม ${RATIO.s}% ค่ะ`;
+  } else {
+    const overAmt = Math.abs(newRemSpend);
+    statusBadge = `<span class="dn" style="font-weight:700">🔴 ไฟแดง: เลขาแนะนำให้ชะลอไว้ก่อนนะคะ!</span>`;
+    adviceText = `ถ้าจ่าย <b>฿${fmt(price)}</b> ตอนนี้ จะทำให้งบใช้จ่ายเดือนนี้เกินเพดานแผน ${RATIO.n+RATIO.w}% ไป <b>฿${fmt(overAmt)}</b> และไปกินส่วนเงินออมของคุณค่ะ แนะนำให้รอต้นเดือนหน้า หรือตัดรายจ่ายหมวดอื่นลงก่อนนะคะ`;
+  }
+
+  return `👩‍💼 <b>เลขาวิเคราะห์ความคุ้มค่าก่อนซื้อ: "${safeName}" (฿${fmt(price)})</b><br>
+    • <b>ผลการประเมิน:</b> ${statusBadge}<br>
+    • <b>สถานะกระเป๋าตอนนี้:</b> คงเหลือสุทธิ <b>฿${fmt(st.bal)}</b> · งบใช้จ่ายที่เหลือเดือนนี้ <b>฿${fmt(remSpendBudget)}</b> (${st.daysLeft} วัน)<br>
+    • <b>คำแนะนำจากเลขา:</b> ${adviceText}
+    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="confirmPurchaseFromChat('${safeName.replace(/'/g,"")}', ${price})">✅ ตัดสินใจซื้อ (บันทึกจ่าย ฿${fmt(price)})</button>
+      <button class="btn sec" style="padding:6px 12px;font-size:12px;border-radius:999px" onclick="appendChatMessage('ai','👏 เยี่ยมมากค่ะบอส! ชะลอการซื้อไว้ก่อน ช่วยเซฟเงินในกระเป๋าได้ตั้ง <b>฿${fmt(price)}</b> เลยค่ะ')">🛑 ชะลอไว้ก่อนตามเลขาแนะนำ</button>
+    </div>`;
+}
+
+function confirmPurchaseFromChat(desc, amount){
+  const {txType, category} = inferTxCategory(desc);
+  const newId = Date.now()+""+Math.random();
+  items.push({id:newId, t:txType, a:amount, c:category, n:desc, date:today});
+  cur = today.slice(0,7);
+  ls("tx", items);
+  render();
+  updateProactiveSecretary();
+  const st = getMonthFinanceStats();
+  appendChatMessage("ai", `✅ <b>บันทึกการซื้อ "${desc}" (-฿${fmt(amount)}) ลงหมวด ${category} เรียบร้อยค่ะ!</b><br><small class="mu">คงเหลือเดือนนี้: ฿${fmt(st.bal)} · งบใช้ได้วันถัดไป: ฿${fmt(st.dailyAllowance)}/วัน</small>`);
+}
+
+function undoLastTransactionFromChat(){
+  if(!items.length){
+    appendChatMessage("ai", `ℹ️ ตอนนี้ยังไม่มีรายการในกระเป๋าตังค์ให้ยกเลิกค่ะ`);
+    return;
+  }
+  const removed = items.pop();
+  ls("tx", items);
+  render();
+  updateProactiveSecretary();
+  const st = getMonthFinanceStats();
+  appendChatMessage("ai", `↩️ <b>เลขาลบรายการล่าสุดให้เรียบร้อยแล้วค่ะ:</b> ยกเลิก <b>${removed.c}${removed.n?" ("+removed.n.replace(/</g,"&lt;")+")":""} จำนวน ฿${fmt(removed.a)}</b><br><small class="mu">ยอดเงินคงเหลือปัจจุบันอัปเดตเป็น ฿${fmt(st.bal)} ค่ะ</small>`);
 }
 
 let lastUsedVoice = false;
@@ -2109,7 +2201,7 @@ function speakSecretaryText(rawText){
   if(!("speechSynthesis" in window)) return;
   try{
     window.speechSynthesis.cancel();
-    const clean = String(rawText||"").replace(/<[^>]+>/g," ").replace(/[•▪▸↳✦⚡📈💎🚀💡💰📊📋📲🎙️]/g,"").replace(/\s+/g," ").trim().slice(0, 260);
+    const clean = String(rawText||"").replace(/<[^>]+>/g," ").replace(/[•▪▸↳✦⚡📈💎🚀💡💰📊📋📲🎙️👩‍💼🟢🟡🔴✅↩️]/g,"").replace(/\s+/g," ").trim().slice(0, 260);
     if(!clean) return;
     const utter = new SpeechSynthesisUtterance(clean);
     utter.lang = "th-TH";
@@ -2126,6 +2218,10 @@ function appendChatMessage(role, html){
   div.innerHTML = html;
   feed.appendChild(div);
   feed.scrollTop = feed.scrollHeight;
+  if(!html.includes("⏳")){
+    chatHistory.push({role, text: div.textContent.trim().slice(0, 400)});
+    if(chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
+  }
   if(role === "ai" && !html.includes("⏳") && (g("ag_voice_reply")==="1" || lastUsedVoice)){
     lastUsedVoice = false;
     speakSecretaryText(div.textContent);
@@ -2134,6 +2230,7 @@ function appendChatMessage(role, html){
 function clearChat(){
   $("chat-feed").innerHTML = "";
   $("chat-wrap").style.display = "none";
+  chatHistory = [];
 }
 
 function quickPrompt(txt){
@@ -2147,6 +2244,16 @@ function prefillCmd(txt){
   inp.setSelectionRange(txt.length, txt.length);
 }
 
+function completeTodoFromChat(id){
+  const t = todos.find(x=>x.id===id);
+  if(t){
+    t.done = true;
+    renderTodos();
+    updateProactiveSecretary();
+    toast(`✅ เคลียร์งาน "${t.text}" สำเร็จ!`);
+  }
+}
+
 async function handleAgentCommand(e){
   if(e) e.preventDefault();
   const inp = $("cmd-input");
@@ -2155,13 +2262,48 @@ async function handleAgentCommand(e){
   inp.value = "";
   appendChatMessage("user", text.replace(/</g,"&lt;"));
 
-  // 1. Check if it's a transaction or todo command
+  const lower = text.toLowerCase();
+  const uname = g("ag_username") ? "คุณ" + g("ag_username") : "บอส";
+
+  // INTENT 1: Undo / Delete / Edit Last Transaction ("ลบรายการล่าสุด", "ยกเลิกเมื่อกี้", "แก้เป็น 80")
+  if(/(ลบ|ยกเลิก).*(ล่าสุด|เมื่อกี้|ตะกี้|อันสุดท้าย)|^ยกเลิก$|^undo$/i.test(text)){
+    undoLastTransactionFromChat();
+    return;
+  }
+  const editMatch = text.match(/^(?:แก้|แก้ไข|เปลี่ยน)(?:รายการล่าสุด|อันเมื่อกี้|ราคา|ยอด)?(?:เป็น|เหลือ)?\s*([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{1,2})?)/i);
+  if(editMatch && items.length){
+    const newAmt = parseFloat(editMatch[1].replace(/,/g,""));
+    if(newAmt > 0){
+      const lastIt = items[items.length - 1];
+      const oldAmt = lastIt.a;
+      lastIt.a = newAmt;
+      ls("tx", items);
+      render();
+      updateProactiveSecretary();
+      const st = getMonthFinanceStats();
+      appendChatMessage("ai", `✏️ <b>เลขาแก้ไขยอดรายการล่าสุด (${lastIt.c}${lastIt.n?" · "+lastIt.n:""}) จาก ฿${fmt(oldAmt)} เป็น ฿${fmt(newAmt)} เรียบร้อยค่ะ!</b><br><small class="mu">คงเหลือเดือนนี้: ฿${fmt(st.bal)} · วันนี้ใช้ไป ฿${fmt(st.todayExp)}</small>`);
+      return;
+    }
+  }
+
+  // INTENT 2: Affordability / Purchase Consultation ("ซื้อหูฟัง 2500 ไหวไหม", "กินบุฟเฟต์ 699 ดีไหม", "ถ้าซื้อ...พอมั้ย")
+  const consultNum = text.match(/([0-9]+(?:,[0-9]{3})*(?:\.[0-9]{1,2})?)/);
+  if(consultNum && /ไหวไหม|ไหวมั้ย|ดีไหม|ดีมั้ย|พอไหม|พอมั้ย|ควรซื้อ|ซื้อดี|ถ้าซื้อ|ถ้าจ่าย|แพงไปไหม|กระทบงบไหม/i.test(text)){
+    const price = parseFloat(consultNum[1].replace(/,/g,""));
+    if(price > 0){
+      const itemDesc = text.replace(consultNum[0],"").replace(/ซื้อ|กิน|จ่าย|ราคา|บาท|บ\.|฿|ไหวไหม|ไหวมั้ย|ดีไหม|ดีมั้ย|พอไหม|พอมั้ย|ควร|ถ้า|แพงไปไหม|กระทบงบไหม|\?/gi,"").trim() || "สินค้าที่สนใจ";
+      appendChatMessage("ai", buildAffordabilityAdvice(itemDesc, price));
+      return;
+    }
+  }
+
+  // INTENT 3: Direct Transaction or Todo Recording ("กาแฟ 65", "เงินเดือน 35000", "เตือน ประชุมบ่ายสอง")
   const parsed = tryParseTransactionCommand(text);
   if(parsed && parsed.action === "todo"){
     todos.unshift({id:"td"+Date.now(), text:parsed.todoText, done:false});
     renderTodos();
     updateProactiveSecretary();
-    appendChatMessage("ai", `✅ <b>เลขารับทราบค่ะ! เพิ่มในรายการงานวันนี้แล้ว:</b> "${parsed.todoText.replace(/</g,"&lt;")}"`);
+    appendChatMessage("ai", `✅ <b>เลขารับทราบค่ะ${uname}! เพิ่มในตารางงานวันนี้แล้ว:</b> "${parsed.todoText.replace(/</g,"&lt;")}" (ตอนนี้มีงานค้าง ${todos.filter(t=>!t.done).length} รายการค่ะ)`);
     return;
   }
   if(parsed && parsed.action === "tx"){
@@ -2173,23 +2315,29 @@ async function handleAgentCommand(e){
     render();
     updateProactiveSecretary();
     const st = getMonthFinanceStats();
+    const remToday = st.dailyAllowance - st.todayExp;
+    const secTip = parsed.txType === "i"
+      ? `🎉 เงินเข้ากระเป๋าแล้ว! เลขาคำนวณงบใช้จ่ายรายวันตามแผน ${RATIO.n}/${RATIO.w}/${RATIO.s} ให้คุณใช้ได้วันละ <b>฿${fmt(st.dailyAllowance)}</b> ค่ะ`
+      : st.inc <= 0
+        ? `💡 วันนี้ใช้ไปรวม <b>฿${fmt(st.todayExp)}</b> (ตั้งรายรับเดือนนี้เพื่อให้เลขาช่วยคุมงบรายวันได้นะคะ)`
+        : remToday >= 0
+          ? `👍 วันนี้ใช้ไปรวม <b>฿${fmt(st.todayExp)}</b> ยังเหลืองบใช้ได้วันนี้อีก <b>฿${fmt(remToday)}</b> ค่ะ`
+          : `⚠️ วันนี้ใช้เกินงบรายวันไป <b>฿${fmt(Math.abs(remToday))}</b> แล้วนะคะ พรุ่งนี้เลขาแนะนำให้คุมงบไม่เกิน <b>฿${fmt(st.dailyAllowance)}</b> ค่ะ`;
+
     appendChatMessage("ai", `✅ <b>เลขาบันทึกลงกระเป๋าตังค์เรียบร้อยค่ะ!</b><br>
       <span class="tag-pill">${parsed.txType==="i"?"รายรับ":"รายจ่าย"}</span>
       <span class="tag-pill">หมวด: ${parsed.category}</span>
       <b>${parsed.txType==="i"?"+":"-"}฿${fmt(parsed.amount)}</b> (${parsed.note.replace(/</g,"&lt;")})<br>
-      <small class="mu">คงเหลือเดือนนี้: ฿${fmt(st.bal)} · วันนี้ใช้ไปรวม ฿${fmt(st.todayExp)}</small>`);
-    toast(`บันทึก ${parsed.category} ฿${fmt(parsed.amount)} แล้ว`, ()=>{
-      items = items.filter(x=>x.id!==newId);
-      ls("tx", items);
-      render();
-      updateProactiveSecretary();
-    });
+      <div style="margin-top:5px;font-size:13px">${secTip}</div>
+      <div style="margin-top:7px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn sec" style="padding:4px 10px;font-size:11.5px;border-radius:999px" onclick="undoLastTransactionFromChat()">↩️ ยกเลิกรายการนี้</button>
+        <button class="btn ghost" style="padding:4px 10px;font-size:11.5px;border-radius:999px" onclick="prefillCmd('แก้เป็น ')">✏️ แก้ไขยอดเงิน</button>
+      </div>`);
     return;
   }
 
-  // 2. Check if user is asking for Today / Weekly / Monthly Structured Pattern Digest!
-  const lower = text.toLowerCase();
-  if(/today|daily|วันนี้มีอะไร|สรุปวันนี้|week|weekly|สัปดาห์นี้|อาทิตย์นี้|วีคนี้|month|monthly|เดือนนี้มีอะไร|สรุปเดือนนี้|สรุปตลาด/.test(lower) && !/การเงินส่วนตัว|กระเป๋าตัง/.test(lower)){
+  // INTENT 4: Structured Pattern Digest (Today / Weekly / Monthly)
+  if(/^(today|daily|week|weekly|month|monthly)$|today มีอะไร|วันนี้มีข่าวอะไร|สรุปข่าววันนี้|week นี้มีอะไร|สรุปสัปดาห์|สรุปวีค|month นี้มีอะไร|สรุปเดือนนี้|สรุปตลาด/i.test(lower) && !/ใช้อะไร|จ่ายอะไร|กี่บาท/.test(lower)){
     const p = /week|weekly|สัปดาห์|อาทิตย์|วีค/.test(lower) ? "week" : /month|monthly|เดือน/.test(lower) ? "month" : "today";
     switchBriefPeriod(p);
     const rep = buildStructuredPatternData(p);
@@ -2200,24 +2348,120 @@ async function handleAgentCommand(e){
     return;
   }
 
-  // 3. If Gemini API Key is configured, use Gemini with full context (Wallet + Live News)
+  // INTENT 5: To-Do List Queries & Commands ("งานวันนี้มีอะไรบ้าง", "เช็กงานค้าง", "เสร็จข้อ 1", "เคลียร์งาน")
+  if(/งานวันนี้|งานค้าง|สิ่งที่ต้องทำ|เช็กงาน|มีงานอะไร|todo/i.test(lower)){
+    const pending = todos.filter(t=>!t.done);
+    const done = todos.filter(t=>t.done);
+    if(!pending.length){
+      appendChatMessage("ai", `🎉 <b>ยอดเยี่ยมมากค่ะ${uname}! วันนี้คุณเคลียร์งานครบหมดแล้ว (${done.length}/${todos.length} รายการ)</b><br>หากมีงานใหม่ พิมพ์สั่งเลขาได้เลย เช่น <b>"เตือน ส่งอีเมลหาลูกค้า"</b> ค่ะ`);
+    } else {
+      const listHtml = pending.map((t,idx)=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed var(--ln)">
+        <span>${idx+1}. ${t.text.replace(/</g,"&lt;")}</span>
+        <button class="btn sec" style="padding:3px 9px;font-size:11.5px;border-radius:999px" onclick="completeTodoFromChat('${t.id}');this.textContent='✓ เสร็จแล้ว';this.disabled=true">✓ ทำเสร็จแล้ว</button>
+      </div>`).join("");
+      appendChatMessage("ai", `📋 <b>รายการงานที่คุณต้องทำวันนี้ (ค้าง ${pending.length} รายการ · เสร็จแล้ว ${done.length} รายการ):</b><div style="margin-top:6px">${listHtml}</div>`);
+    }
+    return;
+  }
+
+  // INTENT 6: Specific Personal Wallet & Spending Queries ("วันนี้ใช้อะไรไปบ้าง", "เมื่อวานจ่ายอะไร", "เดือนนี้ค่ากาแฟเท่าไหร่", "วางแผนการเงิน")
+  if(/วันนี้ใช้อะไร|วันนี้จ่ายอะไร|วันนี้ใช้ไป|รายจ่ายวันนี้|เมื่อวานใช้อะไร|เมื่อวานจ่าย|รายการล่าสุด/i.test(lower)){
+    const isYesterday = /เมื่อวาน/.test(lower);
+    const targetDate = isYesterday ? ad(today, -1) : today;
+    const dayTx = items.filter(x=>x.date===targetDate);
+    const label = isYesterday ? "เมื่อวานนี้" : "วันนี้";
+    if(!dayTx.length){
+      const st = getMonthFinanceStats();
+      appendChatMessage("ai", `🧾 <b>${label}ยังไม่มีรายการบันทึกค่าใช้จ่ายค่ะ${uname}</b><br>• งบใช้ได้ต่อวันของคุณคือ <b>฿${fmt(st.dailyAllowance)}/วัน</b><br>• พิมพ์จดง่ายๆ เช่น <b>"กาแฟ 65"</b> หรือ <b>"ข้าวเที่ยง 80"</b> ได้เลยค่ะ`);
+      return;
+    }
+    const totE = dayTx.filter(x=>x.t==="e").reduce((s,x)=>s+x.a,0);
+    const totI = dayTx.filter(x=>x.t==="i").reduce((s,x)=>s+x.a,0);
+    const rows = dayTx.slice(-8).map(x=>`• <b>${x.c}</b>${x.n?` (${x.n.replace(/</g,"&lt;")})`:""}: <b class="${x.t==="i"?"inc":"exp"}">${x.t==="i"?"+":"-"}฿${fmt(x.a)}</b>`).join("<br>");
+    const st = getMonthFinanceStats();
+    appendChatMessage("ai", `🧾 <b>สรุปรายการ${label} (${dayTx.length} รายการ · จ่ายรวม ฿${fmt(totE)}${totI>0?` · รับ ฿${fmt(totI)}`:""}):</b><br>${rows}<br><div style="margin-top:6px;font-size:12.5px" class="mu">💡 เงินคงเหลือเดือนนี้: ฿${fmt(st.bal)} · งบใช้ได้เฉลี่ยต่อวัน: ฿${fmt(st.dailyAllowance)}/วัน</div>`);
+    return;
+  }
+
+  if(/วางแผน|จัดแผน|อยากเก็บเงิน|อยากออม|ช่วยบริหารเงิน|การเงินส่วนตัว|สุขภาพการเงิน|สรุปการเงิน|จ่ายค่าอะไรเยอะ|เหลือเงินเท่าไหร่|เช็กงบ/i.test(lower)){
+    const st = getMonthFinanceStats();
+    const mo = today.slice(0,7);
+    const monthExp = items.filter(x=>x.date.slice(0,7)===mo && x.t==="e");
+    const byCat = {};
+    monthExp.forEach(x=>{ byCat[x.c] = (byCat[x.c]||0) + x.a; });
+    const topCats = Object.entries(byCat).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const catStr = topCats.length ? topCats.map(([c,v],i)=>`${i+1}) <b>${c}</b> ฿${fmt(v)} (${Math.round(v/Math.max(1,st.exp)*100)}%)`).join(" · ") : "ยังไม่มีรายจ่ายเดือนนี้";
+    const targetSave = Math.round(st.inc * RATIO.s / 100);
+
+    appendChatMessage("ai", `👩‍💼 <b>เลขาสรุปแผนบริหารการเงินประจำเดือนให้${uname}ค่ะ:</b><br>
+      • <b>ภาพรวมเดือนนี้:</b> รายรับ <b class="inc">฿${fmt(st.inc)}</b> · ใช้ไปแล้ว <b class="exp">฿${fmt(st.exp)}</b> · คงเหลือสุทธิ <b>฿${fmt(st.bal)}</b><br>
+      • <b>หมวดที่ใช้จ่ายสูงสุด 3 อันดับ:</b> ${catStr}<br>
+      • <b>แผนคุมงบ ${st.daysLeft} วันที่เหลือ:</b> ${st.inc>0
+        ? `เพื่อให้มีเงินออมถึงเป้า <b>฿${fmt(targetSave)} (${RATIO.s}%)</b> เลขาแนะนำให้จำกัดรายจ่ายไม่เกินวันละ <b>฿${fmt(st.dailyAllowance)}</b> ค่ะ (วันนี้ใช้ไปแล้ว ฿${fmt(st.todayExp)})`
+        : `คุณยังไม่ได้บันทึกรายรับเดือนนี้ ลองพิมพ์ <b>"เงินเดือน 35000"</b> เพื่อให้เลขาคำนวณงบรายวันและเป้าหมายเงินออมให้นะคะ`}
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="switchSection('wallet')">📊 เปิดดูกราฟในกระเป๋าตังค์</button>
+        <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="prefillCmd('ซื้อของ 1000 ไหวไหม')">🤔 ปรึกษาก่อนซื้อของ</button>
+      </div>`);
+    return;
+  }
+
+  // INTENT 7: If Gemini API Key is configured, use Multi-Turn Gemini AI with Full Context + Action Execution!
   const apiKey = g("ag_apikey");
   if(apiKey){
-    appendChatMessage("ai", "⏳ เลขากำลังคิดและวิเคราะห์ข้อมูลให้คุณ...");
+    appendChatMessage("ai", "⏳ เลขากำลังวิเคราะห์ข้อมูลให้คุณ...");
     const lastMsg = $("chat-feed").lastElementChild;
     try{
       const st = getMonthFinanceStats();
-      const headlines = newsItems.slice(0,12).map(x=>`- [${x.c}] ${x.t}`).join("\n");
-      const sysPrompt = `คุณคือ Personal AI Secretary (เลขาส่วนตัวอัจฉริยะ) ด้านการเงิน ข่าวตลาดหุ้น/คริปโต/Stablecoin/เทคโนโลยี/EV และการจัดการชีวิตประจำวัน
-ข้อมูลกระเป๋าตังค์ของผู้ใช้เดือนนี้: รายรับ ฿${fmt(st.inc)}, รายจ่าย ฿${fmt(st.exp)}, คงเหลือ ฿${fmt(st.bal)}, วันนี้ใช้ไป ฿${fmt(st.todayExp)}, งบใช้ได้ต่อวัน ฿${fmt(st.dailyAllowance)}, หมวดใช้จ่ายสูงสุด: ${st.topCat||"ยังไม่มี"}
-ข่าวล่าสุดในระบบ:
+      const todayTxList = items.filter(x=>x.date===today).map(x=>`${x.c}(${x.n||"-"}): ${x.t==="i"?"+":"-"}${x.a}`).join(", ") || "ยังไม่มี";
+      const pendingTodoList = todos.filter(t=>!t.done).map(t=>t.text).join(", ") || "ไม่มีงานค้าง";
+      const mktSnap = ASSETS.map(a=>`${a.id}:${fmtPrice(a)} (${fmtPctText(a.chg)})`).join(", ");
+      const headlines = newsItems.slice(0,10).map(x=>`- [${x.c}] ${x.t}`).join("\n");
+      const histText = chatHistory.slice(-5).map(h=>`${h.role==="user"?"ผู้ใช้":"เลขา"}: ${h.text}`).join("\n");
+
+      const sysPrompt = `คุณคือ "เลขา AI ส่วนตัว" (Personal AI Secretary) ที่ฉลาด อบอุ่น พึ่งพาได้จริง ดูแลทั้งการเงินส่วนตัว ตารางงาน และวิเคราะห์ข่าวตลาด/เทคโนโลยีให้ "${uname}"
+ข้อมูลจริงของผู้ใช้ตอนนี้:
+- เดือนนี้: รายรับ ฿${fmt(st.inc)}, รายจ่ายสะสม ฿${fmt(st.exp)}, คงเหลือ ฿${fmt(st.bal)}, เหลืออีก ${st.daysLeft} วันในเดือนนี้, งบใช้ได้ต่อวัน ฿${fmt(st.dailyAllowance)}/วัน (แผน Needs ${RATIO.n}% / Wants ${RATIO.w}% / Savings ${RATIO.s}%)
+- รายการที่ใช้จ่ายวันนี้ (รวม ฿${fmt(st.todayExp)}): ${todayTxList}
+- หมวดที่ใช้จ่ายสูงสุดเดือนนี้: ${st.topCat ? `${st.topCat} (฿${fmt(st.topCatAmt)})` : "ยังไม่มี"}
+- งานที่ต้องทำวันนี้ (To-Do): ${pendingTodoList}
+- ราคาตลาดล่าสุด: ${mktSnap}
+- ข่าวเด่นล่าสุด:
 ${headlines}
 
-คำสั่งของผู้ใช้: "${text}"
-ตอบในบทบาทเลขาส่วนตัวที่สุภาพ กระชับ แบ่งหัวข้อชัดเจน และนำไปใช้ตัดสินใจได้จริง`;
-      const reply = await callGeminiText(sysPrompt);
+ประวัติการสนทนาล่าสุด:
+${histText}
+
+คำพูดล่าสุดของผู้ใช้: "${text}"
+
+กติกาการตอบของเลขา:
+1. ตอบตรงคำถามของผู้ใช้ด้วยข้อมูลจริงด้านบน กระชับ อ่านง่าย แบ่งหัวข้อชัดเจน และให้คำแนะนำที่นำไปตัดสินใจได้จริง (ห้ามตอบนอกเรื่องเด็ดขาด)
+2. หากผู้ใช้สั่งให้จดรายรับ/รายจ่ายในประโยค ให้ใส่แท็กคำสั่งไว้บรรทัดสุดท้ายในรูปแบบ: [ACTION:ADD_TX|e หรือ i|หมวดหมู่|จำนวนเงินตัวเลข|รายละเอียด]
+3. หากผู้ใช้สั่งให้เพิ่มงาน/เตือนความจำ ให้ใส่แท็กคำสั่งไว้บรรทัดสุดท้ายในรูปแบบ: [ACTION:ADD_TODO|ชื่องาน]`;
+
+      let reply = await callGeminiText(sysPrompt);
       if(reply){
+        // Check if Gemini emitted any [ACTION:...] tags and execute them!
+        const txAct = reply.match(/\[ACTION:ADD_TX\|(e|i)\|([^|]+)\|([0-9.]+)\|([^\]]+)\]/i);
+        if(txAct){
+          const amt = parseFloat(txAct[3]);
+          if(amt > 0){
+            items.push({id:Date.now()+""+Math.random(), t:txAct[1].toLowerCase(), a:amt, c:txAct[2].trim(), n:txAct[4].trim(), date:today});
+            ls("tx", items);
+            render();
+            updateProactiveSecretary();
+          }
+          reply = reply.replace(txAct[0], "").trim();
+        }
+        const tdAct = reply.match(/\[ACTION:ADD_TODO\|([^\]]+)\]/i);
+        if(tdAct){
+          todos.unshift({id:"td"+Date.now(), text:tdAct[1].trim(), done:false});
+          renderTodos();
+          updateProactiveSecretary();
+          reply = reply.replace(tdAct[0], "").trim();
+        }
         lastMsg.innerHTML = reply.replace(/</g,"&lt;").replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
+        chatHistory.push({role:"ai", text: lastMsg.textContent.trim().slice(0, 400)});
         if(g("ag_voice_reply")==="1" || lastUsedVoice){ lastUsedVoice = false; speakSecretaryText(lastMsg.textContent); }
         return;
       }
@@ -2225,30 +2469,40 @@ ${headlines}
     lastMsg.remove();
   }
 
-  // 4. Built-in Smart Local Agent Response (works 100% offline/without API key)
-  if(/การเงิน|กระเป๋า|ใช้จ่าย|งบ|ออม|wallet/.test(lower)){
-    const st = getMonthFinanceStats();
-    appendChatMessage("ai", `💰 <b>เลขารายงานสุขภาพการเงินเดือนนี้ค่ะ:</b><br>
-      • รายรับรวม: <b class="inc">฿${fmt(st.inc)}</b> · รายจ่ายรวม: <b class="exp">฿${fmt(st.exp)}</b> (คงเหลือ <b>฿${fmt(st.bal)}</b>)<br>
-      • วันนี้ใช้จ่ายไป: <b>฿${fmt(st.todayExp)}</b><br>
-      • หมวดที่ใช้เยอะสุด: <b>${st.topCat ? `${st.topCat} (฿${fmt(st.topCatAmt)})` : "ยังไม่มีข้อมูลรายจ่าย"}</b><br>
-      • คำแนะนำจากเลขา: ${st.inc>0 ? `คุณมีงบใช้จ่ายได้อีกวันละ <b>฿${fmt(st.dailyAllowance)}</b> เพื่อให้บรรลุเป้าออมเงิน ${RATIO.s}% ของเดือนนี้ค่ะ` : `ลองสั่งเลขาเพิ่มรายรับ เช่น <b>"เงินเดือน 35000"</b> เพื่อให้เลขาคำนวณงบรายวันตามสูตร 50/30/20 ให้ค่ะ`}`);
+  // INTENT 8: Market & News Topic Query (ONLY when the query actually mentions market/news/assets!)
+  if(/ข่าว|ตลาด|หุ้น|ทอง|gold|xau|คริปโต|บิตคอยน์|btc|eth|sol|stablecoin|usdt|usdc|roadster|ev|รถไฟฟ้า|tesla|tsla|เทสลา|7 นางฟ้า|mag7|ai|ชิป|nvda|apple|aapl|spx|s&p|ไทย|set|ptt|aot|พลังงาน|น้ำมัน|wti|ดอกเบี้ย|เฟด|fed/i.test(lower)){
+    let matchedNews = newsItems;
+    let topicLabel = "ภาพรวมตลาดโลก";
+    let assetRef = null;
+    if(/stablecoin|usdt|usdc|คริปโต|บิตคอยน์|btc|eth|sol|crypto/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"Stablecoin")||matchNewsTopic(x,"BTC")); topicLabel = "คริปโต & Stablecoin"; assetRef = ASSETS.find(a=>a.id==="BTC"); }
+    else if(/roadster|ev|รถไฟฟ้า|tesla|tsla|เทสลา/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"Roadster")); topicLabel = "รถ EV & Tesla Roadster"; assetRef = ASSETS.find(a=>a.id==="TSLA"); }
+    else if(/ทอง|gold|xau/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"ทอง")); topicLabel = "ทองคำ (Gold)"; assetRef = ASSETS.find(a=>a.id==="GTH"); }
+    else if(/7 นางฟ้า|mag7|ai|เทค|ชิป|nvda|meta|apple|aapl/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"AI")||matchNewsTopic(x,"MAG7")); topicLabel = "เทคโนโลยี AI & 7 นางฟ้า"; assetRef = ASSETS.find(a=>a.id==="NVDA"); }
+    else if(/ไทย|set|ptt|aot/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"SET")); topicLabel = "ตลาดหุ้นไทย (SET)"; assetRef = ASSETS.find(a=>a.id==="SET"); }
+    else if(/พลังงาน|น้ำมัน|wti|oil|energy/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"WTI")); topicLabel = "กลุ่มพลังงาน & น้ำมัน"; assetRef = ASSETS.find(a=>a.id==="WTI"); }
+
+    const priceLine = assetRef ? `<div style="background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:7px 11px;margin:6px 0">📌 <b>ราคา ${assetRef.id} (${assetRef.n}) ล่าสุด:</b> <b>${fmtPrice(assetRef)}</b> (${fmtPctBadge(assetRef.chg)})</div>` : "";
+    const topItems = (matchedNews.length ? matchedNews : newsItems).slice(0,4);
+    const bullets = topItems.map(x=>`• <b>[${NEWS_CATS[x.c]||"ข่าว"}]</b> ${x.t.replace(/ - [^-]+$/,"")} <span class="mu">(${fmtAgo(x.m)})</span>`).join("<br>");
+    appendChatMessage("ai", `📊 <b>เลขาสรุปเจาะลึกหมวด ${topicLabel} ให้ค่ะ:</b>${priceLine}<div style="margin-top:4px">${bullets}</div>`);
     return;
   }
 
-  // Match specific news topics
-  let matchedNews = newsItems;
-  let topicLabel = "ตลาดและการเงินวันนี้";
-  if(/stablecoin|usdt|usdc|คริปโต|บิตคอยน์|btc|eth|crypto/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"Stablecoin")||matchNewsTopic(x,"BTC")); topicLabel = "คริปโต & Stablecoin"; }
-  else if(/roadster|ev|รถไฟฟ้า|tesla|เทสลา/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"Roadster")); topicLabel = "รถ EV & Tesla Roadster"; }
-  else if(/ทอง|gold|xau/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"ทอง")); topicLabel = "ทองคำ (Gold)"; }
-  else if(/7 นางฟ้า|mag7|ai|เทค|nvda|meta|apple/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"AI")||matchNewsTopic(x,"MAG7")); topicLabel = "เทคโนโลยี AI & 7 นางฟ้า"; }
-  else if(/ไทย|set|ptt|aot|gulf/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"SET")); topicLabel = "ตลาดหุ้นไทย (SET)"; }
-  else if(/พลังงาน|น้ำมัน|wti|oil|energy/.test(lower)){ matchedNews = newsItems.filter(x=>matchNewsTopic(x,"WTI")); topicLabel = "กลุ่มพลังงาน & น้ำมัน"; }
-
-  const topItems = (matchedNews.length ? matchedNews : newsItems).slice(0,4);
-  const bullets = topItems.map(x=>`• <b>[${NEWS_CATS[x.c]||"ข่าว"}]</b> ${x.t.replace(/ - [^-]+$/,"")}`).join("<br>");
-  appendChatMessage("ai", `📊 <b>สรุปเจาะลึกหมวด ${topicLabel} จากเลขาค่ะ:</b><br>${bullets}<br><small class="mu">💡 ทิป: กดปุ่มไมค์ 🎤 เพื่อพูดสั่งงาน หรือพิมพ์ <b>"today มีอะไรบ้าง"</b> / <b>"week นี้มีอะไรบ้าง"</b> ได้เลยค่ะ</small>`);
+  // INTENT 9: Smart Conversational Secretary Fallback (Never dumps random news! Helps the user with their actual life/money/tasks)
+  const st = getMonthFinanceStats();
+  const pendingCount = todos.filter(t=>!t.done).length;
+  appendChatMessage("ai", `👩‍💼 <b>สวัสดีค่ะ${uname}! เลขาพร้อมช่วยดูแลทั้งเรื่องเงิน งานวันนี้ และข่าวตลาดให้คุณค่ะ</b><br>
+    ตอนนี้สถานะของคุณคือ: เงินคงเหลือเดือนนี้ <b>฿${fmt(st.bal)}</b> (งบใช้ได้วันละ <b>฿${fmt(st.dailyAllowance)}</b>) และมีงานค้างวันนี้ <b>${pendingCount} รายการ</b>ค่ะ<br>
+    <div style="margin-top:6px">คุณสามารถสั่งงานหรือปรึกษาเลขาได้หลายแบบเลยนะคะ:</div>
+    • 🤔 <b>ปรึกษาก่อนซื้อของ:</b> พิมพ์ <i>"ซื้อหูฟัง 2500 ไหวไหม"</i> หรือ <i>"กินชาบู 599 ดีไหม"</i><br>
+    • 💸 <b>จดรายรับ-รายจ่ายด่วน:</b> พิมพ์ <i>"กาแฟ 65"</i>, <i>"เงินเดือน 35000"</i>, หรือ <i>"ลบรายการล่าสุด"</i><br>
+    • 🧾 <b>เช็กยอดใช้จ่ายจริง:</b> พิมพ์ <i>"วันนี้ใช้อะไรไปบ้าง"</i> หรือ <i>"วางแผนการเงินให้หน่อย"</i><br>
+    • 📅 <b>ขอดูสรุปข่าวตลาด:</b> พิมพ์ <i>"today"</i>, <i>"week"</i>, <i>"month"</i> หรือ <i>"ข่าวทอง / บิตคอยน์ / หุ้น"</i>
+    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="quickPrompt('วันนี้ใช้อะไรไปบ้าง')">🧾 วันนี้ใช้อะไรไปบ้าง</button>
+      <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="quickPrompt('วางแผนการเงินเดือนนี้ให้หน่อย')">💡 จัดแผนการเงินเดือนนี้</button>
+      <button class="btn sec" style="padding:5px 11px;font-size:12px;border-radius:999px" onclick="quickPrompt('งานวันนี้มีอะไรบ้าง')">📋 เช็กงานวันนี้</button>
+    </div>`);
 }
 
 function askAgentAboutNews(id){
@@ -2284,7 +2538,7 @@ function toggleVoiceInput(){
   recognition.onstart = ()=>{
     isRecording = true;
     btn.classList.add("rec");
-    $("cmd-input").placeholder = "🎙️ เลขากำลังฟังคุณพูด... (เช่น กาแฟ 65, วันนี้มีอะไรบ้าง)";
+    $("cmd-input").placeholder = "🎙️ เลขากำลังฟังคุณพูด... (เช่น ซื้อหูฟัง 2500 ไหวไหม, กาแฟ 65)";
   };
   recognition.onresult = e=>{
     let transcript = "";
@@ -2294,7 +2548,7 @@ function toggleVoiceInput(){
   recognition.onend = ()=>{
     isRecording = false;
     btn.classList.remove("rec");
-    $("cmd-input").placeholder = "พิมพ์หรือกดไมค์พูดกับเลขา… เช่น “กาแฟ 65”, “วันนี้มีอะไรบ้าง”";
+    $("cmd-input").placeholder = "คุยกับเลขาได้ทุกเรื่อง… เช่น “ซื้อหูฟัง 2500 ไหวไหม”, “กาแฟ 65”, “วันนี้ใช้อะไรไปบ้าง”";
     const finalTxt = $("cmd-input").value.trim();
     if(finalTxt){
       lastUsedVoice = true;
@@ -2309,7 +2563,7 @@ function toggleVoiceInput(){
   recognition.start();
 }
 
-/* ==================== 6. PROACTIVE SECRETARY ROUTINE & NOTIFICATIONS ==================== */
+/* ==================== 6. PROACTIVE SECRETARY ROUTINE & ACTIVE RECOMMENDATIONS ==================== */
 function getProactiveRoutineData(){
   const hr = new Date().getHours();
   const uname = g("ag_username") ? "คุณ" + g("ag_username") : "บอส";
@@ -2317,30 +2571,36 @@ function getProactiveRoutineData(){
   const pendingTodos = todos.filter(t=>!t.done);
   const mood = marketMoodFromNews();
   const gthA = ASSETS.find(x=>x.id==="GTH"), btcA = ASSETS.find(x=>x.id==="BTC");
-  const leadNews = newsItems[0] ? newsItems[0].t.replace(/ - [^-]+$/,"") : "";
+  const sorted1D = [...ASSETS].sort((a,b)=>Math.abs(b.chg||0)-Math.abs(a.chg||0));
+  const topMover = sorted1D[0] || gthA;
 
-  if(hr >= 5 && hr < 12){
-    return {
-      slot: "morning",
-      title: `☀️ รายงานเลขาตอนเช้า (Morning Brief) สำหรับ${uname}`,
-      msg: `เช้านี้บรรยากาศตลาด <b>${mood.label}</b> (ทองแท่ง ${fmtPrice(gthA)} · BTC ${fmtPrice(btcA)}) · วันนี้คุณมีงานที่ต้องทำ <b>${pendingTodos.length} รายการ</b>${pendingTodos[0]?` (เริ่มด้วย "${pendingTodos[0].text.replace(/</g,"&lt;")}")`:""} และมีงบใช้จ่ายได้ <b>฿${fmt(st.dailyAllowance)}</b> ค่ะ`,
-      speech: `สวัสดีตอนเช้าค่ะ${uname} เช้านี้ตลาด${mood.label.replace(/[^ก-๙a-zA-Z\s]/g,"")} ราคาทองแท่งอยู่ที่ ${gthA.p} บาท วันนี้คุณมีงานต้องทำ ${pendingTodos.length} รายการ และมีงบใช้จ่ายได้ ${st.dailyAllowance} บาทค่ะ ประเด็นข่าวเด่นเช้านี้คือ ${leadNews}`
-    };
+  // Compute proactive financial diagnosis
+  let finDiag = "";
+  if(st.inc <= 0){
+    finDiag = `💡 เดือนนี้ยังไม่ได้ตั้งรายรับ (จ่ายสะสม <b>฿${fmt(st.exp)}</b>) กดปุ่มด้านล่างเพื่อตั้งรายรับให้เลขาช่วยคุมงบรายวันนะคะ`;
+  } else if(st.todayExp > st.dailyAllowance){
+    const over = st.todayExp - st.dailyAllowance;
+    finDiag = `⚠️ วันนี้ใช้เกินงบรายวันไป <b class="dn">฿${fmt(over)}</b> (ใช้ไป ฿${fmt(st.todayExp)} จากงบ ฿${fmt(st.dailyAllowance)}) · พรุ่งนี้เลขาช่วยปรับแผนคุมงบให้นะคะ`;
+  } else {
+    const rem = st.dailyAllowance - st.todayExp;
+    finDiag = `💰 วันนี้ใช้ไป <b>฿${fmt(st.todayExp)}</b> ยังเหลืองบใช้ได้วันนี้อีก <b class="up">฿${fmt(rem)}</b> (จากงบ ฿${fmt(st.dailyAllowance)}/วัน)`;
   }
-  if(hr >= 12 && hr < 17){
-    const remToday = Math.max(0, st.dailyAllowance - st.todayExp);
-    return {
-      slot: "afternoon",
-      title: `☕ เลขาอัปเดตช่วงบ่าย (Midday Check-in) สำหรับ${uname}`,
-      msg: `วันนี้คุณบันทึกค่าใช้จ่ายไปแล้ว <b>฿${fmt(st.todayExp)}</b> ${st.inc>0?`(เหลืองบใช้ได้วันนี้ <b>฿${fmt(remToday)}</b>)`:""} · เหลืองานค้าง <b>${pendingTodos.length} รายการ</b> · ข่าวเด่นบ่ายนี้: <i>"${leadNews.slice(0,75).replace(/</g,"&lt;")}..."</i>`,
-      speech: `อัปเดตช่วงบ่ายค่ะ${uname} วันนี้คุณใช้จ่ายไปแล้ว ${st.todayExp} บาท เหลืองานค้าง ${pendingTodos.length} รายการ ข่าวเด่นบ่ายนี้คือ ${leadNews}`
-    };
-  }
+
+  const todoDiag = pendingTodos.length
+    ? `📋 มีงานด่วนรอทำ <b>${pendingTodos.length} งาน</b> (เริ่มด้วย <i>"${pendingTodos[0].text.replace(/</g,"&lt;")}"</i>)`
+    : `✅ งานวันนี้เคลียร์ครบหมดแล้ว`;
+
+  const mktDiag = `📈 ตลาดวันนี้ ${mood.label} (เด่นสุด: <b>${topMover.id}</b> ${fmtPctBadge(topMover.chg)} · ทองแท่ง <b>${fmtPrice(gthA)}</b>)`;
+
+  const title = hr >= 5 && hr < 12 ? `☀️ เลขารายงานแผนตอนเช้าสำหรับ${uname}`
+              : hr >= 12 && hr < 17 ? `☕ เลขาตรวจเช็กสถานะช่วงบ่ายสำหรับ${uname}`
+              : `🌙 เลขาสรุปภาพรวมปิดวันสำหรับ${uname}`;
+
   return {
-    slot: "evening",
-    title: `🌙 เลขาสรุปปิดวัน (Evening Wrap-up) สำหรับ${uname}`,
-    msg: `สรุปวันนี้ใช้จ่ายรวม <b>฿${fmt(st.todayExp)}</b> (คงเหลือเดือนนี้ <b>฿${fmt(st.bal)}</b>) · เคลียร์งานสำเร็จ <b>${todos.filter(t=>t.done).length}/${todos.length} รายการ</b> · คืนนี้จับตาตลาดหุ้นสหรัฐฯ (NVDA / TSLA) และคริปโต (BTC ${fmtPrice(btcA)}) ค่ะ`,
-    speech: `สรุปปิดวันค่ะ${uname} วันนี้คุณใช้จ่ายรวม ${st.todayExp} บาท คงเหลือสุทธิเดือนนี้ ${st.bal} บาท และทำงานสำเร็จแล้ว ${todos.filter(t=>t.done).length} จาก ${todos.length} รายการค่ะ`
+    slot: hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening",
+    title,
+    msg: `${finDiag}<br>${todoDiag} · ${mktDiag}`,
+    speech: `${title.replace(/[^ก-๙a-zA-Z0-9\s]/g,"")} วันนี้คุณใช้จ่ายไป ${st.todayExp} บาท ${st.inc>0 ? `จากงบรายวัน ${st.dailyAllowance} บาท` : ""} มีงานค้าง ${pendingTodos.length} รายการ และราคาทองแท่งอยู่ที่ ${gthA.p} บาทค่ะ`
   };
 }
 
@@ -2348,10 +2608,31 @@ function updateProactiveSecretary(){
   const r = getProactiveRoutineData();
   if($("sec-routine-title")) $("sec-routine-title").innerHTML = r.title;
   if($("sec-routine-msg")) $("sec-routine-msg").innerHTML = r.msg;
-  const hasTg = !!(g("ag_tg_token") && g("ag_tg_chatid"));
-  const badge = $("tg-sync-badge");
-  if(badge){
-    badge.textContent = hasTg ? "🟢 เชื่อม Telegram เลขาแล้ว (สั่งงาน 2 ทาง)" : "⚙️ ตั้งค่าเชื่อม Telegram";
+
+  // Render interactive 1-click Secretary Action Pills based on real-time user state!
+  const pillsEl = $("sec-action-pills");
+  if(pillsEl){
+    const st = getMonthFinanceStats();
+    const pendingTodos = todos.filter(t=>!t.done);
+    const actions = [];
+    if(st.inc <= 0){
+      actions.push(`<button type="button" class="qchip add" onclick="prefillCmd('เงินเดือน 35000')">💰 ตั้งรายรับเดือนนี้</button>`);
+    } else if(st.todayExp > st.dailyAllowance){
+      actions.push(`<button type="button" class="qchip add" onclick="quickPrompt('วางแผนการเงินเดือนนี้ให้หน่อย')">🚨 วันนี้เกินงบ · ให้เลขาปรับแผน</button>`);
+    } else {
+      actions.push(`<button type="button" class="qchip add" onclick="prefillCmd('ซื้อของ 1500 ไหวไหม')">🤔 ปรึกษาก่อนซื้อของ</button>`);
+    }
+    if(pendingTodos.length){
+      const firstTodo = pendingTodos[0];
+      const shortTxt = firstTodo.text.length > 18 ? firstTodo.text.slice(0,18)+"…" : firstTodo.text;
+      actions.push(`<button type="button" class="qchip" onclick="completeTodoFromChat('${firstTodo.id}')">✓ เสร็จงาน: ${shortTxt.replace(/</g,"&lt;")}</button>`);
+    }
+    if(items.length){
+      actions.push(`<button type="button" class="qchip" onclick="quickPrompt('วันนี้ใช้อะไรไปบ้าง')">🧾 ดูที่จ่ายวันนี้ (${items.filter(x=>x.date===today).length})</button>`);
+    }
+    const hasTg = !!(g("ag_tg_token") && g("ag_tg_chatid"));
+    actions.push(`<button type="button" class="qchip" onclick="$('btn-ai-cfg').onclick()">${hasTg ? "🟢 เชื่อม Telegram แล้ว" : "⚙️ ตั้งค่า API / Telegram"}</button>`);
+    pillsEl.innerHTML = actions.join("");
   }
 }
 
@@ -2365,11 +2646,9 @@ function checkAutoSecretarySchedule(){
   if(g("ag_last_auto_slot") === slotKey) return;
   ls("ag_last_auto_slot", slotKey);
 
-  // Trigger Browser Notification if permitted
   if("Notification" in window && Notification.permission === "granted"){
     try{ new Notification(r.title, {body: r.speech}); }catch(e){}
   }
-  // Also auto-push to Telegram if configured
   if(g("ag_tg_token") && g("ag_tg_chatid")){
     const rep = buildStructuredPatternData("today");
     sendTelegramMsg(`👩‍💼 ${r.title}\n\n${r.speech}\n\n${rep.plainText}`, true);
@@ -2435,7 +2714,7 @@ async function autoDetectTelegramChatId(){
     $("cfg-tg-chatid").value = String(lastChat.id);
     ls("ag_tg_token", token);
     ls("ag_tg_chatid", String(lastChat.id));
-    stEl.innerHTML = `<span class="up">✅ พบ Chat ID เรียบร้อยค่ะ! (${lastChat.first_name||lastChat.title||lastChat.id}) กดปุ่ม "📨 ทดสอบส่ง" ได้เลย</span>`;
+    stEl.innerHTML = `<span class="up">✅ พบ Chat ID เรียบร้อยค่ะ! (${lastChat.first_name||lastChat.title||lastChat.id}) กดปุ่ม "📨 ทดสอบ" ได้เลย</span>`;
     updateProactiveSecretary();
   }catch(e){
     stEl.innerHTML = `<span class="dn">❌ เชื่อมต่อ Telegram ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต</span>`;
@@ -2448,7 +2727,7 @@ async function testTelegramPush(){
   ls("ag_tg_token", token);
   ls("ag_tg_chatid", chatId);
   const r = getProactiveRoutineData();
-  const ok = await sendTelegramMsg(`👩‍💼 สวัสดีค่ะ! เลขา AI ส่วนตัวเชื่อมต่อกับ Telegram ของคุณสำเร็จแล้วค่ะ\n\nคุณสามารถพิมพ์สั่งงานในแชทนี้ได้เลย เช่น:\n• "กาแฟ 65" (จดรายจ่าย)\n• "เตือน ประชุมบ่ายสอง" (เพิ่มงาน)\n• "today" / "week" / "month" (ขอดูสรุปข่าว 3 หมวด)\n• "งบ" (เช็กยอดเงินคงเหลือ)\n\n${r.speech}`);
+  const ok = await sendTelegramMsg(`👩‍💼 สวัสดีค่ะ! เลขา AI ส่วนตัวเชื่อมต่อกับ Telegram ของคุณสำเร็จแล้วค่ะ\n\nคุณสามารถพิมพ์สั่งงานในแชทนี้ได้เลย เช่น:\n• "กาแฟ 65" (จดรายจ่าย)\n• "ซื้อหูฟัง 2500 ไหวไหม" (ปรึกษาก่อนซื้อ)\n• "เตือน ประชุมบ่ายสอง" (เพิ่มงาน)\n• "today" / "week" / "month" (ขอดูสรุปข่าว 3 หมวด)\n• "งบ" (เช็กยอดเงินคงเหลือ)\n\n${r.speech}`);
   if(ok) $("tg-setup-status").innerHTML = `<span class="up">🎉 ส่งข้อความทดสอบเข้า Telegram สำเร็จแล้ว! ลองพิมพ์ "today" หรือ "กาแฟ 65" ตอบกลับมาใน Telegram ได้เลยค่ะ</span>`;
 }
 
@@ -2469,7 +2748,6 @@ async function pollTelegramUpdates(){
       const msg = upd.message;
       if(!msg || !msg.text || String(msg.chat.id) !== String(myChatId)) continue;
       const txt = msg.text.trim();
-      // Ignore old messages (> 5 mins ago)
       if(msg.date && (Date.now()/1000 - msg.date > 300)) continue;
 
       const parsed = tryParseTransactionCommand(txt);
@@ -2493,7 +2771,7 @@ async function pollTelegramUpdates(){
         await sendTelegramMsg(buildStructuredPatternData("week").plainText, true);
       } else if(/month|monthly|เดือน/i.test(txt)){
         await sendTelegramMsg(buildStructuredPatternData("month").plainText, true);
-      } else if(/งบ|กระเป๋า|เงิน|bal|wallet/i.test(txt)){
+      } else if(/งบ|กระเป๋า|เงิน|bal|wallet|ใช้อะไร/i.test(txt)){
         const st = getMonthFinanceStats();
         await sendTelegramMsg(`💰 สรุปกระเป๋าตังค์เดือนนี้ค่ะ:\n• รายรับ: ฿${fmt(st.inc)} | รายจ่าย: ฿${fmt(st.exp)}\n• คงเหลือสุทธิ: ฿${fmt(st.bal)}\n• วันนี้ใช้ไป: ฿${fmt(st.todayExp)}\n• งบใช้ได้ต่อวัน: ฿${fmt(st.dailyAllowance)}/วัน`, true);
       } else {
@@ -2505,23 +2783,32 @@ async function pollTelegramUpdates(){
 setInterval(pollTelegramUpdates, 6500);
 setInterval(checkAutoSecretarySchedule, 60000);
 
-/* Gemini API Helper */
+/* Gemini API Helper with Automatic Model Fallback (gemini-2.5-flash -> gemini-2.0-flash) */
 async function callGeminiText(prompt){
   const key = g("ag_apikey");
   if(!key) return null;
-  apiStats.geminiCalls++;
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
-  });
-  if(!res.ok){ saveApiStats(); throw new Error("Gemini API error"); }
-  const data = await res.json();
-  const txt = data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
-  const usedTok = data?.usageMetadata?.totalTokenCount || Math.ceil((prompt.length + (txt?txt.length:0))/3.2);
-  apiStats.geminiTokens += usedTok;
+  const models = ["gemini-2.5-flash", "gemini-2.0-flash"];
+  for(const model of models){
+    try{
+      apiStats.geminiCalls++;
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+      });
+      if(!res.ok) continue;
+      const data = await res.json();
+      const txt = data?.candidates?.[0]?.content?.parts?.[0]?.text || null;
+      if(txt){
+        const usedTok = data?.usageMetadata?.totalTokenCount || Math.ceil((prompt.length + txt.length)/3.2);
+        apiStats.geminiTokens += usedTok;
+        saveApiStats();
+        return txt;
+      }
+    }catch(e){}
+  }
   saveApiStats();
-  return txt;
+  return null;
 }
 
 /* Audio Briefing (Text-to-Speech) */
